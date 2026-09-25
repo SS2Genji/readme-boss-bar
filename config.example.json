@@ -1,4 +1,22 @@
 [
-  { "name": "MILESTONE 1", "totalBars": 3, "hits": 3 },
-  { "name": "MILESTONE 2", "totalBars": 5, "hits": 1 }
+  {
+    "name": "STARCOURGE RADAHN",
+    "totalBars": 10,
+    "hits": 2,
+    "damagePerHit": 3,
+    "hitInterval": 0.5,
+    "barColor": "purple",
+    "shake": "heavy",
+    "dmgPop": "-{N} BARS"
+  },
+  {
+    "name": "MALENIA, BLADE OF MIQUELLA",
+    "totalBars": 8,
+    "hits": 4,
+    "damagePerHit": 2,
+    "hitInterval": 0.35,
+    "barColor": "gold",
+    "shake": "heavy",
+    "felledText": "DEMIGOD FELLED"
+  }
 ]

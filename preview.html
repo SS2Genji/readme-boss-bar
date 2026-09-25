@@ -1,0 +1,4242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retro Boss Bar - Interactive Studio & Showcase</title>
+<style>
+  :root {
+    --bg: #090d16;
+    --card-bg: #111827;
+    --card-hover: #162032;
+    --border: #1f2937;
+    --border-bright: #374151;
+    --gold: #f59e0b;
+    --gold-bright: #fef08a;
+    --crimson: #dc2626;
+    --cyan: #38bdf8;
+    --purple: #a855f7;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 32px 16px;
+    background: var(--bg);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+  .header {
+    text-align: center;
+    max-width: 820px;
+  }
+  .header h1 {
+    font-size: 26px;
+    letter-spacing: 2px;
+    margin: 0 0 10px 0;
+    color: var(--gold-bright);
+    text-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
+  }
+  .header p {
+    color: var(--text-muted);
+    font-size: 14.5px;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: monospace;
+    font-weight: 700;
+  }
+  .badge-gold { background: rgba(245, 158, 11, 0.15); color: var(--gold); border: 1px solid rgba(245, 158, 11, 0.3); }
+  .badge-cyan { background: rgba(56, 189, 248, 0.15); color: var(--cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
+  .badge-purple { background: rgba(168, 85, 247, 0.15); color: var(--purple); border: 1px solid rgba(168, 85, 247, 0.3); }
+  .badge-red { background: rgba(220, 38, 38, 0.15); color: var(--crimson); border: 1px solid rgba(220, 38, 38, 0.3); }
+
+  .studio-card {
+    width: 100%;
+    max-width: 840px;
+    background: #0d1322;
+    border: 1px solid #2a374a;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.7);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .studio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1f2937;
+    padding-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .studio-title {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .studio-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+  }
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .control-label {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+  .control-input, .control-select {
+    background: #090d16;
+    border: 1px solid #243042;
+    border-radius: 6px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    padding: 8px 10px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .control-input:focus, .control-select:focus {
+    border-color: var(--cyan);
+  }
+  .range-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .range-container input[type="range"] {
+    flex: 1;
+    accent-color: var(--gold);
+  }
+  .range-val {
+    font-family: monospace;
+    font-size: 12px;
+    width: 32px;
+    text-align: right;
+    color: var(--gold-bright);
+  }
+
+  .toggle-btn {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .toggle-btn.active {
+    background: #0284c7;
+    border-color: #38bdf8;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+  }
+
+  .showcase-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    width: 100%;
+    max-width: 840px;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1f2937;
+    padding-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: monospace;
+  }
+  .card-desc {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .svg-viewport {
+    background: #070a10;
+    border: 1px solid #1a2230;
+    border-radius: 8px;
+    padding: 16px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.85);
+    overflow: hidden;
+  }
+  .svg-viewport svg {
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    display: block;
+  }
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .metric-box {
+    background: #090d16;
+    border: 1px solid #1f2937;
+    border-radius: 6px;
+    padding: 9px 12px;
+  }
+  .metric-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .metric-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-top: 3px;
+    font-family: monospace;
+  }
+  .code-block {
+    background: #0a0f1d;
+    border: 1px solid #1e293b;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>SOULS BOSS BAR STUDIO</h1>
+    <p>Dynamic 16-bit retro RPG health bars with granular damage, custom intervals, screen shakes, themes, and automated cinematic presets for your GitHub Profile README.</p>
+  </div>
+
+  <!-- Interactive Live Studio -->
+  <div class="studio-card">
+    <div class="studio-header">
+      <div class="studio-title">
+        <span>⚔️</span> Interactive Boss Bar Studio (Live Preview)
+      </div>
+      <div>
+        <button id="btn-mode-auto" class="toggle-btn" onclick="toggleAutoMode()">Mode: Manual Custom</button>
+      </div>
+    </div>
+
+    <div class="studio-controls" id="studio-controls">
+      <div class="control-group">
+        <label class="control-label">Boss Name</label>
+        <input type="text" id="in-name" class="control-input" value="STARCOURGE RADAHN" oninput="updateStudio()" />
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Total Health Bars</label>
+        <div class="range-container">
+          <input type="range" id="in-bars" min="1" max="20" value="10" oninput="updateStudio()" />
+          <span id="val-bars" class="range-val">10</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Damage Per Hit</label>
+        <div class="range-container">
+          <input type="range" id="in-dmg" min="1" max="10" value="3" oninput="updateStudio()" />
+          <span id="val-dmg" class="range-val">3</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Hits Executed</label>
+        <div class="range-container">
+          <input type="range" id="in-hits" min="0" max="20" value="2" oninput="updateStudio()" />
+          <span id="val-hits" class="range-val">2</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Hit Interval (Speed)</label>
+        <div class="range-container">
+          <input type="range" id="in-interval" min="0.15" max="1.5" step="0.05" value="0.50" oninput="updateStudio()" />
+          <span id="val-interval" class="range-val">0.50s</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Theme Color</label>
+        <select id="in-theme" class="control-select" onchange="updateStudio()">
+          <option value="purple" selected>Purple (Void / Gravity)</option>
+          <option value="crimson">Crimson (Souls Red)</option>
+          <option value="cyan">Cyan (Glintstone Sorcery)</option>
+          <option value="gold">Gold (Erdtree Order)</option>
+          <option value="green">Green (Poison / Rot)</option>
+          <option value="orange">Orange (Frenzy Flame)</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Screen Shake</label>
+        <select id="in-shake" class="control-select" onchange="updateStudio()">
+          <option value="heavy" selected>Heavy (Visceral Impact)</option>
+          <option value="medium">Medium (Standard)</option>
+          <option value="subtle">Subtle (Light)</option>
+          <option value="none">None (Disabled)</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Defeated Banner</label>
+        <input type="text" id="in-felled" class="control-input" value="DEMIGOD FELLED" oninput="updateStudio()" />
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Damage Popup</label>
+        <input type="text" id="in-dmgpop" class="control-input" value="-{N} BARS" oninput="updateStudio()" />
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Sparks Effect</label>
+        <select id="in-sparks" class="control-select" onchange="updateStudio()">
+          <option value="true" selected>Enabled</option>
+          <option value="false">Disabled</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Live SVG Display -->
+    <div class="svg-viewport" id="studio-viewport"></div>
+
+    <!-- Live Code Output -->
+    <div class="control-group">
+      <label class="control-label">Generated Markdown Embed URL</label>
+      <div class="code-block" id="studio-markdown"></div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Equivalent CLI Command</label>
+      <div class="code-block" id="studio-cli"></div>
+    </div>
+  </div>
+
+  <!-- Showcase Grid -->
+  <div class="showcase-grid">
+
+    <!-- Showcase 1: Auto Mode -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span>⚡</span> Preset 1: Fully Automatic Cinematic Mode
+        </div>
+        <span class="badge badge-gold">--auto / ?auto=true</span>
+      </div>
+      <p class="card-desc">Zero manual configuration required. The generator automatically designs a 2-stage multi-boss encounter with balanced speeds, combo strikes, camera shake, and dramatic defeat transitions.</p>
+      <div class="svg-viewport"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 95" width="100%" height="95" shape-rendering="crispEdges">
+  <defs>
+    <style><![CDATA[
+      
+    .pixel-txt {
+      font-family: 'Courier New', 'Fira Code', 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+  
+
+      .pulse-crimson {
+        animation: pulse_crimson 2s infinite alternate;
+      }
+      @keyframes pulse_crimson {
+        0% { fill: #dc2626; }
+        100% { fill: #ef4444; }
+      }
+    
+
+      .pulse-gold {
+        animation: pulse_gold 2s infinite alternate;
+      }
+      @keyframes pulse_gold {
+        0% { fill: #d97706; }
+        100% { fill: #f59e0b; }
+      }
+    
+
+      .boss-layer-0 {
+        opacity: 0;
+        animation: bossLife0 9.8s infinite;
+      }
+      @keyframes bossLife0 {
+        0%, 0.00% { opacity: 0; transform: translateY(3px); }
+        2.55%, 38.27% { opacity: 1; transform: translateY(0); }
+        40.82%, 100% { opacity: 0; transform: translateY(-3px); }
+      }
+    
+
+      .shake-0 {
+        animation: shakeAnim0 9.8s infinite;
+      }
+      @keyframes shakeAnim0 {
+        0%, 0.00% { transform: translate(0, 0); }
+
+            5.10% { transform: translate(-4px, 3px); }
+            5.59% { transform: translate(4px, -3px); }
+            6.16% { transform: translate(-2px, 2px); }
+            6.73% { transform: translate(0, 0); }
+          
+
+            10.20% { transform: translate(-4px, 3px); }
+            10.69% { transform: translate(4px, -3px); }
+            11.27% { transform: translate(-2px, 2px); }
+            11.84% { transform: translate(0, 0); }
+          
+
+            15.31% { transform: translate(-4px, 3px); }
+            15.80% { transform: translate(4px, -3px); }
+            16.37% { transform: translate(-2px, 2px); }
+            16.94% { transform: translate(0, 0); }
+          
+40.82%, 100% { transform: translate(0, 0); }
+      }
+    
+
+          .bar-0-0 {
+            animation: drain_0_0 9.8s infinite;
+          }
+          @keyframes drain_0_0 {
+            0%, 0.00% { width: 0px; }
+            3.06%, 14.90% { width: 75px; fill: #dc2626; }
+            15.31% { fill: #fef08a; }
+            17.14%, 40.82% { width: 0px; fill: #dc2626; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-0 {
+              opacity: 0;
+              animation: sparkAnim_0_0 9.8s infinite;
+            }
+            @keyframes sparkAnim_0_0 {
+              0%, 14.90% { opacity: 0; transform: scale(0.6); }
+              15.31% { opacity: 1; transform: scale(1.2); }
+              16.96% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-1 {
+            animation: drain_0_1 9.8s infinite;
+          }
+          @keyframes drain_0_1 {
+            0%, 0.00% { width: 0px; }
+            3.06%, 14.90% { width: 75px; fill: #dc2626; }
+            15.31% { fill: #fef08a; }
+            17.14%, 40.82% { width: 0px; fill: #dc2626; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-1 {
+              opacity: 0;
+              animation: sparkAnim_0_1 9.8s infinite;
+            }
+            @keyframes sparkAnim_0_1 {
+              0%, 14.90% { opacity: 0; transform: scale(0.6); }
+              15.31% { opacity: 1; transform: scale(1.2); }
+              16.96% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-2 {
+            animation: drain_0_2 9.8s infinite;
+          }
+          @keyframes drain_0_2 {
+            0%, 0.00% { width: 0px; }
+            3.06%, 9.80% { width: 75px; fill: #dc2626; }
+            10.20% { fill: #fef08a; }
+            12.04%, 40.82% { width: 0px; fill: #dc2626; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-2 {
+              opacity: 0;
+              animation: sparkAnim_0_2 9.8s infinite;
+            }
+            @keyframes sparkAnim_0_2 {
+              0%, 9.80% { opacity: 0; transform: scale(0.6); }
+              10.20% { opacity: 1; transform: scale(1.2); }
+              11.86% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-3 {
+            animation: drain_0_3 9.8s infinite;
+          }
+          @keyframes drain_0_3 {
+            0%, 0.00% { width: 0px; }
+            3.06%, 9.80% { width: 75px; fill: #dc2626; }
+            10.20% { fill: #fef08a; }
+            12.04%, 40.82% { width: 0px; fill: #dc2626; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-3 {
+              opacity: 0;
+              animation: sparkAnim_0_3 9.8s infinite;
+            }
+            @keyframes sparkAnim_0_3 {
+              0%, 9.80% { opacity: 0; transform: scale(0.6); }
+              10.20% { opacity: 1; transform: scale(1.2); }
+              11.86% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-4 {
+            animation: drain_0_4 9.8s infinite;
+          }
+          @keyframes drain_0_4 {
+            0%, 0.00% { width: 0px; }
+            3.06%, 4.69% { width: 75px; fill: #dc2626; }
+            5.10% { fill: #fef08a; }
+            6.94%, 40.82% { width: 0px; fill: #dc2626; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-4 {
+              opacity: 0;
+              animation: sparkAnim_0_4 9.8s infinite;
+            }
+            @keyframes sparkAnim_0_4 {
+              0%, 4.69% { opacity: 0; transform: scale(0.6); }
+              5.10% { opacity: 1; transform: scale(1.2); }
+              6.76% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-5 {
+            animation: drain_0_5 9.8s infinite;
+          }
+          @keyframes drain_0_5 {
+            0%, 0.00% { width: 0px; }
+            3.06%, 4.69% { width: 75px; fill: #dc2626; }
+            5.10% { fill: #fef08a; }
+            6.94%, 40.82% { width: 0px; fill: #dc2626; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-5 {
+              opacity: 0;
+              animation: sparkAnim_0_5 9.8s infinite;
+            }
+            @keyframes sparkAnim_0_5 {
+              0%, 4.69% { opacity: 0; transform: scale(0.6); }
+              5.10% { opacity: 1; transform: scale(1.2); }
+              6.76% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .dmg-pop-0-0 {
+            opacity: 0;
+            animation: dmgPopAnim_0_0 9.8s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_0 {
+            0%, 5.10% { opacity: 0; transform: translateY(0); }
+            5.71% { opacity: 1; transform: translateY(-4px); }
+            9.69% { opacity: 1; transform: translateY(-13px); }
+            13.78%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-0-1 {
+            opacity: 0;
+            animation: dmgPopAnim_0_1 9.8s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_1 {
+            0%, 10.20% { opacity: 0; transform: translateY(0); }
+            10.82% { opacity: 1; transform: translateY(-4px); }
+            14.80% { opacity: 1; transform: translateY(-13px); }
+            18.88%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-0-2 {
+            opacity: 0;
+            animation: dmgPopAnim_0_2 9.8s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_2 {
+            0%, 15.31% { opacity: 0; transform: translateY(0); }
+            15.92% { opacity: 1; transform: translateY(-4px); }
+            19.90% { opacity: 1; transform: translateY(-13px); }
+            23.98%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+        .tag-live-0 {
+          animation: tagLiveAnim0 9.8s infinite;
+        }
+        @keyframes tagLiveAnim0 {
+          0%, 16.84% { opacity: 1; }
+          17.35%, 100% { opacity: 0; }
+        }
+
+        .tag-felled-0 {
+          opacity: 0;
+          animation: tagFelledAnim0 9.8s infinite;
+        }
+        @keyframes tagFelledAnim0 {
+          0%, 16.84% { opacity: 0; }
+          17.86%, 38.27% { opacity: 1; }
+          40.82%, 100% { opacity: 0; }
+        }
+
+        .felled-text-0 {
+          opacity: 0;
+          animation: felledBannerAnim0 9.8s infinite;
+          font-family: 'Times New Roman', 'Georgia', serif;
+          font-size: 15px;
+          font-weight: 900;
+          letter-spacing: 5px;
+          fill: #fef08a;
+          filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
+        }
+        @keyframes felledBannerAnim0 {
+          0%, 16.84% { opacity: 0; }
+          17.86%, 38.27% { opacity: 1; }
+          40.82%, 100% { opacity: 0; }
+        }
+      
+
+      .boss-layer-1 {
+        opacity: 0;
+        animation: bossLife1 9.8s infinite;
+      }
+      @keyframes bossLife1 {
+        0%, 43.88% { opacity: 0; transform: translateY(3px); }
+        46.43%, 94.39% { opacity: 1; transform: translateY(0); }
+        96.94%, 100% { opacity: 0; transform: translateY(-3px); }
+      }
+    
+
+      .shake-1 {
+        animation: shakeAnim1 9.8s infinite;
+      }
+      @keyframes shakeAnim1 {
+        0%, 43.88% { transform: translate(0, 0); }
+
+            52.04% { transform: translate(-2px, 2px); }
+            52.86% { transform: translate(2px, -2px); }
+            53.67% { transform: translate(0, 0); }
+          
+
+            58.16% { transform: translate(-2px, 2px); }
+            58.98% { transform: translate(2px, -2px); }
+            59.80% { transform: translate(0, 0); }
+          
+96.94%, 100% { transform: translate(0, 0); }
+      }
+    
+
+          .bar-1-0 {
+            animation: alive_1_0 9.8s infinite;
+          }
+          @keyframes alive_1_0 {
+            0%, 43.88% { width: 0px; }
+            46.94%, 96.94% { width: 55px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-1-1 {
+            animation: alive_1_1 9.8s infinite;
+          }
+          @keyframes alive_1_1 {
+            0%, 43.88% { width: 0px; }
+            46.94%, 96.94% { width: 55px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-1-2 {
+            animation: alive_1_2 9.8s infinite;
+          }
+          @keyframes alive_1_2 {
+            0%, 43.88% { width: 0px; }
+            46.94%, 96.94% { width: 55px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-1-3 {
+            animation: alive_1_3 9.8s infinite;
+          }
+          @keyframes alive_1_3 {
+            0%, 43.88% { width: 0px; }
+            46.94%, 96.94% { width: 55px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-1-4 {
+            animation: drain_1_4 9.8s infinite;
+          }
+          @keyframes drain_1_4 {
+            0%, 43.88% { width: 0px; }
+            46.94%, 57.76% { width: 55px; fill: #d97706; }
+            58.16% { fill: #fef9c3; }
+            60.00%, 96.94% { width: 0px; fill: #d97706; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-1-4 {
+              opacity: 0;
+              animation: sparkAnim_1_4 9.8s infinite;
+            }
+            @keyframes sparkAnim_1_4 {
+              0%, 57.76% { opacity: 0; transform: scale(0.6); }
+              58.16% { opacity: 1; transform: scale(1.2); }
+              59.82% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-1-5 {
+            animation: drain_1_5 9.8s infinite;
+          }
+          @keyframes drain_1_5 {
+            0%, 43.88% { width: 0px; }
+            46.94%, 57.76% { width: 55px; fill: #d97706; }
+            58.16% { fill: #fef9c3; }
+            60.00%, 96.94% { width: 0px; fill: #d97706; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-1-5 {
+              opacity: 0;
+              animation: sparkAnim_1_5 9.8s infinite;
+            }
+            @keyframes sparkAnim_1_5 {
+              0%, 57.76% { opacity: 0; transform: scale(0.6); }
+              58.16% { opacity: 1; transform: scale(1.2); }
+              59.82% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-1-6 {
+            animation: drain_1_6 9.8s infinite;
+          }
+          @keyframes drain_1_6 {
+            0%, 43.88% { width: 0px; }
+            46.94%, 51.63% { width: 55px; fill: #d97706; }
+            52.04% { fill: #fef9c3; }
+            53.88%, 96.94% { width: 0px; fill: #d97706; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-1-6 {
+              opacity: 0;
+              animation: sparkAnim_1_6 9.8s infinite;
+            }
+            @keyframes sparkAnim_1_6 {
+              0%, 51.63% { opacity: 0; transform: scale(0.6); }
+              52.04% { opacity: 1; transform: scale(1.2); }
+              53.69% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-1-7 {
+            animation: drain_1_7 9.8s infinite;
+          }
+          @keyframes drain_1_7 {
+            0%, 43.88% { width: 0px; }
+            46.94%, 51.63% { width: 55px; fill: #d97706; }
+            52.04% { fill: #fef9c3; }
+            53.88%, 96.94% { width: 0px; fill: #d97706; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-1-7 {
+              opacity: 0;
+              animation: sparkAnim_1_7 9.8s infinite;
+            }
+            @keyframes sparkAnim_1_7 {
+              0%, 51.63% { opacity: 0; transform: scale(0.6); }
+              52.04% { opacity: 1; transform: scale(1.2); }
+              53.69% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .dmg-pop-1-0 {
+            opacity: 0;
+            animation: dmgPopAnim_1_0 9.8s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_1_0 {
+            0%, 52.04% { opacity: 0; transform: translateY(0); }
+            52.65% { opacity: 1; transform: translateY(-4px); }
+            56.63% { opacity: 1; transform: translateY(-13px); }
+            60.71%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-1-1 {
+            opacity: 0;
+            animation: dmgPopAnim_1_1 9.8s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_1_1 {
+            0%, 58.16% { opacity: 0; transform: translateY(0); }
+            58.78% { opacity: 1; transform: translateY(-4px); }
+            62.76% { opacity: 1; transform: translateY(-13px); }
+            66.84%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+    ]]></style>
+  </defs>
+  
+      <g class="boss-layer-0">
+        <g class="shake-0">
+          <!-- Header (Name & Emblem) -->
+          <g transform="translate(113, 22)">
+            <!-- Pixel Emblem -->
+            <rect x="0" y="2" width="12" height="10" fill="#ef4444" />
+            <rect x="2" y="0" width="8" height="14" fill="#ef4444" />
+            <rect x="3" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="7" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="5" y="9" width="2" height="2" fill="#0d1117" />
+
+            <!-- Boss Name -->
+            <text x="22" y="11" fill="#f8fafc" class="pixel-txt">MARGIT, THE FELL OMEN</text>
+            
+            
+            <!-- Live & Felled Tags -->
+            <text x="475" text-anchor="end" y="11" fill="#ef4444" class="pixel-txt tag-live-0">[BOSS]</text>
+            <text x="475" text-anchor="end" y="11" fill="#f59e0b" class="pixel-txt tag-felled-0">[FELLED]</text>
+            
+          </g>
+
+          <!-- Segments -->
+          <g transform="translate(113, 36)">
+            
+        <g transform="translate(0, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="79" height="20" fill="#78350f" />
+          <rect x="-1" y="-1" width="77" height="18" fill="#d97706" />
+          <rect x="0" y="0" width="75" height="16" fill="#200606" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-0 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-0" transform="translate(38, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(80, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="79" height="20" fill="#78350f" />
+          <rect x="-1" y="-1" width="77" height="18" fill="#d97706" />
+          <rect x="0" y="0" width="75" height="16" fill="#200606" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-1 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-1" transform="translate(38, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(160, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="79" height="20" fill="#78350f" />
+          <rect x="-1" y="-1" width="77" height="18" fill="#d97706" />
+          <rect x="0" y="0" width="75" height="16" fill="#200606" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-2 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-2" transform="translate(38, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(240, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="79" height="20" fill="#78350f" />
+          <rect x="-1" y="-1" width="77" height="18" fill="#d97706" />
+          <rect x="0" y="0" width="75" height="16" fill="#200606" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-3 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-3" transform="translate(38, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(320, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="79" height="20" fill="#78350f" />
+          <rect x="-1" y="-1" width="77" height="18" fill="#d97706" />
+          <rect x="0" y="0" width="75" height="16" fill="#200606" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-4 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-4" transform="translate(38, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(400, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="79" height="20" fill="#78350f" />
+          <rect x="-1" y="-1" width="77" height="18" fill="#d97706" />
+          <rect x="0" y="0" width="75" height="16" fill="#200606" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-5 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-5" transform="translate(38, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+          </g>
+
+          
+          <!-- Felled Banner Overlay -->
+          <text x="350" text-anchor="middle" y="48" class="felled-text-0">GREAT ENEMY FELLED</text>
+          
+
+          <!-- Hit Damage Pop-ups -->
+          
+          <text x="511" text-anchor="middle" y="30" class="dmg-pop-0-0">-2 BARS</text>
+        
+          <text x="351" text-anchor="middle" y="30" class="dmg-pop-0-1">-2 BARS</text>
+        
+          <text x="191" text-anchor="middle" y="30" class="dmg-pop-0-2">-2 BARS</text>
+        
+        </g>
+      </g>
+    
+
+      <g class="boss-layer-1">
+        <g class="shake-1">
+          <!-- Header (Name & Emblem) -->
+          <g transform="translate(113, 22)">
+            <!-- Pixel Emblem -->
+            <rect x="0" y="2" width="12" height="10" fill="#facc15" />
+            <rect x="2" y="0" width="8" height="14" fill="#facc15" />
+            <rect x="3" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="7" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="5" y="9" width="2" height="2" fill="#0d1117" />
+
+            <!-- Boss Name -->
+            <text x="22" y="11" fill="#f8fafc" class="pixel-txt">GODRICK THE GRAFTED</text>
+            
+            
+            <text x="475" text-anchor="end" y="11" fill="#38bdf8" class="pixel-txt">[CURRENT FOE]</text>
+            
+          </g>
+
+          <!-- Segments -->
+          <g transform="translate(113, 36)">
+            
+        <g transform="translate(0, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-1-0 pulse-gold" />
+          
+        </g>
+      
+        <g transform="translate(60, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-1-1 pulse-gold" />
+          
+        </g>
+      
+        <g transform="translate(120, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-1-2 pulse-gold" />
+          
+        </g>
+      
+        <g transform="translate(180, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-1-3 pulse-gold" />
+          
+        </g>
+      
+        <g transform="translate(240, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-1-4 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-1-4" transform="translate(28, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(300, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-1-5 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-1-5" transform="translate(28, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(360, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-1-6 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-1-6" transform="translate(28, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(420, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-1-7 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-1-7" transform="translate(28, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+          </g>
+
+          
+
+          <!-- Hit Damage Pop-ups -->
+          
+          <text x="531" text-anchor="middle" y="30" class="dmg-pop-1-0">-2 BARS</text>
+        
+          <text x="411" text-anchor="middle" y="30" class="dmg-pop-1-1">-2 BARS</text>
+        
+        </g>
+      </g>
+    
+</svg></div>
+      <div class="code-block">&lt;img src="https://readme-boss-bar.vercel.app/api?auto=true" alt="Boss Bar" /&gt;</div>
+    </div>
+
+    <!-- Showcase 2: Manual Multi-Bar Hits -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span>🟣</span> Preset 2: Multi-Bar Combat (3 Bars / 0.5s)
+        </div>
+        <span class="badge badge-purple">Purple Theme &bull; Heavy Shake</span>
+      </div>
+      <p class="card-desc">Custom manual configuration: 10 segments of health, draining 3 full segments per strike every 0.5 seconds, paired with violent camera shake and purple void magic styling.</p>
+      <div class="svg-viewport"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 95" width="100%" height="95" shape-rendering="crispEdges">
+  <defs>
+    <style><![CDATA[
+      
+    .pixel-txt {
+      font-family: 'Courier New', 'Fira Code', 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+  
+
+      .pulse-purple {
+        animation: pulse_purple 2s infinite alternate;
+      }
+      @keyframes pulse_purple {
+        0% { fill: #9333ea; }
+        100% { fill: #a855f7; }
+      }
+    
+
+      .boss-layer-0 {
+        opacity: 0;
+        animation: bossLife0 8.0s infinite;
+      }
+      @keyframes bossLife0 {
+        0%, 0.00% { opacity: 0; transform: translateY(3px); }
+        3.13%, 59.38% { opacity: 1; transform: translateY(0); }
+        62.50%, 100% { opacity: 0; transform: translateY(-3px); }
+      }
+    
+
+      .shake-0 {
+        animation: shakeAnim0 8.0s infinite;
+      }
+      @keyframes shakeAnim0 {
+        0%, 0.00% { transform: translate(0, 0); }
+
+            10.00% { transform: translate(-4px, 3px); }
+            10.60% { transform: translate(4px, -3px); }
+            11.30% { transform: translate(-2px, 2px); }
+            12.00% { transform: translate(0, 0); }
+          
+
+            16.25% { transform: translate(-4px, 3px); }
+            16.85% { transform: translate(4px, -3px); }
+            17.55% { transform: translate(-2px, 2px); }
+            18.25% { transform: translate(0, 0); }
+          
+62.50%, 100% { transform: translate(0, 0); }
+      }
+    
+
+          .bar-0-0 {
+            animation: alive_0_0 8.0s infinite;
+          }
+          @keyframes alive_0_0 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 62.50% { width: 45px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-0-1 {
+            animation: alive_0_1 8.0s infinite;
+          }
+          @keyframes alive_0_1 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 62.50% { width: 45px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-0-2 {
+            animation: alive_0_2 8.0s infinite;
+          }
+          @keyframes alive_0_2 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 62.50% { width: 45px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-0-3 {
+            animation: alive_0_3 8.0s infinite;
+          }
+          @keyframes alive_0_3 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 62.50% { width: 45px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-0-4 {
+            animation: drain_0_4 8.0s infinite;
+          }
+          @keyframes drain_0_4 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 15.75% { width: 45px; fill: #9333ea; }
+            16.25% { fill: #f3e8ff; }
+            18.50%, 62.50% { width: 0px; fill: #9333ea; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-4 {
+              opacity: 0;
+              animation: sparkAnim_0_4 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_4 {
+              0%, 15.75% { opacity: 0; transform: scale(0.6); }
+              16.25% { opacity: 1; transform: scale(1.2); }
+              18.27% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-5 {
+            animation: drain_0_5 8.0s infinite;
+          }
+          @keyframes drain_0_5 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 15.75% { width: 45px; fill: #9333ea; }
+            16.25% { fill: #f3e8ff; }
+            18.50%, 62.50% { width: 0px; fill: #9333ea; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-5 {
+              opacity: 0;
+              animation: sparkAnim_0_5 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_5 {
+              0%, 15.75% { opacity: 0; transform: scale(0.6); }
+              16.25% { opacity: 1; transform: scale(1.2); }
+              18.27% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-6 {
+            animation: drain_0_6 8.0s infinite;
+          }
+          @keyframes drain_0_6 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 15.75% { width: 45px; fill: #9333ea; }
+            16.25% { fill: #f3e8ff; }
+            18.50%, 62.50% { width: 0px; fill: #9333ea; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-6 {
+              opacity: 0;
+              animation: sparkAnim_0_6 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_6 {
+              0%, 15.75% { opacity: 0; transform: scale(0.6); }
+              16.25% { opacity: 1; transform: scale(1.2); }
+              18.27% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-7 {
+            animation: drain_0_7 8.0s infinite;
+          }
+          @keyframes drain_0_7 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 9.50% { width: 45px; fill: #9333ea; }
+            10.00% { fill: #f3e8ff; }
+            12.25%, 62.50% { width: 0px; fill: #9333ea; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-7 {
+              opacity: 0;
+              animation: sparkAnim_0_7 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_7 {
+              0%, 9.50% { opacity: 0; transform: scale(0.6); }
+              10.00% { opacity: 1; transform: scale(1.2); }
+              12.03% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-8 {
+            animation: drain_0_8 8.0s infinite;
+          }
+          @keyframes drain_0_8 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 9.50% { width: 45px; fill: #9333ea; }
+            10.00% { fill: #f3e8ff; }
+            12.25%, 62.50% { width: 0px; fill: #9333ea; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-8 {
+              opacity: 0;
+              animation: sparkAnim_0_8 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_8 {
+              0%, 9.50% { opacity: 0; transform: scale(0.6); }
+              10.00% { opacity: 1; transform: scale(1.2); }
+              12.03% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-9 {
+            animation: drain_0_9 8.0s infinite;
+          }
+          @keyframes drain_0_9 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 9.50% { width: 45px; fill: #9333ea; }
+            10.00% { fill: #f3e8ff; }
+            12.25%, 62.50% { width: 0px; fill: #9333ea; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-9 {
+              opacity: 0;
+              animation: sparkAnim_0_9 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_9 {
+              0%, 9.50% { opacity: 0; transform: scale(0.6); }
+              10.00% { opacity: 1; transform: scale(1.2); }
+              12.03% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .dmg-pop-0-0 {
+            opacity: 0;
+            animation: dmgPopAnim_0_0 8.0s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_0 {
+            0%, 10.00% { opacity: 0; transform: translateY(0); }
+            10.75% { opacity: 1; transform: translateY(-4px); }
+            15.63% { opacity: 1; transform: translateY(-13px); }
+            20.63%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-0-1 {
+            opacity: 0;
+            animation: dmgPopAnim_0_1 8.0s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_1 {
+            0%, 16.25% { opacity: 0; transform: translateY(0); }
+            17.00% { opacity: 1; transform: translateY(-4px); }
+            21.88% { opacity: 1; transform: translateY(-13px); }
+            26.88%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+    ]]></style>
+  </defs>
+  
+      <g class="boss-layer-0">
+        <g class="shake-0">
+          <!-- Header (Name & Emblem) -->
+          <g transform="translate(112, 22)">
+            <!-- Pixel Emblem -->
+            <rect x="0" y="2" width="12" height="10" fill="#a855f7" />
+            <rect x="2" y="0" width="8" height="14" fill="#a855f7" />
+            <rect x="3" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="7" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="5" y="9" width="2" height="2" fill="#0d1117" />
+
+            <!-- Boss Name -->
+            <text x="22" y="11" fill="#f8fafc" class="pixel-txt">STARCOURGE RADAHN</text>
+            
+            
+            <text x="477" text-anchor="end" y="11" fill="#38bdf8" class="pixel-txt">[CURRENT FOE]</text>
+            
+          </g>
+
+          <!-- Segments -->
+          <g transform="translate(112, 36)">
+            
+        <g transform="translate(0, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="49" height="20" fill="#3b0764" />
+          <rect x="-1" y="-1" width="47" height="18" fill="#7e22ce" />
+          <rect x="0" y="0" width="45" height="16" fill="#1b0826" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-0 pulse-purple" />
+          
+        </g>
+      
+        <g transform="translate(48, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="49" height="20" fill="#3b0764" />
+          <rect x="-1" y="-1" width="47" height="18" fill="#7e22ce" />
+          <rect x="0" y="0" width="45" height="16" fill="#1b0826" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-1 pulse-purple" />
+          
+        </g>
+      
+        <g transform="translate(96, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="49" height="20" fill="#3b0764" />
+          <rect x="-1" y="-1" width="47" height="18" fill="#7e22ce" />
+          <rect x="0" y="0" width="45" height="16" fill="#1b0826" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-2 pulse-purple" />
+          
+        </g>
+      
+        <g transform="translate(144, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="49" height="20" fill="#3b0764" />
+          <rect x="-1" y="-1" width="47" height="18" fill="#7e22ce" />
+          <rect x="0" y="0" width="45" height="16" fill="#1b0826" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-3 pulse-purple" />
+          
+        </g>
+      
+        <g transform="translate(192, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="49" height="20" fill="#3b0764" />
+          <rect x="-1" y="-1" width="47" height="18" fill="#7e22ce" />
+          <rect x="0" y="0" width="45" height="16" fill="#1b0826" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-4 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-4" transform="translate(23, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#e9d5ff" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#c084fc" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#c084fc" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#e9d5ff" />
+          </g>
+        </g>
+      
+        <g transform="translate(240, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="49" height="20" fill="#3b0764" />
+          <rect x="-1" y="-1" width="47" height="18" fill="#7e22ce" />
+          <rect x="0" y="0" width="45" height="16" fill="#1b0826" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-5 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-5" transform="translate(23, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#e9d5ff" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#c084fc" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#c084fc" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#e9d5ff" />
+          </g>
+        </g>
+      
+        <g transform="translate(288, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="49" height="20" fill="#3b0764" />
+          <rect x="-1" y="-1" width="47" height="18" fill="#7e22ce" />
+          <rect x="0" y="0" width="45" height="16" fill="#1b0826" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-6 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-6" transform="translate(23, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#e9d5ff" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#c084fc" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#c084fc" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#e9d5ff" />
+          </g>
+        </g>
+      
+        <g transform="translate(336, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="49" height="20" fill="#3b0764" />
+          <rect x="-1" y="-1" width="47" height="18" fill="#7e22ce" />
+          <rect x="0" y="0" width="45" height="16" fill="#1b0826" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-7 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-7" transform="translate(23, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#e9d5ff" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#c084fc" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#c084fc" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#e9d5ff" />
+          </g>
+        </g>
+      
+        <g transform="translate(384, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="49" height="20" fill="#3b0764" />
+          <rect x="-1" y="-1" width="47" height="18" fill="#7e22ce" />
+          <rect x="0" y="0" width="45" height="16" fill="#1b0826" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-8 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-8" transform="translate(23, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#e9d5ff" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#c084fc" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#c084fc" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#e9d5ff" />
+          </g>
+        </g>
+      
+        <g transform="translate(432, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="49" height="20" fill="#3b0764" />
+          <rect x="-1" y="-1" width="47" height="18" fill="#7e22ce" />
+          <rect x="0" y="0" width="45" height="16" fill="#1b0826" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-9 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-9" transform="translate(23, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#e9d5ff" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#c084fc" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#c084fc" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#e9d5ff" />
+          </g>
+        </g>
+      
+          </g>
+
+          
+
+          <!-- Hit Damage Pop-ups -->
+          
+          <text x="519" text-anchor="middle" y="30" class="dmg-pop-0-0">-3 BARS</text>
+        
+          <text x="375" text-anchor="middle" y="30" class="dmg-pop-0-1">-3 BARS</text>
+        
+        </g>
+      </g>
+    
+</svg></div>
+      <div class="code-block">node bin/cli.js -b "STARCOURGE RADAHN:10:2:0.5:3" --theme purple --shake heavy</div>
+    </div>
+
+    <!-- Showcase 3: Rapid Glintstone Flurry -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span>💎</span> Preset 3: Rapid Glintstone Flurry
+        </div>
+        <span class="badge badge-cyan">Cyan Theme &bull; 0.25s Interval</span>
+      </div>
+      <p class="card-desc">Ultra-fast 0.25s attack speed simulating rapid sorcery projectiles with subtle shake and custom damage popup format (-{N} HP).</p>
+      <div class="svg-viewport"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 95" width="100%" height="95" shape-rendering="crispEdges">
+  <defs>
+    <style><![CDATA[
+      
+    .pixel-txt {
+      font-family: 'Courier New', 'Fira Code', 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+  
+
+      .pulse-cyan {
+        animation: pulse_cyan 2s infinite alternate;
+      }
+      @keyframes pulse_cyan {
+        0% { fill: #0891b2; }
+        100% { fill: #06b6d4; }
+      }
+    
+
+      .boss-layer-0 {
+        opacity: 0;
+        animation: bossLife0 8.0s infinite;
+      }
+      @keyframes bossLife0 {
+        0%, 0.00% { opacity: 0; transform: translateY(3px); }
+        3.13%, 59.38% { opacity: 1; transform: translateY(0); }
+        62.50%, 100% { opacity: 0; transform: translateY(-3px); }
+      }
+    
+
+      .shake-0 {
+        animation: shakeAnim0 8.0s infinite;
+      }
+      @keyframes shakeAnim0 {
+        0%, 0.00% { transform: translate(0, 0); }
+
+            10.00% { transform: translate(-1px, 1px); }
+            11.00% { transform: translate(1px, -1px); }
+            12.00% { transform: translate(0, 0); }
+          
+
+            13.13% { transform: translate(-1px, 1px); }
+            14.13% { transform: translate(1px, -1px); }
+            15.13% { transform: translate(0, 0); }
+          
+
+            16.25% { transform: translate(-1px, 1px); }
+            17.25% { transform: translate(1px, -1px); }
+            18.25% { transform: translate(0, 0); }
+          
+
+            19.38% { transform: translate(-1px, 1px); }
+            20.38% { transform: translate(1px, -1px); }
+            21.38% { transform: translate(0, 0); }
+          
+62.50%, 100% { transform: translate(0, 0); }
+      }
+    
+
+          .bar-0-0 {
+            animation: alive_0_0 8.0s infinite;
+          }
+          @keyframes alive_0_0 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 62.50% { width: 64px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-0-1 {
+            animation: alive_0_1 8.0s infinite;
+          }
+          @keyframes alive_0_1 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 62.50% { width: 64px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-0-2 {
+            animation: alive_0_2 8.0s infinite;
+          }
+          @keyframes alive_0_2 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 62.50% { width: 64px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-0-3 {
+            animation: drain_0_3 8.0s infinite;
+          }
+          @keyframes drain_0_3 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 18.88% { width: 64px; fill: #0891b2; }
+            19.38% { fill: #cffafe; }
+            21.25%, 62.50% { width: 0px; fill: #0891b2; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-3 {
+              opacity: 0;
+              animation: sparkAnim_0_3 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_3 {
+              0%, 18.88% { opacity: 0; transform: scale(0.6); }
+              19.38% { opacity: 1; transform: scale(1.2); }
+              21.06% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-4 {
+            animation: drain_0_4 8.0s infinite;
+          }
+          @keyframes drain_0_4 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 15.75% { width: 64px; fill: #0891b2; }
+            16.25% { fill: #cffafe; }
+            18.13%, 62.50% { width: 0px; fill: #0891b2; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-4 {
+              opacity: 0;
+              animation: sparkAnim_0_4 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_4 {
+              0%, 15.75% { opacity: 0; transform: scale(0.6); }
+              16.25% { opacity: 1; transform: scale(1.2); }
+              17.94% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-5 {
+            animation: drain_0_5 8.0s infinite;
+          }
+          @keyframes drain_0_5 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 12.63% { width: 64px; fill: #0891b2; }
+            13.13% { fill: #cffafe; }
+            15.00%, 62.50% { width: 0px; fill: #0891b2; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-5 {
+              opacity: 0;
+              animation: sparkAnim_0_5 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_5 {
+              0%, 12.63% { opacity: 0; transform: scale(0.6); }
+              13.13% { opacity: 1; transform: scale(1.2); }
+              14.81% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-6 {
+            animation: drain_0_6 8.0s infinite;
+          }
+          @keyframes drain_0_6 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 9.50% { width: 64px; fill: #0891b2; }
+            10.00% { fill: #cffafe; }
+            11.88%, 62.50% { width: 0px; fill: #0891b2; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-6 {
+              opacity: 0;
+              animation: sparkAnim_0_6 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_6 {
+              0%, 9.50% { opacity: 0; transform: scale(0.6); }
+              10.00% { opacity: 1; transform: scale(1.2); }
+              11.69% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .dmg-pop-0-0 {
+            opacity: 0;
+            animation: dmgPopAnim_0_0 8.0s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_0 {
+            0%, 10.00% { opacity: 0; transform: translateY(0); }
+            10.75% { opacity: 1; transform: translateY(-4px); }
+            15.63% { opacity: 1; transform: translateY(-13px); }
+            20.63%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-0-1 {
+            opacity: 0;
+            animation: dmgPopAnim_0_1 8.0s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_1 {
+            0%, 13.13% { opacity: 0; transform: translateY(0); }
+            13.88% { opacity: 1; transform: translateY(-4px); }
+            18.75% { opacity: 1; transform: translateY(-13px); }
+            23.75%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-0-2 {
+            opacity: 0;
+            animation: dmgPopAnim_0_2 8.0s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_2 {
+            0%, 16.25% { opacity: 0; transform: translateY(0); }
+            17.00% { opacity: 1; transform: translateY(-4px); }
+            21.88% { opacity: 1; transform: translateY(-13px); }
+            26.88%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-0-3 {
+            opacity: 0;
+            animation: dmgPopAnim_0_3 8.0s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_3 {
+            0%, 19.38% { opacity: 0; transform: translateY(0); }
+            20.13% { opacity: 1; transform: translateY(-4px); }
+            25.00% { opacity: 1; transform: translateY(-13px); }
+            30.00%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+    ]]></style>
+  </defs>
+  
+      <g class="boss-layer-0">
+        <g class="shake-0">
+          <!-- Header (Name & Emblem) -->
+          <g transform="translate(111, 22)">
+            <!-- Pixel Emblem -->
+            <rect x="0" y="2" width="12" height="10" fill="#38bdf8" />
+            <rect x="2" y="0" width="8" height="14" fill="#38bdf8" />
+            <rect x="3" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="7" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="5" y="9" width="2" height="2" fill="#0d1117" />
+
+            <!-- Boss Name -->
+            <text x="22" y="11" fill="#f8fafc" class="pixel-txt">GLINTSTONE DRAGON</text>
+            
+            
+            <text x="478" text-anchor="end" y="11" fill="#38bdf8" class="pixel-txt">[CURRENT FOE]</text>
+            
+          </g>
+
+          <!-- Segments -->
+          <g transform="translate(111, 36)">
+            
+        <g transform="translate(0, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="68" height="20" fill="#164e63" />
+          <rect x="-1" y="-1" width="66" height="18" fill="#0e7490" />
+          <rect x="0" y="0" width="64" height="16" fill="#08202a" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-0 pulse-cyan" />
+          
+        </g>
+      
+        <g transform="translate(69, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="68" height="20" fill="#164e63" />
+          <rect x="-1" y="-1" width="66" height="18" fill="#0e7490" />
+          <rect x="0" y="0" width="64" height="16" fill="#08202a" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-1 pulse-cyan" />
+          
+        </g>
+      
+        <g transform="translate(138, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="68" height="20" fill="#164e63" />
+          <rect x="-1" y="-1" width="66" height="18" fill="#0e7490" />
+          <rect x="0" y="0" width="64" height="16" fill="#08202a" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-2 pulse-cyan" />
+          
+        </g>
+      
+        <g transform="translate(207, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="68" height="20" fill="#164e63" />
+          <rect x="-1" y="-1" width="66" height="18" fill="#0e7490" />
+          <rect x="0" y="0" width="64" height="16" fill="#08202a" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-3 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-3" transform="translate(32, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#a5f3fc" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#a5f3fc" />
+          </g>
+        </g>
+      
+        <g transform="translate(276, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="68" height="20" fill="#164e63" />
+          <rect x="-1" y="-1" width="66" height="18" fill="#0e7490" />
+          <rect x="0" y="0" width="64" height="16" fill="#08202a" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-4 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-4" transform="translate(32, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#a5f3fc" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#a5f3fc" />
+          </g>
+        </g>
+      
+        <g transform="translate(345, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="68" height="20" fill="#164e63" />
+          <rect x="-1" y="-1" width="66" height="18" fill="#0e7490" />
+          <rect x="0" y="0" width="64" height="16" fill="#08202a" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-5 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-5" transform="translate(32, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#a5f3fc" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#a5f3fc" />
+          </g>
+        </g>
+      
+        <g transform="translate(414, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="68" height="20" fill="#164e63" />
+          <rect x="-1" y="-1" width="66" height="18" fill="#0e7490" />
+          <rect x="0" y="0" width="64" height="16" fill="#08202a" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-6 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-6" transform="translate(32, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#a5f3fc" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#a5f3fc" />
+          </g>
+        </g>
+      
+          </g>
+
+          
+
+          <!-- Hit Damage Pop-ups -->
+          
+          <text x="557" text-anchor="middle" y="30" class="dmg-pop-0-0">-1 HP</text>
+        
+          <text x="488" text-anchor="middle" y="30" class="dmg-pop-0-1">-1 HP</text>
+        
+          <text x="419" text-anchor="middle" y="30" class="dmg-pop-0-2">-1 HP</text>
+        
+          <text x="350" text-anchor="middle" y="30" class="dmg-pop-0-3">-1 HP</text>
+        
+        </g>
+      </g>
+    
+</svg></div>
+      <div class="code-block">node bin/cli.js -b "GLINTSTONE DRAGON:7:4:0.25:1" --theme cyan --shake subtle --dmg-pop "-{N} HP"</div>
+    </div>
+
+    <!-- Showcase 4: Custom Defeated Banner -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span>👑</span> Preset 4: Demigod Felled (Gold Order)
+        </div>
+        <span class="badge badge-gold">Gold Theme &bull; Custom Felled Banner</span>
+      </div>
+      <p class="card-desc">Demigod boss taking 2 bars per hit every 0.35s until total depletion, triggering the custom gold glowing "DEMIGOD FELLED" victory banner.</p>
+      <div class="svg-viewport"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 95" width="100%" height="95" shape-rendering="crispEdges">
+  <defs>
+    <style><![CDATA[
+      
+    .pixel-txt {
+      font-family: 'Courier New', 'Fira Code', 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+  
+
+      .pulse-gold {
+        animation: pulse_gold 2s infinite alternate;
+      }
+      @keyframes pulse_gold {
+        0% { fill: #d97706; }
+        100% { fill: #f59e0b; }
+      }
+    
+
+      .boss-layer-0 {
+        opacity: 0;
+        animation: bossLife0 8.0s infinite;
+      }
+      @keyframes bossLife0 {
+        0%, 0.00% { opacity: 0; transform: translateY(3px); }
+        3.13%, 45.63% { opacity: 1; transform: translateY(0); }
+        48.75%, 100% { opacity: 0; transform: translateY(-3px); }
+      }
+    
+
+      .shake-0 {
+        animation: shakeAnim0 8.0s infinite;
+      }
+      @keyframes shakeAnim0 {
+        0%, 0.00% { transform: translate(0, 0); }
+
+            6.25% { transform: translate(-4px, 3px); }
+            6.85% { transform: translate(4px, -3px); }
+            7.55% { transform: translate(-2px, 2px); }
+            8.25% { transform: translate(0, 0); }
+          
+
+            10.63% { transform: translate(-4px, 3px); }
+            11.22% { transform: translate(4px, -3px); }
+            11.92% { transform: translate(-2px, 2px); }
+            12.63% { transform: translate(0, 0); }
+          
+
+            15.00% { transform: translate(-4px, 3px); }
+            15.60% { transform: translate(4px, -3px); }
+            16.30% { transform: translate(-2px, 2px); }
+            17.00% { transform: translate(0, 0); }
+          
+
+            19.37% { transform: translate(-4px, 3px); }
+            19.97% { transform: translate(4px, -3px); }
+            20.67% { transform: translate(-2px, 2px); }
+            21.37% { transform: translate(0, 0); }
+          
+48.75%, 100% { transform: translate(0, 0); }
+      }
+    
+
+          .bar-0-0 {
+            animation: drain_0_0 8.0s infinite;
+          }
+          @keyframes drain_0_0 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 18.87% { width: 55px; fill: #d97706; }
+            19.37% { fill: #fef9c3; }
+            21.62%, 48.75% { width: 0px; fill: #d97706; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-0 {
+              opacity: 0;
+              animation: sparkAnim_0_0 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_0 {
+              0%, 18.87% { opacity: 0; transform: scale(0.6); }
+              19.37% { opacity: 1; transform: scale(1.2); }
+              21.40% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-1 {
+            animation: drain_0_1 8.0s infinite;
+          }
+          @keyframes drain_0_1 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 18.87% { width: 55px; fill: #d97706; }
+            19.37% { fill: #fef9c3; }
+            21.62%, 48.75% { width: 0px; fill: #d97706; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-1 {
+              opacity: 0;
+              animation: sparkAnim_0_1 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_1 {
+              0%, 18.87% { opacity: 0; transform: scale(0.6); }
+              19.37% { opacity: 1; transform: scale(1.2); }
+              21.40% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-2 {
+            animation: drain_0_2 8.0s infinite;
+          }
+          @keyframes drain_0_2 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 14.50% { width: 55px; fill: #d97706; }
+            15.00% { fill: #fef9c3; }
+            17.25%, 48.75% { width: 0px; fill: #d97706; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-2 {
+              opacity: 0;
+              animation: sparkAnim_0_2 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_2 {
+              0%, 14.50% { opacity: 0; transform: scale(0.6); }
+              15.00% { opacity: 1; transform: scale(1.2); }
+              17.02% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-3 {
+            animation: drain_0_3 8.0s infinite;
+          }
+          @keyframes drain_0_3 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 14.50% { width: 55px; fill: #d97706; }
+            15.00% { fill: #fef9c3; }
+            17.25%, 48.75% { width: 0px; fill: #d97706; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-3 {
+              opacity: 0;
+              animation: sparkAnim_0_3 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_3 {
+              0%, 14.50% { opacity: 0; transform: scale(0.6); }
+              15.00% { opacity: 1; transform: scale(1.2); }
+              17.02% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-4 {
+            animation: drain_0_4 8.0s infinite;
+          }
+          @keyframes drain_0_4 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 10.13% { width: 55px; fill: #d97706; }
+            10.63% { fill: #fef9c3; }
+            12.88%, 48.75% { width: 0px; fill: #d97706; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-4 {
+              opacity: 0;
+              animation: sparkAnim_0_4 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_4 {
+              0%, 10.13% { opacity: 0; transform: scale(0.6); }
+              10.63% { opacity: 1; transform: scale(1.2); }
+              12.65% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-5 {
+            animation: drain_0_5 8.0s infinite;
+          }
+          @keyframes drain_0_5 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 10.13% { width: 55px; fill: #d97706; }
+            10.63% { fill: #fef9c3; }
+            12.88%, 48.75% { width: 0px; fill: #d97706; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-5 {
+              opacity: 0;
+              animation: sparkAnim_0_5 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_5 {
+              0%, 10.13% { opacity: 0; transform: scale(0.6); }
+              10.63% { opacity: 1; transform: scale(1.2); }
+              12.65% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-6 {
+            animation: drain_0_6 8.0s infinite;
+          }
+          @keyframes drain_0_6 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 5.75% { width: 55px; fill: #d97706; }
+            6.25% { fill: #fef9c3; }
+            8.50%, 48.75% { width: 0px; fill: #d97706; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-6 {
+              opacity: 0;
+              animation: sparkAnim_0_6 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_6 {
+              0%, 5.75% { opacity: 0; transform: scale(0.6); }
+              6.25% { opacity: 1; transform: scale(1.2); }
+              8.28% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-7 {
+            animation: drain_0_7 8.0s infinite;
+          }
+          @keyframes drain_0_7 {
+            0%, 0.00% { width: 0px; }
+            3.75%, 5.75% { width: 55px; fill: #d97706; }
+            6.25% { fill: #fef9c3; }
+            8.50%, 48.75% { width: 0px; fill: #d97706; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-7 {
+              opacity: 0;
+              animation: sparkAnim_0_7 8.0s infinite;
+            }
+            @keyframes sparkAnim_0_7 {
+              0%, 5.75% { opacity: 0; transform: scale(0.6); }
+              6.25% { opacity: 1; transform: scale(1.2); }
+              8.28% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .dmg-pop-0-0 {
+            opacity: 0;
+            animation: dmgPopAnim_0_0 8.0s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_0 {
+            0%, 6.25% { opacity: 0; transform: translateY(0); }
+            7.00% { opacity: 1; transform: translateY(-4px); }
+            11.88% { opacity: 1; transform: translateY(-13px); }
+            16.88%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-0-1 {
+            opacity: 0;
+            animation: dmgPopAnim_0_1 8.0s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_1 {
+            0%, 10.63% { opacity: 0; transform: translateY(0); }
+            11.37% { opacity: 1; transform: translateY(-4px); }
+            16.25% { opacity: 1; transform: translateY(-13px); }
+            21.25%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-0-2 {
+            opacity: 0;
+            animation: dmgPopAnim_0_2 8.0s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_2 {
+            0%, 15.00% { opacity: 0; transform: translateY(0); }
+            15.75% { opacity: 1; transform: translateY(-4px); }
+            20.63% { opacity: 1; transform: translateY(-13px); }
+            25.62%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-0-3 {
+            opacity: 0;
+            animation: dmgPopAnim_0_3 8.0s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_3 {
+            0%, 19.37% { opacity: 0; transform: translateY(0); }
+            20.13% { opacity: 1; transform: translateY(-4px); }
+            25.00% { opacity: 1; transform: translateY(-13px); }
+            30.00%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+        .tag-live-0 {
+          animation: tagLiveAnim0 8.0s infinite;
+        }
+        @keyframes tagLiveAnim0 {
+          0%, 21.25% { opacity: 1; }
+          21.87%, 100% { opacity: 0; }
+        }
+
+        .tag-felled-0 {
+          opacity: 0;
+          animation: tagFelledAnim0 8.0s infinite;
+        }
+        @keyframes tagFelledAnim0 {
+          0%, 21.25% { opacity: 0; }
+          22.50%, 45.63% { opacity: 1; }
+          48.75%, 100% { opacity: 0; }
+        }
+
+        .felled-text-0 {
+          opacity: 0;
+          animation: felledBannerAnim0 8.0s infinite;
+          font-family: 'Times New Roman', 'Georgia', serif;
+          font-size: 15px;
+          font-weight: 900;
+          letter-spacing: 5px;
+          fill: #fef08a;
+          filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
+        }
+        @keyframes felledBannerAnim0 {
+          0%, 21.25% { opacity: 0; }
+          22.50%, 45.63% { opacity: 1; }
+          48.75%, 100% { opacity: 0; }
+        }
+      
+    ]]></style>
+  </defs>
+  
+      <g class="boss-layer-0">
+        <g class="shake-0">
+          <!-- Header (Name & Emblem) -->
+          <g transform="translate(113, 22)">
+            <!-- Pixel Emblem -->
+            <rect x="0" y="2" width="12" height="10" fill="#facc15" />
+            <rect x="2" y="0" width="8" height="14" fill="#facc15" />
+            <rect x="3" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="7" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="5" y="9" width="2" height="2" fill="#0d1117" />
+
+            <!-- Boss Name -->
+            <text x="22" y="11" fill="#f8fafc" class="pixel-txt">MALENIA, BLADE OF MIQUELLA</text>
+            
+            
+            <!-- Live & Felled Tags -->
+            <text x="475" text-anchor="end" y="11" fill="#ef4444" class="pixel-txt tag-live-0">[BOSS]</text>
+            <text x="475" text-anchor="end" y="11" fill="#f59e0b" class="pixel-txt tag-felled-0">[FELLED]</text>
+            
+          </g>
+
+          <!-- Segments -->
+          <g transform="translate(113, 36)">
+            
+        <g transform="translate(0, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-0 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-0" transform="translate(28, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(60, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-1 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-1" transform="translate(28, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(120, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-2 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-2" transform="translate(28, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(180, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-3 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-3" transform="translate(28, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(240, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-4 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-4" transform="translate(28, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(300, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-5 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-5" transform="translate(28, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(360, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-6 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-6" transform="translate(28, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(420, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="59" height="20" fill="#713f12" />
+          <rect x="-1" y="-1" width="57" height="18" fill="#b45309" />
+          <rect x="0" y="0" width="55" height="16" fill="#261805" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-7 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-7" transform="translate(28, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#eab308" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+          </g>
+
+          
+          <!-- Felled Banner Overlay -->
+          <text x="350" text-anchor="middle" y="48" class="felled-text-0">DEMIGOD FELLED</text>
+          
+
+          <!-- Hit Damage Pop-ups -->
+          
+          <text x="531" text-anchor="middle" y="30" class="dmg-pop-0-0">-2 BARS</text>
+        
+          <text x="411" text-anchor="middle" y="30" class="dmg-pop-0-1">-2 BARS</text>
+        
+          <text x="291" text-anchor="middle" y="30" class="dmg-pop-0-2">-2 BARS</text>
+        
+          <text x="171" text-anchor="middle" y="30" class="dmg-pop-0-3">-2 BARS</text>
+        
+        </g>
+      </g>
+    
+</svg></div>
+      <div class="code-block">node bin/cli.js -b "MALENIA, BLADE OF MIQUELLA:8:4:0.35:2" --theme gold --felled-text "DEMIGOD FELLED" --shake heavy</div>
+    </div>
+
+    <!-- Showcase 5: Multi-Boss Progression -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span>🎓</span> Preset 5: 42 School Milestone Progression
+        </div>
+        <span class="badge badge-red">Sequential Boss Chain</span>
+      </div>
+      <p class="card-desc">Chaining 3 curriculum milestones: Circle 00 and 01 are defeated with customized circle completion banners, followed by current active combat on Push_Swap.</p>
+      <div class="svg-viewport"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 95" width="100%" height="95" shape-rendering="crispEdges">
+  <defs>
+    <style><![CDATA[
+      
+    .pixel-txt {
+      font-family: 'Courier New', 'Fira Code', 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+  
+
+      .pulse-green {
+        animation: pulse_green 2s infinite alternate;
+      }
+      @keyframes pulse_green {
+        0% { fill: #16a34a; }
+        100% { fill: #22c55e; }
+      }
+    
+
+      .pulse-cyan {
+        animation: pulse_cyan 2s infinite alternate;
+      }
+      @keyframes pulse_cyan {
+        0% { fill: #0891b2; }
+        100% { fill: #06b6d4; }
+      }
+    
+
+      .pulse-crimson {
+        animation: pulse_crimson 2s infinite alternate;
+      }
+      @keyframes pulse_crimson {
+        0% { fill: #dc2626; }
+        100% { fill: #ef4444; }
+      }
+    
+
+      .boss-layer-0 {
+        opacity: 0;
+        animation: bossLife0 13.9s infinite;
+      }
+      @keyframes bossLife0 {
+        0%, 0.00% { opacity: 0; transform: translateY(3px); }
+        1.81%, 24.91% { opacity: 1; transform: translateY(0); }
+        26.71%, 100% { opacity: 0; transform: translateY(-3px); }
+      }
+    
+
+      .shake-0 {
+        animation: shakeAnim0 13.9s infinite;
+      }
+      @keyframes shakeAnim0 {
+        0%, 0.00% { transform: translate(0, 0); }
+
+            3.61% { transform: translate(-2px, 2px); }
+            4.19% { transform: translate(2px, -2px); }
+            4.77% { transform: translate(0, 0); }
+          
+
+            5.78% { transform: translate(-2px, 2px); }
+            6.35% { transform: translate(2px, -2px); }
+            6.93% { transform: translate(0, 0); }
+          
+
+            7.94% { transform: translate(-2px, 2px); }
+            8.52% { transform: translate(2px, -2px); }
+            9.10% { transform: translate(0, 0); }
+          
+
+            10.11% { transform: translate(-2px, 2px); }
+            10.69% { transform: translate(2px, -2px); }
+            11.26% { transform: translate(0, 0); }
+          
+26.71%, 100% { transform: translate(0, 0); }
+      }
+    
+
+          .bar-0-0 {
+            animation: drain_0_0 13.9s infinite;
+          }
+          @keyframes drain_0_0 {
+            0%, 0.00% { width: 0px; }
+            2.17%, 9.82% { width: 114px; fill: #16a34a; }
+            10.11% { fill: #dcfce7; }
+            11.41%, 26.71% { width: 0px; fill: #16a34a; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-0 {
+              opacity: 0;
+              animation: sparkAnim_0_0 13.9s infinite;
+            }
+            @keyframes sparkAnim_0_0 {
+              0%, 9.82% { opacity: 0; transform: scale(0.6); }
+              10.11% { opacity: 1; transform: scale(1.2); }
+              11.28% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-1 {
+            animation: drain_0_1 13.9s infinite;
+          }
+          @keyframes drain_0_1 {
+            0%, 0.00% { width: 0px; }
+            2.17%, 7.65% { width: 114px; fill: #16a34a; }
+            7.94% { fill: #dcfce7; }
+            9.24%, 26.71% { width: 0px; fill: #16a34a; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-1 {
+              opacity: 0;
+              animation: sparkAnim_0_1 13.9s infinite;
+            }
+            @keyframes sparkAnim_0_1 {
+              0%, 7.65% { opacity: 0; transform: scale(0.6); }
+              7.94% { opacity: 1; transform: scale(1.2); }
+              9.11% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-2 {
+            animation: drain_0_2 13.9s infinite;
+          }
+          @keyframes drain_0_2 {
+            0%, 0.00% { width: 0px; }
+            2.17%, 5.49% { width: 114px; fill: #16a34a; }
+            5.78% { fill: #dcfce7; }
+            7.08%, 26.71% { width: 0px; fill: #16a34a; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-2 {
+              opacity: 0;
+              animation: sparkAnim_0_2 13.9s infinite;
+            }
+            @keyframes sparkAnim_0_2 {
+              0%, 5.49% { opacity: 0; transform: scale(0.6); }
+              5.78% { opacity: 1; transform: scale(1.2); }
+              6.95% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-0-3 {
+            animation: drain_0_3 13.9s infinite;
+          }
+          @keyframes drain_0_3 {
+            0%, 0.00% { width: 0px; }
+            2.17%, 3.32% { width: 114px; fill: #16a34a; }
+            3.61% { fill: #dcfce7; }
+            4.91%, 26.71% { width: 0px; fill: #16a34a; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-0-3 {
+              opacity: 0;
+              animation: sparkAnim_0_3 13.9s infinite;
+            }
+            @keyframes sparkAnim_0_3 {
+              0%, 3.32% { opacity: 0; transform: scale(0.6); }
+              3.61% { opacity: 1; transform: scale(1.2); }
+              4.78% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .dmg-pop-0-0 {
+            opacity: 0;
+            animation: dmgPopAnim_0_0 13.9s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_0 {
+            0%, 3.61% { opacity: 0; transform: translateY(0); }
+            4.04% { opacity: 1; transform: translateY(-4px); }
+            6.86% { opacity: 1; transform: translateY(-13px); }
+            9.75%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-0-1 {
+            opacity: 0;
+            animation: dmgPopAnim_0_1 13.9s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_1 {
+            0%, 5.78% { opacity: 0; transform: translateY(0); }
+            6.21% { opacity: 1; transform: translateY(-4px); }
+            9.03% { opacity: 1; transform: translateY(-13px); }
+            11.91%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-0-2 {
+            opacity: 0;
+            animation: dmgPopAnim_0_2 13.9s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_2 {
+            0%, 7.94% { opacity: 0; transform: translateY(0); }
+            8.38% { opacity: 1; transform: translateY(-4px); }
+            11.19% { opacity: 1; transform: translateY(-13px); }
+            14.08%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-0-3 {
+            opacity: 0;
+            animation: dmgPopAnim_0_3 13.9s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_0_3 {
+            0%, 10.11% { opacity: 0; transform: translateY(0); }
+            10.54% { opacity: 1; transform: translateY(-4px); }
+            13.36% { opacity: 1; transform: translateY(-13px); }
+            16.25%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+        .tag-live-0 {
+          animation: tagLiveAnim0 13.9s infinite;
+        }
+        @keyframes tagLiveAnim0 {
+          0%, 11.19% { opacity: 1; }
+          11.55%, 100% { opacity: 0; }
+        }
+
+        .tag-felled-0 {
+          opacity: 0;
+          animation: tagFelledAnim0 13.9s infinite;
+        }
+        @keyframes tagFelledAnim0 {
+          0%, 11.19% { opacity: 0; }
+          11.91%, 24.91% { opacity: 1; }
+          26.71%, 100% { opacity: 0; }
+        }
+
+        .felled-text-0 {
+          opacity: 0;
+          animation: felledBannerAnim0 13.9s infinite;
+          font-family: 'Times New Roman', 'Georgia', serif;
+          font-size: 15px;
+          font-weight: 900;
+          letter-spacing: 5px;
+          fill: #fef08a;
+          filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
+        }
+        @keyframes felledBannerAnim0 {
+          0%, 11.19% { opacity: 0; }
+          11.91%, 24.91% { opacity: 1; }
+          26.71%, 100% { opacity: 0; }
+        }
+      
+
+      .boss-layer-1 {
+        opacity: 0;
+        animation: bossLife1 13.9s infinite;
+      }
+      @keyframes bossLife1 {
+        0%, 28.88% { opacity: 0; transform: translateY(3px); }
+        30.69%, 52.71% { opacity: 1; transform: translateY(0); }
+        54.51%, 100% { opacity: 0; transform: translateY(-3px); }
+      }
+    
+
+      .shake-1 {
+        animation: shakeAnim1 13.9s infinite;
+      }
+      @keyframes shakeAnim1 {
+        0%, 28.88% { transform: translate(0, 0); }
+
+            32.49% { transform: translate(-2px, 2px); }
+            33.07% { transform: translate(2px, -2px); }
+            33.65% { transform: translate(0, 0); }
+          
+
+            35.02% { transform: translate(-2px, 2px); }
+            35.60% { transform: translate(2px, -2px); }
+            36.17% { transform: translate(0, 0); }
+          
+
+            37.55% { transform: translate(-2px, 2px); }
+            38.12% { transform: translate(2px, -2px); }
+            38.70% { transform: translate(0, 0); }
+          
+54.51%, 100% { transform: translate(0, 0); }
+      }
+    
+
+          .bar-1-0 {
+            animation: drain_1_0 13.9s infinite;
+          }
+          @keyframes drain_1_0 {
+            0%, 28.88% { width: 0px; }
+            31.05%, 37.26% { width: 154px; fill: #0891b2; }
+            37.55% { fill: #cffafe; }
+            38.84%, 54.51% { width: 0px; fill: #0891b2; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-1-0 {
+              opacity: 0;
+              animation: sparkAnim_1_0 13.9s infinite;
+            }
+            @keyframes sparkAnim_1_0 {
+              0%, 37.26% { opacity: 0; transform: scale(0.6); }
+              37.55% { opacity: 1; transform: scale(1.2); }
+              38.71% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-1-1 {
+            animation: drain_1_1 13.9s infinite;
+          }
+          @keyframes drain_1_1 {
+            0%, 28.88% { width: 0px; }
+            31.05%, 34.73% { width: 154px; fill: #0891b2; }
+            35.02% { fill: #cffafe; }
+            36.32%, 54.51% { width: 0px; fill: #0891b2; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-1-1 {
+              opacity: 0;
+              animation: sparkAnim_1_1 13.9s infinite;
+            }
+            @keyframes sparkAnim_1_1 {
+              0%, 34.73% { opacity: 0; transform: scale(0.6); }
+              35.02% { opacity: 1; transform: scale(1.2); }
+              36.19% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-1-2 {
+            animation: drain_1_2 13.9s infinite;
+          }
+          @keyframes drain_1_2 {
+            0%, 28.88% { width: 0px; }
+            31.05%, 32.20% { width: 154px; fill: #0891b2; }
+            32.49% { fill: #cffafe; }
+            33.79%, 54.51% { width: 0px; fill: #0891b2; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-1-2 {
+              opacity: 0;
+              animation: sparkAnim_1_2 13.9s infinite;
+            }
+            @keyframes sparkAnim_1_2 {
+              0%, 32.20% { opacity: 0; transform: scale(0.6); }
+              32.49% { opacity: 1; transform: scale(1.2); }
+              33.66% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .dmg-pop-1-0 {
+            opacity: 0;
+            animation: dmgPopAnim_1_0 13.9s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_1_0 {
+            0%, 32.49% { opacity: 0; transform: translateY(0); }
+            32.92% { opacity: 1; transform: translateY(-4px); }
+            35.74% { opacity: 1; transform: translateY(-13px); }
+            38.63%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-1-1 {
+            opacity: 0;
+            animation: dmgPopAnim_1_1 13.9s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_1_1 {
+            0%, 35.02% { opacity: 0; transform: translateY(0); }
+            35.45% { opacity: 1; transform: translateY(-4px); }
+            38.27% { opacity: 1; transform: translateY(-13px); }
+            41.16%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-1-2 {
+            opacity: 0;
+            animation: dmgPopAnim_1_2 13.9s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_1_2 {
+            0%, 37.55% { opacity: 0; transform: translateY(0); }
+            37.98% { opacity: 1; transform: translateY(-4px); }
+            40.79% { opacity: 1; transform: translateY(-13px); }
+            43.68%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+        .tag-live-1 {
+          animation: tagLiveAnim1 13.9s infinite;
+        }
+        @keyframes tagLiveAnim1 {
+          0%, 38.63% { opacity: 1; }
+          38.99%, 100% { opacity: 0; }
+        }
+
+        .tag-felled-1 {
+          opacity: 0;
+          animation: tagFelledAnim1 13.9s infinite;
+        }
+        @keyframes tagFelledAnim1 {
+          0%, 38.63% { opacity: 0; }
+          39.35%, 52.71% { opacity: 1; }
+          54.51%, 100% { opacity: 0; }
+        }
+
+        .felled-text-1 {
+          opacity: 0;
+          animation: felledBannerAnim1 13.9s infinite;
+          font-family: 'Times New Roman', 'Georgia', serif;
+          font-size: 15px;
+          font-weight: 900;
+          letter-spacing: 5px;
+          fill: #fef08a;
+          filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
+        }
+        @keyframes felledBannerAnim1 {
+          0%, 38.63% { opacity: 0; }
+          39.35%, 52.71% { opacity: 1; }
+          54.51%, 100% { opacity: 0; }
+        }
+      
+
+      .boss-layer-2 {
+        opacity: 0;
+        animation: bossLife2 13.9s infinite;
+      }
+      @keyframes bossLife2 {
+        0%, 56.68% { opacity: 0; transform: translateY(3px); }
+        58.48%, 96.03% { opacity: 1; transform: translateY(0); }
+        97.83%, 100% { opacity: 0; transform: translateY(-3px); }
+      }
+    
+
+      .shake-2 {
+        animation: shakeAnim2 13.9s infinite;
+      }
+      @keyframes shakeAnim2 {
+        0%, 56.68% { transform: translate(0, 0); }
+
+            62.45% { transform: translate(-2px, 2px); }
+            63.03% { transform: translate(2px, -2px); }
+            63.61% { transform: translate(0, 0); }
+          
+
+            68.59% { transform: translate(-2px, 2px); }
+            69.17% { transform: translate(2px, -2px); }
+            69.75% { transform: translate(0, 0); }
+          
+97.83%, 100% { transform: translate(0, 0); }
+      }
+    
+
+          .bar-2-0 {
+            animation: alive_2_0 13.9s infinite;
+          }
+          @keyframes alive_2_0 {
+            0%, 56.68% { width: 0px; }
+            58.84%, 97.83% { width: 89px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-2-1 {
+            animation: alive_2_1 13.9s infinite;
+          }
+          @keyframes alive_2_1 {
+            0%, 56.68% { width: 0px; }
+            58.84%, 97.83% { width: 89px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-2-2 {
+            animation: alive_2_2 13.9s infinite;
+          }
+          @keyframes alive_2_2 {
+            0%, 56.68% { width: 0px; }
+            58.84%, 97.83% { width: 89px; }
+            100% { width: 0px; }
+          }
+        
+
+          .bar-2-3 {
+            animation: drain_2_3 13.9s infinite;
+          }
+          @keyframes drain_2_3 {
+            0%, 56.68% { width: 0px; }
+            58.84%, 68.30% { width: 89px; fill: #dc2626; }
+            68.59% { fill: #fef08a; }
+            69.89%, 97.83% { width: 0px; fill: #dc2626; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-2-3 {
+              opacity: 0;
+              animation: sparkAnim_2_3 13.9s infinite;
+            }
+            @keyframes sparkAnim_2_3 {
+              0%, 68.30% { opacity: 0; transform: scale(0.6); }
+              68.59% { opacity: 1; transform: scale(1.2); }
+              69.76% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .bar-2-4 {
+            animation: drain_2_4 13.9s infinite;
+          }
+          @keyframes drain_2_4 {
+            0%, 56.68% { width: 0px; }
+            58.84%, 62.17% { width: 89px; fill: #dc2626; }
+            62.45% { fill: #fef08a; }
+            63.75%, 97.83% { width: 0px; fill: #dc2626; }
+            100% { width: 0px; }
+          }
+        
+
+            .sparks-2-4 {
+              opacity: 0;
+              animation: sparkAnim_2_4 13.9s infinite;
+            }
+            @keyframes sparkAnim_2_4 {
+              0%, 62.17% { opacity: 0; transform: scale(0.6); }
+              62.45% { opacity: 1; transform: scale(1.2); }
+              63.62% { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          
+
+          .dmg-pop-2-0 {
+            opacity: 0;
+            animation: dmgPopAnim_2_0 13.9s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_2_0 {
+            0%, 62.45% { opacity: 0; transform: translateY(0); }
+            62.89% { opacity: 1; transform: translateY(-4px); }
+            65.70% { opacity: 1; transform: translateY(-13px); }
+            68.59%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+
+          .dmg-pop-2-1 {
+            opacity: 0;
+            animation: dmgPopAnim_2_1 13.9s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_2_1 {
+            0%, 68.59% { opacity: 0; transform: translateY(0); }
+            69.03% { opacity: 1; transform: translateY(-4px); }
+            71.84% { opacity: 1; transform: translateY(-13px); }
+            74.73%, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        
+    ]]></style>
+  </defs>
+  
+      <g class="boss-layer-0">
+        <g class="shake-0">
+          <!-- Header (Name & Emblem) -->
+          <g transform="translate(110, 22)">
+            <!-- Pixel Emblem -->
+            <rect x="0" y="2" width="12" height="10" fill="#4ade80" />
+            <rect x="2" y="0" width="8" height="14" fill="#4ade80" />
+            <rect x="3" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="7" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="5" y="9" width="2" height="2" fill="#0d1117" />
+
+            <!-- Boss Name -->
+            <text x="22" y="11" fill="#f8fafc" class="pixel-txt">CIRCLE 00 (LIBFT)</text>
+            
+            
+            <!-- Live & Felled Tags -->
+            <text x="480" text-anchor="end" y="11" fill="#ef4444" class="pixel-txt tag-live-0">[BOSS]</text>
+            <text x="480" text-anchor="end" y="11" fill="#f59e0b" class="pixel-txt tag-felled-0">[FELLED]</text>
+            
+          </g>
+
+          <!-- Segments -->
+          <g transform="translate(110, 36)">
+            
+        <g transform="translate(0, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="118" height="20" fill="#14532d" />
+          <rect x="-1" y="-1" width="116" height="18" fill="#15803d" />
+          <rect x="0" y="0" width="114" height="16" fill="#05230e" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-0 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-0" transform="translate(57, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#bbf7d0" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#22c55e" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#22c55e" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#bbf7d0" />
+          </g>
+        </g>
+      
+        <g transform="translate(122, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="118" height="20" fill="#14532d" />
+          <rect x="-1" y="-1" width="116" height="18" fill="#15803d" />
+          <rect x="0" y="0" width="114" height="16" fill="#05230e" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-1 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-1" transform="translate(57, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#bbf7d0" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#22c55e" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#22c55e" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#bbf7d0" />
+          </g>
+        </g>
+      
+        <g transform="translate(244, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="118" height="20" fill="#14532d" />
+          <rect x="-1" y="-1" width="116" height="18" fill="#15803d" />
+          <rect x="0" y="0" width="114" height="16" fill="#05230e" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-2 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-2" transform="translate(57, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#bbf7d0" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#22c55e" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#22c55e" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#bbf7d0" />
+          </g>
+        </g>
+      
+        <g transform="translate(366, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="118" height="20" fill="#14532d" />
+          <rect x="-1" y="-1" width="116" height="18" fill="#15803d" />
+          <rect x="0" y="0" width="114" height="16" fill="#05230e" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-0-3 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-0-3" transform="translate(57, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#bbf7d0" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#22c55e" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#22c55e" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#bbf7d0" />
+          </g>
+        </g>
+      
+          </g>
+
+          
+          <!-- Felled Banner Overlay -->
+          <text x="350" text-anchor="middle" y="48" class="felled-text-0">CIRCLE COMPLETED</text>
+          
+
+          <!-- Hit Damage Pop-ups -->
+          
+          <text x="533" text-anchor="middle" y="30" class="dmg-pop-0-0">-1 BAR</text>
+        
+          <text x="411" text-anchor="middle" y="30" class="dmg-pop-0-1">-1 BAR</text>
+        
+          <text x="289" text-anchor="middle" y="30" class="dmg-pop-0-2">-1 BAR</text>
+        
+          <text x="167" text-anchor="middle" y="30" class="dmg-pop-0-3">-1 BAR</text>
+        
+        </g>
+      </g>
+    
+
+      <g class="boss-layer-1">
+        <g class="shake-1">
+          <!-- Header (Name & Emblem) -->
+          <g transform="translate(111, 22)">
+            <!-- Pixel Emblem -->
+            <rect x="0" y="2" width="12" height="10" fill="#38bdf8" />
+            <rect x="2" y="0" width="8" height="14" fill="#38bdf8" />
+            <rect x="3" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="7" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="5" y="9" width="2" height="2" fill="#0d1117" />
+
+            <!-- Boss Name -->
+            <text x="22" y="11" fill="#f8fafc" class="pixel-txt">CIRCLE 01 (FT_PRINTF)</text>
+            
+            
+            <!-- Live & Felled Tags -->
+            <text x="478" text-anchor="end" y="11" fill="#ef4444" class="pixel-txt tag-live-1">[BOSS]</text>
+            <text x="478" text-anchor="end" y="11" fill="#f59e0b" class="pixel-txt tag-felled-1">[FELLED]</text>
+            
+          </g>
+
+          <!-- Segments -->
+          <g transform="translate(111, 36)">
+            
+        <g transform="translate(0, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="158" height="20" fill="#164e63" />
+          <rect x="-1" y="-1" width="156" height="18" fill="#0e7490" />
+          <rect x="0" y="0" width="154" height="16" fill="#08202a" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-1-0 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-1-0" transform="translate(77, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#a5f3fc" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#a5f3fc" />
+          </g>
+        </g>
+      
+        <g transform="translate(162, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="158" height="20" fill="#164e63" />
+          <rect x="-1" y="-1" width="156" height="18" fill="#0e7490" />
+          <rect x="0" y="0" width="154" height="16" fill="#08202a" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-1-1 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-1-1" transform="translate(77, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#a5f3fc" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#a5f3fc" />
+          </g>
+        </g>
+      
+        <g transform="translate(324, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="158" height="20" fill="#164e63" />
+          <rect x="-1" y="-1" width="156" height="18" fill="#0e7490" />
+          <rect x="0" y="0" width="154" height="16" fill="#08202a" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-1-2 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-1-2" transform="translate(77, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#a5f3fc" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#38bdf8" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#a5f3fc" />
+          </g>
+        </g>
+      
+          </g>
+
+          
+          <!-- Felled Banner Overlay -->
+          <text x="350" text-anchor="middle" y="48" class="felled-text-1">CIRCLE COMPLETED</text>
+          
+
+          <!-- Hit Damage Pop-ups -->
+          
+          <text x="512" text-anchor="middle" y="30" class="dmg-pop-1-0">-1 BAR</text>
+        
+          <text x="350" text-anchor="middle" y="30" class="dmg-pop-1-1">-1 BAR</text>
+        
+          <text x="188" text-anchor="middle" y="30" class="dmg-pop-1-2">-1 BAR</text>
+        
+        </g>
+      </g>
+    
+
+      <g class="boss-layer-2">
+        <g class="shake-2">
+          <!-- Header (Name & Emblem) -->
+          <g transform="translate(112, 22)">
+            <!-- Pixel Emblem -->
+            <rect x="0" y="2" width="12" height="10" fill="#ef4444" />
+            <rect x="2" y="0" width="8" height="14" fill="#ef4444" />
+            <rect x="3" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="7" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="5" y="9" width="2" height="2" fill="#0d1117" />
+
+            <!-- Boss Name -->
+            <text x="22" y="11" fill="#f8fafc" class="pixel-txt">CIRCLE 02 (PUSH_SWAP)</text>
+            
+            
+            <text x="477" text-anchor="end" y="11" fill="#38bdf8" class="pixel-txt">[CURRENT FOE]</text>
+            
+          </g>
+
+          <!-- Segments -->
+          <g transform="translate(112, 36)">
+            
+        <g transform="translate(0, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="93" height="20" fill="#78350f" />
+          <rect x="-1" y="-1" width="91" height="18" fill="#d97706" />
+          <rect x="0" y="0" width="89" height="16" fill="#200606" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-2-0 pulse-crimson" />
+          
+        </g>
+      
+        <g transform="translate(97, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="93" height="20" fill="#78350f" />
+          <rect x="-1" y="-1" width="91" height="18" fill="#d97706" />
+          <rect x="0" y="0" width="89" height="16" fill="#200606" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-2-1 pulse-crimson" />
+          
+        </g>
+      
+        <g transform="translate(194, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="93" height="20" fill="#78350f" />
+          <rect x="-1" y="-1" width="91" height="18" fill="#d97706" />
+          <rect x="0" y="0" width="89" height="16" fill="#200606" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-2-2 pulse-crimson" />
+          
+        </g>
+      
+        <g transform="translate(291, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="93" height="20" fill="#78350f" />
+          <rect x="-1" y="-1" width="91" height="18" fill="#d97706" />
+          <rect x="0" y="0" width="89" height="16" fill="#200606" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-2-3 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-2-3" transform="translate(45, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+        <g transform="translate(388, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="93" height="20" fill="#78350f" />
+          <rect x="-1" y="-1" width="91" height="18" fill="#d97706" />
+          <rect x="0" y="0" width="89" height="16" fill="#200606" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="16" class="bar-2-4 " />
+          
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-2-4" transform="translate(45, 8)">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
+          </g>
+        </g>
+      
+          </g>
+
+          
+
+          <!-- Hit Damage Pop-ups -->
+          
+          <text x="545" text-anchor="middle" y="30" class="dmg-pop-2-0">-1 BAR</text>
+        
+          <text x="448" text-anchor="middle" y="30" class="dmg-pop-2-1">-1 BAR</text>
+        
+        </g>
+      </g>
+    
+</svg></div>
+      <div class="code-block">node bin/cli.js -b "CIRCLE 00:4:4:0.3:1" -b "CIRCLE 01:3:3:0.35:1" -b "CIRCLE 02:5:2:0.5:1"</div>
+    </div>
+
+  </div>
+
+  <!-- Generator Script Injected -->
+  <script>
+    /**
+ * Dynamic Retro Pixel Art Boss Health Bar Generator
+ * Author: Ahmet Emir Şimşek (SS2Genji)
+ */
+
+function escapeXml(unsafe) {
+  if (unsafe === undefined || unsafe === null) return '';
+  return String(unsafe).replace(/[<>&'"]/g, (c) => {
+    switch (c) {
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '&': return '&amp;';
+      case '\'': return '&apos;';
+      case '"': return '&quot;';
+    }
+  });
+}
+
+const THEMES = {
+  crimson: {
+    name: 'crimson',
+    bar: '#dc2626',
+    pulse: '#ef4444',
+    frameOuter: '#78350f',
+    frameInner: '#d97706',
+    frameBg: '#200606',
+    emblem: '#ef4444',
+    flash: '#fef08a',
+    sparks: ['#fef08a', '#f59e0b']
+  },
+  red: {
+    name: 'red',
+    bar: '#dc2626',
+    pulse: '#ef4444',
+    frameOuter: '#78350f',
+    frameInner: '#d97706',
+    frameBg: '#200606',
+    emblem: '#ef4444',
+    flash: '#fef08a',
+    sparks: ['#fef08a', '#f59e0b']
+  },
+  purple: {
+    name: 'purple',
+    bar: '#9333ea',
+    pulse: '#a855f7',
+    frameOuter: '#3b0764',
+    frameInner: '#7e22ce',
+    frameBg: '#1b0826',
+    emblem: '#a855f7',
+    flash: '#f3e8ff',
+    sparks: ['#e9d5ff', '#c084fc']
+  },
+  cyan: {
+    name: 'cyan',
+    bar: '#0891b2',
+    pulse: '#06b6d4',
+    frameOuter: '#164e63',
+    frameInner: '#0e7490',
+    frameBg: '#08202a',
+    emblem: '#38bdf8',
+    flash: '#cffafe',
+    sparks: ['#a5f3fc', '#38bdf8']
+  },
+  gold: {
+    name: 'gold',
+    bar: '#d97706',
+    pulse: '#f59e0b',
+    frameOuter: '#713f12',
+    frameInner: '#b45309',
+    frameBg: '#261805',
+    emblem: '#facc15',
+    flash: '#fef9c3',
+    sparks: ['#fef08a', '#eab308']
+  },
+  green: {
+    name: 'green',
+    bar: '#16a34a',
+    pulse: '#22c55e',
+    frameOuter: '#14532d',
+    frameInner: '#15803d',
+    frameBg: '#05230e',
+    emblem: '#4ade80',
+    flash: '#dcfce7',
+    sparks: ['#bbf7d0', '#22c55e']
+  },
+  orange: {
+    name: 'orange',
+    bar: '#ea580c',
+    pulse: '#f97316',
+    frameOuter: '#7c2d12',
+    frameInner: '#c2410c',
+    frameBg: '#270e05',
+    emblem: '#fb923c',
+    flash: '#ffedd5',
+    sparks: ['#fed7aa', '#f97316']
+  }
+};
+
+const AUTO_THEME_KEYS = ['crimson', 'cyan', 'purple', 'gold', 'orange', 'green'];
+
+function resolveTheme(colorNameOrHex, index = 0) {
+  if (!colorNameOrHex) {
+    return THEMES.crimson;
+  }
+  const key = String(colorNameOrHex).trim().toLowerCase();
+  if (THEMES[key]) {
+    return THEMES[key];
+  }
+  if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(key)) {
+    return {
+      name: `custom_${index}`,
+      bar: key,
+      pulse: key,
+      frameOuter: '#78350f',
+      frameInner: '#d97706',
+      frameBg: '#1f1515',
+      emblem: key,
+      flash: '#fef08a',
+      sparks: ['#fef08a', '#f59e0b']
+    };
+  }
+  return THEMES.crimson;
+}
+
+function resolveShake(shake, defaultValue = 'medium') {
+  if (shake === false || shake === 'false' || shake === 'none') return 'none';
+  if (shake === 'subtle') return 'subtle';
+  if (shake === 'heavy') return 'heavy';
+  if (shake === 'medium' || shake === true || shake === 'true') return 'medium';
+  return defaultValue;
+}
+
+function resolveSparks(sparks) {
+  if (sparks === false || sparks === 'false' || sparks === 'none') return false;
+  return true;
+}
+
+function generateBossBarSVG(bossesConfig = [], options = {}) {
+  const isGlobalAuto = options.auto === true || options.auto === 'true' || options.auto === '1';
+
+  // Fallback defaults if no bosses provided
+  let rawBosses;
+  if (bossesConfig && bossesConfig.length > 0) {
+    rawBosses = bossesConfig;
+  } else if (isGlobalAuto) {
+    rawBosses = [
+      { name: "MARGIT, THE FELL OMEN", totalBars: 6, hits: 3, damagePerHit: 2, hitInterval: 0.5, shake: 'heavy', barColor: 'crimson', felledText: 'GREAT ENEMY FELLED' },
+      { name: "GODRICK THE GRAFTED", totalBars: 8, hits: 2, damagePerHit: 2, hitInterval: 0.6, shake: 'medium', barColor: 'gold' }
+    ];
+  } else {
+    rawBosses = [
+      { name: "MILESTONE 1", totalBars: 3, hits: 3 },
+      { name: "MILESTONE 2", totalBars: 5, hits: 1 }
+    ];
+  }
+
+  const svgWidth = parseInt(options.width, 10) || 700;
+  const svgHeight = parseInt(options.height, 10) || 95;
+  const containerWidth = parseInt(options.barWidth, 10) || 480;
+  const containerY = 36;
+  const barHeight = 16;
+
+  // Helper to calculate segment layout for a given totalBars
+  function getBarLayout(totalBars) {
+    let gap = 8;
+    if (totalBars >= 16) gap = 2;
+    else if (totalBars >= 10) gap = 3;
+    else if (totalBars >= 6) gap = 5;
+    const segWidth = Math.max(4, Math.floor((containerWidth - (totalBars - 1) * gap) / totalBars));
+    const actualWidth = totalBars * segWidth + (totalBars - 1) * gap;
+    return { gap, segWidth, actualWidth };
+  }
+
+  // 1. Calculate Timelines for each Boss
+  let timeline = [];
+  let currentTime = 0;
+  const uniqueThemes = new Map();
+
+  rawBosses.forEach((boss, bIndex) => {
+    const isBossAuto = isGlobalAuto || boss.auto === true || boss.auto === 'true';
+    const totalBars = Math.max(1, parseInt(boss.totalBars, 10) || (isBossAuto ? 6 : 5));
+
+    // Resolve damage per hit
+    let damagePerHit = parseInt(
+      boss.damagePerHit || boss.damage || boss.dmg || boss.dmgPerHit ||
+      options.damagePerHit || options.damage || options.dmg || options.dmgPerHit,
+      10
+    );
+    if (!damagePerHit || damagePerHit < 1) {
+      if (isBossAuto && totalBars >= 8) damagePerHit = 2;
+      else damagePerHit = 1;
+    }
+
+    // Resolve total damage and hit count
+    let totalDamage;
+    if (boss.hits !== undefined && boss.hits !== null && boss.hits !== '') {
+      const requestedHits = Math.max(0, parseInt(boss.hits, 10) || 0);
+      totalDamage = Math.min(totalBars, requestedHits * damagePerHit);
+    } else if (boss.damage !== undefined && boss.damage !== null && boss.damage !== '') {
+      totalDamage = Math.min(totalBars, Math.max(0, parseInt(boss.damage, 10) || 0));
+    } else if (isBossAuto) {
+      if (bIndex < rawBosses.length - 1) {
+        totalDamage = totalBars; // Earlier bosses in sequence defeated
+      } else {
+        totalDamage = Math.max(1, Math.floor(totalBars * 0.5)); // Active foe partially damaged
+      }
+    } else {
+      totalDamage = 0;
+    }
+
+    const hitsCount = totalDamage > 0 ? Math.ceil(totalDamage / damagePerHit) : 0;
+    const isDefeated = totalDamage >= totalBars;
+    const name = String(boss.name || `BOSS ${bIndex + 1}`).trim();
+
+    // Resolve hit interval (speed)
+    let hitInterval;
+    const rawInterval = boss.hitInterval ?? boss.interval ?? boss.speed ??
+      options.hitInterval ?? options.interval ?? options.speed;
+    if (rawInterval !== undefined && rawInterval !== null && rawInterval !== '') {
+      hitInterval = Math.max(0.1, parseFloat(rawInterval) || 0.5);
+    } else if (isBossAuto) {
+      hitInterval = hitsCount > 4 ? 0.38 : (hitsCount > 2 ? 0.5 : 0.7);
+    } else if (hitsCount > 6) {
+      hitInterval = 0.32;
+    } else if (hitsCount > 3) {
+      hitInterval = 0.55;
+    } else {
+      hitInterval = 0.85;
+    }
+
+    // Resolve Theme & Colors
+    let themeChoice = boss.barColor || boss.theme || boss.color || options.barColor || options.theme || options.color;
+    if (!themeChoice && isBossAuto) {
+      themeChoice = AUTO_THEME_KEYS[bIndex % AUTO_THEME_KEYS.length];
+    }
+    const theme = resolveTheme(themeChoice, bIndex);
+    uniqueThemes.set(theme.name, theme);
+
+    const hitFlash = String(boss.hitFlash || options.hitFlash || theme.flash).trim();
+    const sparks = resolveSparks(boss.sparks ?? options.sparks);
+
+    // Resolve Shake
+    let defaultShake = 'medium';
+    if (isBossAuto) {
+      defaultShake = (isDefeated || damagePerHit >= 3) ? 'heavy' : 'medium';
+    }
+    const shake = resolveShake(boss.shake ?? options.shake, defaultShake);
+
+    // Defeated banner text
+    const felledText = String(boss.felledText || options.felledText || 'GREAT ENEMY FELLED').trim();
+
+    // Damage popup template
+    const dmgPopOption = boss.dmgPop !== undefined ? boss.dmgPop : options.dmgPop;
+    const showDmgPop = dmgPopOption !== false && dmgPopOption !== 'false' && dmgPopOption !== 'none';
+
+    const startTime = currentTime;
+    const leadIn = isDefeated ? 0.5 : 0.8;
+    const hitTimes = [];
+    let hitT = startTime + leadIn;
+
+    for (let h = 0; h < hitsCount; h++) {
+      hitTimes.push(hitT);
+      hitT += hitInterval;
+    }
+
+    const holdTime = isDefeated ? 2.0 : 3.2;
+    const duration = leadIn + (hitsCount * hitInterval) + holdTime;
+    const endTime = startTime + duration;
+    currentTime = endTime + 0.3; // brief gap between bosses
+
+    const layout = getBarLayout(totalBars);
+
+    timeline.push({
+      bIndex,
+      name,
+      totalBars,
+      damagePerHit,
+      totalDamage,
+      hitsCount,
+      isDefeated,
+      hitInterval,
+      startTime,
+      endTime,
+      duration,
+      hitTimes,
+      layout,
+      theme,
+      hitFlash,
+      sparks,
+      shake,
+      felledText,
+      dmgPopOption,
+      showDmgPop
+    });
+  });
+
+  const totalTime = Math.max(currentTime, 8.0);
+  const pct = (t) => Math.min(100, Math.max(0, (t / totalTime) * 100)).toFixed(2) + '%';
+
+  // 2. Generate Dynamic CSS Keyframes
+  let cssRules = [];
+
+  cssRules.push(`
+    .pixel-txt {
+      font-family: 'Courier New', 'Fira Code', 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+  `);
+
+  // Pulse animation rules for each unique theme
+  uniqueThemes.forEach((th) => {
+    cssRules.push(`
+      .pulse-${th.name} {
+        animation: pulse_${th.name} 2s infinite alternate;
+      }
+      @keyframes pulse_${th.name} {
+        0% { fill: ${th.bar}; }
+        100% { fill: ${th.pulse}; }
+      }
+    `);
+  });
+
+  // Build keyframes for each boss layer
+  timeline.forEach((tb) => {
+    const b = tb.bIndex;
+    const startP = pct(tb.startTime);
+    const inP = pct(tb.startTime + 0.25);
+    const outStartP = pct(tb.endTime - 0.25);
+    const endP = pct(tb.endTime);
+
+    // Layer lifecycle (fade in & fade out)
+    cssRules.push(`
+      .boss-layer-${b} {
+        opacity: 0;
+        animation: bossLife${b} ${totalTime.toFixed(1)}s infinite;
+      }
+      @keyframes bossLife${b} {
+        0%, ${startP} { opacity: 0; transform: translateY(3px); }
+        ${inP}, ${outStartP} { opacity: 1; transform: translateY(0); }
+        ${endP}, 100% { opacity: 0; transform: translateY(-3px); }
+      }
+    `);
+
+    // Screen Shake Animation
+    let shakeKeyframes = [`0%, ${pct(tb.startTime)} { transform: translate(0, 0); }`];
+    if (tb.shake !== 'none' && tb.hitTimes.length > 0) {
+      tb.hitTimes.forEach((ht) => {
+        const shakeDur = Math.min(0.08, tb.hitInterval / 3);
+        if (tb.shake === 'heavy') {
+          shakeKeyframes.push(`
+            ${pct(ht)} { transform: translate(-4px, 3px); }
+            ${pct(ht + shakeDur * 0.6)} { transform: translate(4px, -3px); }
+            ${pct(ht + shakeDur * 1.3)} { transform: translate(-2px, 2px); }
+            ${pct(ht + shakeDur * 2)} { transform: translate(0, 0); }
+          `);
+        } else if (tb.shake === 'subtle') {
+          shakeKeyframes.push(`
+            ${pct(ht)} { transform: translate(-1px, 1px); }
+            ${pct(ht + shakeDur)} { transform: translate(1px, -1px); }
+            ${pct(ht + shakeDur * 2)} { transform: translate(0, 0); }
+          `);
+        } else {
+          // medium / default
+          shakeKeyframes.push(`
+            ${pct(ht)} { transform: translate(-2px, 2px); }
+            ${pct(ht + shakeDur)} { transform: translate(2px, -2px); }
+            ${pct(ht + shakeDur * 2)} { transform: translate(0, 0); }
+          `);
+        }
+      });
+    }
+    shakeKeyframes.push(`${endP}, 100% { transform: translate(0, 0); }`);
+
+    cssRules.push(`
+      .shake-${b} {
+        animation: shakeAnim${b} ${totalTime.toFixed(1)}s infinite;
+      }
+      @keyframes shakeAnim${b} {
+        ${shakeKeyframes.join('\n')}
+      }
+    `);
+
+    // Segment widths and drainage
+    const totalBars = tb.totalBars;
+    const { segWidth } = tb.layout;
+
+    for (let i = 0; i < totalBars; i++) {
+      const drainIndex = (totalBars - 1) - i;
+      const getsHit = drainIndex < tb.totalDamage;
+
+      if (getsHit) {
+        const hitActionIndex = Math.floor(drainIndex / tb.damagePerHit);
+        const hitT = tb.hitTimes[hitActionIndex];
+        const hitP0 = pct(hitT - 0.04);
+        const hitPFlash = pct(hitT);
+        const drainTime = Math.min(0.18, tb.hitInterval * 0.6);
+        const hitPDrain = pct(hitT + drainTime);
+
+        cssRules.push(`
+          .bar-${b}-${i} {
+            animation: drain_${b}_${i} ${totalTime.toFixed(1)}s infinite;
+          }
+          @keyframes drain_${b}_${i} {
+            0%, ${startP} { width: 0px; }
+            ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
+            ${hitPFlash} { fill: ${tb.hitFlash}; }
+            ${hitPDrain}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
+            100% { width: 0px; }
+          }
+        `);
+
+        if (tb.sparks) {
+          cssRules.push(`
+            .sparks-${b}-${i} {
+              opacity: 0;
+              animation: sparkAnim_${b}_${i} ${totalTime.toFixed(1)}s infinite;
+            }
+            @keyframes sparkAnim_${b}_${i} {
+              0%, ${hitP0} { opacity: 0; transform: scale(0.6); }
+              ${hitPFlash} { opacity: 1; transform: scale(1.2); }
+              ${pct(hitT + drainTime * 0.9)} { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            }
+          `);
+        }
+      } else {
+        // Stays full / alive
+        cssRules.push(`
+          .bar-${b}-${i} {
+            animation: alive_${b}_${i} ${totalTime.toFixed(1)}s infinite;
+          }
+          @keyframes alive_${b}_${i} {
+            0%, ${startP} { width: 0px; }
+            ${pct(tb.startTime + 0.3)}, ${endP} { width: ${segWidth}px; }
+            100% { width: 0px; }
+          }
+        `);
+      }
+    }
+
+    // Damage pop-up keyframes per hit
+    if (tb.showDmgPop && tb.hitsCount > 0) {
+      for (let h = 0; h < tb.hitsCount; h++) {
+        const hitT = tb.hitTimes[h];
+        cssRules.push(`
+          .dmg-pop-${b}-${h} {
+            opacity: 0;
+            animation: dmgPopAnim_${b}_${h} ${totalTime.toFixed(1)}s infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            fill: #facc15;
+          }
+          @keyframes dmgPopAnim_${b}_${h} {
+            0%, ${pct(hitT)} { opacity: 0; transform: translateY(0); }
+            ${pct(hitT + 0.06)} { opacity: 1; transform: translateY(-4px); }
+            ${pct(hitT + 0.45)} { opacity: 1; transform: translateY(-13px); }
+            ${pct(hitT + 0.85)}, 100% { opacity: 0; transform: translateY(-19px); }
+          }
+        `);
+      }
+    }
+
+    // Tags & Defeat Banner Text
+    if (tb.isDefeated) {
+      const finalHitT = tb.hitTimes[tb.hitTimes.length - 1] || tb.startTime;
+      const deathP = pct(finalHitT + 0.15);
+
+      cssRules.push(`
+        .tag-live-${b} {
+          animation: tagLiveAnim${b} ${totalTime.toFixed(1)}s infinite;
+        }
+        @keyframes tagLiveAnim${b} {
+          0%, ${deathP} { opacity: 1; }
+          ${pct(finalHitT + 0.2)}, 100% { opacity: 0; }
+        }
+
+        .tag-felled-${b} {
+          opacity: 0;
+          animation: tagFelledAnim${b} ${totalTime.toFixed(1)}s infinite;
+        }
+        @keyframes tagFelledAnim${b} {
+          0%, ${deathP} { opacity: 0; }
+          ${pct(finalHitT + 0.25)}, ${outStartP} { opacity: 1; }
+          ${endP}, 100% { opacity: 0; }
+        }
+
+        .felled-text-${b} {
+          opacity: 0;
+          animation: felledBannerAnim${b} ${totalTime.toFixed(1)}s infinite;
+          font-family: 'Times New Roman', 'Georgia', serif;
+          font-size: 15px;
+          font-weight: 900;
+          letter-spacing: 5px;
+          fill: #fef08a;
+          filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
+        }
+        @keyframes felledBannerAnim${b} {
+          0%, ${deathP} { opacity: 0; }
+          ${pct(finalHitT + 0.25)}, ${outStartP} { opacity: 1; }
+          ${endP}, 100% { opacity: 0; }
+        }
+      `);
+    }
+  });
+
+  // 3. Render SVG Content
+  let svgBodies = [];
+
+  timeline.forEach((tb) => {
+    const b = tb.bIndex;
+    const totalBars = tb.totalBars;
+    const { gap, segWidth, actualWidth } = tb.layout;
+    const containerX = Math.round((svgWidth - actualWidth) / 2);
+
+    let segmentsMarkup = [];
+
+    for (let i = 0; i < totalBars; i++) {
+      const segX = i * (segWidth + gap);
+      const drainIndex = (totalBars - 1) - i;
+      const getsHit = drainIndex < tb.totalDamage;
+
+      segmentsMarkup.push(`
+        <g transform="translate(${segX}, 0)">
+          <!-- Frame Background -->
+          <rect x="-2" y="-2" width="${segWidth + 4}" height="${barHeight + 4}" fill="${tb.theme.frameOuter}" />
+          <rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" fill="${tb.theme.frameInner}" />
+          <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="${tb.theme.frameBg}" />
+          <!-- Animated Fill Bar -->
+          <rect x="0" y="0" height="${barHeight}" class="bar-${b}-${i} ${!getsHit ? `pulse-${tb.theme.name}` : ''}" />
+          ${getsHit && tb.sparks ? `
+          <!-- Golden/Themed Pixel Sparks -->
+          <g class="sparks-${b}-${i}" transform="translate(${Math.round(segWidth / 2)}, ${Math.round(barHeight / 2)})">
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="${tb.theme.sparks[0]}" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="${tb.theme.sparks[1]}" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="${tb.theme.sparks[1]}" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="${tb.theme.sparks[0]}" />
+          </g>` : ''}
+        </g>
+      `);
+    }
+
+    // Top Header info
+    const emblemColor = tb.theme.emblem;
+    const tagLive = tb.isDefeated ? '[BOSS]' : '[CURRENT FOE]';
+    const tagLiveColor = tb.isDefeated ? '#ef4444' : '#38bdf8';
+
+    // Damage popups markup
+    let popupsMarkup = [];
+    if (tb.showDmgPop && tb.hitsCount > 0) {
+      for (let h = 0; h < tb.hitsCount; h++) {
+        const fromDrain = h * tb.damagePerHit;
+        const toDrain = Math.min(tb.totalDamage - 1, (h + 1) * tb.damagePerHit - 1);
+        const dmgThisHit = toDrain - fromDrain + 1;
+
+        const segStart = (totalBars - 1) - fromDrain;
+        const segEnd = (totalBars - 1) - toDrain;
+        const hitSegMin = Math.min(segStart, segEnd);
+        const hitSegMax = Math.max(segStart, segEnd);
+        const hitCenterX = containerX + Math.round((hitSegMin * (segWidth + gap) + hitSegMax * (segWidth + gap) + segWidth) / 2);
+
+        let popText;
+        if (typeof tb.dmgPopOption === 'string' && tb.dmgPopOption !== 'true') {
+          popText = tb.dmgPopOption
+            .replace(/\{N\}/g, dmgThisHit)
+            .replace(/\{TOTAL\}/g, tb.totalDamage);
+        } else {
+          popText = `-${dmgThisHit} ${dmgThisHit > 1 ? 'BARS' : 'BAR'}`;
+        }
+
+        popupsMarkup.push(`
+          <text x="${hitCenterX}" text-anchor="middle" y="30" class="dmg-pop-${b}-${h}">${escapeXml(popText)}</text>
+        `);
+      }
+    }
+
+    svgBodies.push(`
+      <g class="boss-layer-${b}">
+        <g class="shake-${b}">
+          <!-- Header (Name & Emblem) -->
+          <g transform="translate(${containerX}, 22)">
+            <!-- Pixel Emblem -->
+            <rect x="0" y="2" width="12" height="10" fill="${emblemColor}" />
+            <rect x="2" y="0" width="8" height="14" fill="${emblemColor}" />
+            <rect x="3" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="7" y="4" width="2" height="3" fill="#0d1117" />
+            <rect x="5" y="9" width="2" height="2" fill="#0d1117" />
+
+            <!-- Boss Name -->
+            <text x="22" y="11" fill="#f8fafc" class="pixel-txt">${escapeXml(tb.name)}</text>
+            
+            ${tb.isDefeated ? `
+            <!-- Live & Felled Tags -->
+            <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagLiveColor}" class="pixel-txt tag-live-${b}">${tagLive}</text>
+            <text x="${actualWidth}" text-anchor="end" y="11" fill="#f59e0b" class="pixel-txt tag-felled-${b}">[FELLED]</text>
+            ` : `
+            <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagLiveColor}" class="pixel-txt">${tagLive}</text>
+            `}
+          </g>
+
+          <!-- Segments -->
+          <g transform="translate(${containerX}, ${containerY})">
+            ${segmentsMarkup.join('')}
+          </g>
+
+          ${tb.isDefeated ? `
+          <!-- Felled Banner Overlay -->
+          <text x="${Math.round(svgWidth / 2)}" text-anchor="middle" y="48" class="felled-text-${b}">${escapeXml(tb.felledText)}</text>
+          ` : ''}
+
+          <!-- Hit Damage Pop-ups -->
+          ${popupsMarkup.join('')}
+        </g>
+      </g>
+    `);
+  });
+
+  return `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgWidth} ${svgHeight}" width="100%" height="${svgHeight}" shape-rendering="crispEdges">
+  <defs>
+    <style><![CDATA[
+      ${cssRules.join('\n')}
+    ]]></style>
+  </defs>
+  ${svgBodies.join('\n')}
+</svg>
+`.trim();
+}
+
+// Browser export
+window.generateBossBarSVG = generateBossBarSVG;
+/*
+  generateBossBarSVG,
+  escapeXml,
+  THEMES
+};
+
+*/
+
+    let isAutoMode = false;
+
+    function toggleAutoMode() {
+      isAutoMode = !isAutoMode;
+      const btn = document.getElementById("btn-mode-auto");
+      const controls = document.getElementById("studio-controls");
+      if (isAutoMode) {
+        btn.innerText = "Mode: Automatic (Active)";
+        btn.classList.add("active");
+        controls.style.opacity = "0.4";
+        controls.style.pointerEvents = "none";
+      } else {
+        btn.innerText = "Mode: Manual Custom";
+        btn.classList.remove("active");
+        controls.style.opacity = "1";
+        controls.style.pointerEvents = "auto";
+      }
+      updateStudio();
+    }
+
+    function updateStudio() {
+      const barsVal = document.getElementById("in-bars").value;
+      const dmgVal = document.getElementById("in-dmg").value;
+      const hitsVal = document.getElementById("in-hits").value;
+      const intervalVal = parseFloat(document.getElementById("in-interval").value).toFixed(2);
+
+      document.getElementById("val-bars").innerText = barsVal;
+      document.getElementById("val-dmg").innerText = dmgVal;
+      document.getElementById("val-hits").innerText = hitsVal;
+      document.getElementById("val-interval").innerText = intervalVal + "s";
+
+      let svg, mdUrl, cliCmd;
+
+      if (isAutoMode) {
+        svg = generateBossBarSVG([], { auto: true });
+        mdUrl = "https://readme-boss-bar.vercel.app/api?auto=true";
+        cliCmd = "readme-boss-bar --auto -o boss_bar.svg";
+      } else {
+        const name = document.getElementById("in-name").value.trim() || "BOSS";
+        const totalBars = parseInt(barsVal, 10);
+        const damagePerHit = parseInt(dmgVal, 10);
+        const hits = parseInt(hitsVal, 10);
+        const hitInterval = parseFloat(intervalVal);
+        const theme = document.getElementById("in-theme").value;
+        const shake = document.getElementById("in-shake").value;
+        const felledText = document.getElementById("in-felled").value.trim() || "GREAT ENEMY FELLED";
+        const dmgPop = document.getElementById("in-dmgpop").value.trim();
+        const sparks = document.getElementById("in-sparks").value === "true";
+
+        const bossConfig = [
+          {
+            name,
+            totalBars,
+            hits,
+            damagePerHit,
+            hitInterval,
+            barColor: theme,
+            shake,
+            felledText,
+            dmgPop: dmgPop || undefined,
+            sparks
+          }
+        ];
+
+        svg = generateBossBarSVG(bossConfig);
+
+        const encodedName = encodeURIComponent(name);
+        mdUrl = "https://readme-boss-bar.vercel.app/api?boss=" + encodedName + ":" + totalBars + ":" + hits + ":" + hitInterval + ":" + damagePerHit + "&theme=" + theme + "&shake=" + shake;
+        if (felledText !== "GREAT ENEMY FELLED") mdUrl += "&felled=" + encodeURIComponent(felledText);
+        if (!sparks) mdUrl += "&sparks=false";
+
+        cliCmd = "readme-boss-bar -b \"" + name + ":" + totalBars + ":" + hits + ":" + hitInterval + ":" + damagePerHit + "\" --theme " + theme + " --shake " + shake;
+        if (felledText !== "GREAT ENEMY FELLED") cliCmd += " --felled-text \"" + felledText + "\"";
+        if (!sparks) cliCmd += " --sparks false";
+        cliCmd += " -o boss_bar.svg";
+      }
+
+      document.getElementById("studio-viewport").innerHTML = svg;
+      document.getElementById("studio-markdown").innerText = "<img src=\"" + mdUrl + "\" alt=\"Boss Bar\" />";
+      document.getElementById("studio-cli").innerText = cliCmd;
+    }
+
+    // Initialize on load
+    updateStudio();
+  </script>
+</body>
+</html>

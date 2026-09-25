@@ -1,54 +1,102 @@
 const { generateBossBarSVG } = require('../src/generator');
 
+function parseBossSpec(rawSpec, defaults = {}) {
+  if (!rawSpec) return null;
+  const parts = String(rawSpec).split(':');
+  const boss = {
+    name: parts[0]?.trim() || 'BOSS'
+  };
+  if (parts.length >= 2 && parts[1] !== '') {
+    boss.totalBars = parseInt(parts[1], 10);
+  }
+  if (parts.length >= 3 && parts[2] !== '') {
+    boss.hits = parseInt(parts[2], 10);
+  }
+  if (parts.length >= 4 && parts[3] !== '') {
+    boss.hitInterval = parseFloat(parts[3]);
+  } else if (defaults.hitInterval !== undefined) {
+    boss.hitInterval = defaults.hitInterval;
+  }
+  if (parts.length >= 5 && parts[4] !== '') {
+    boss.damagePerHit = parseInt(parts[4], 10);
+  } else if (defaults.damagePerHit !== undefined) {
+    boss.damagePerHit = defaults.damagePerHit;
+  }
+  return boss;
+}
+
 module.exports = (req, res) => {
   try {
     const query = req.query || {};
     let bosses = [];
 
-    // Parse repeated ?boss=Name:Total:Hits or comma-separated ?bosses=...
-    const rawBosses = query.boss || query.bosses;
-    
-    if (rawBosses) {
-      const items = Array.isArray(rawBosses) 
-        ? rawBosses 
-        : rawBosses.split(',');
+    // Parse options from granular query params
+    const options = {
+      width: parseInt(query.width, 10) || 700,
+      height: parseInt(query.height, 10) || 95,
+      barWidth: parseInt(query.barWidth, 10) || 480
+    };
 
+    if (query.shake) options.shake = query.shake;
+    if (query.theme || query.barColor || query.color) {
+      options.barColor = query.theme || query.barColor || query.color;
+    }
+    if (query.sparks !== undefined) {
+      options.sparks = query.sparks !== 'false' && query.sparks !== '0';
+    }
+    if (query.flash || query.hitFlash) {
+      options.hitFlash = query.flash || query.hitFlash;
+    }
+    if (query.felled || query.felledText) {
+      options.felledText = query.felled || query.felledText;
+    }
+    if (query.dmgPop !== undefined || query.popup !== undefined) {
+      const val = query.dmgPop !== undefined ? query.dmgPop : query.popup;
+      options.dmgPop = (val === 'false' || val === '0') ? false : val;
+    }
+    if (query.auto === 'true' || query.auto === '1') {
+      options.auto = true;
+    }
+
+    const granularDefaults = {};
+    if (query.interval || query.speed) {
+      granularDefaults.hitInterval = parseFloat(query.interval || query.speed);
+      options.hitInterval = granularDefaults.hitInterval;
+    }
+    if (query.dmg || query.damage || query.damagePerHit) {
+      granularDefaults.damagePerHit = parseInt(query.dmg || query.damage || query.damagePerHit, 10);
+      options.damagePerHit = granularDefaults.damagePerHit;
+    }
+
+    // Parse repeated ?boss=... or comma-separated ?bosses=...
+    const rawBosses = query.boss || query.bosses;
+    if (rawBosses) {
+      const items = Array.isArray(rawBosses) ? rawBosses : rawBosses.split(',');
       items.forEach(item => {
-        const parts = item.split(':');
-        if (parts.length >= 3) {
-          bosses.push({
-            name: parts[0].trim(),
-            totalBars: parseInt(parts[1], 10) || 3,
-            hits: parseInt(parts[2], 10) || 0
-          });
-        }
+        const boss = parseBossSpec(item, granularDefaults);
+        if (boss) bosses.push(boss);
       });
     }
 
-    // Also support ?b1=Name:Total:Hits&b2=...
-    for (let k of Object.keys(query)) {
-      if (/^b\d+$/i.test(k)) {
-        const parts = query[k].split(':');
-        if (parts.length >= 3) {
-          bosses.push({
-            name: parts[0].trim(),
-            totalBars: parseInt(parts[1], 10) || 3,
-            hits: parseInt(parts[2], 10) || 0
-          });
-        }
-      }
+    // Also support ?b1=Name:Total:Hits...&b2=...
+    const bKeys = Object.keys(query).filter(k => /^b\d+$/i.test(k)).sort();
+    for (let k of bKeys) {
+      const boss = parseBossSpec(query[k], granularDefaults);
+      if (boss) bosses.push(boss);
     }
 
-    // Fallback if no params given
-    if (bosses.length === 0) {
-      bosses = [
-        { name: "MILESTONE 1", totalBars: 3, hits: 3 },
-        { name: "MILESTONE 2", totalBars: 5, hits: 1 }
-      ];
+    // Support single boss query params: ?name=RADAHN&bars=10&hits=2...
+    if (bosses.length === 0 && (query.name || query.bossName)) {
+      bosses.push({
+        name: (query.name || query.bossName).trim(),
+        totalBars: parseInt(query.bars || query.totalBars, 10) || 5,
+        hits: query.hits !== undefined ? parseInt(query.hits, 10) : undefined,
+        hitInterval: granularDefaults.hitInterval,
+        damagePerHit: granularDefaults.damagePerHit
+      });
     }
 
-    const width = parseInt(query.width, 10) || 700;
-    const svg = generateBossBarSVG(bosses, { width });
+    const svg = generateBossBarSVG(bosses, options);
 
     res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
     res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=3600, stale-while-revalidate=86400');
@@ -59,3 +107,4 @@ module.exports = (req, res) => {
     return res.status(500).send(errSvg);
   }
 };
+

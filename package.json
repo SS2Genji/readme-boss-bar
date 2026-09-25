@@ -7,8 +7,7 @@
     "readme-boss-bar": "bin/cli.js"
   },
   "scripts": {
-    "test": "node test/test.js",
-    "start": "node test/dev-server.js"
+    "test": "node test/test.js && node test/test-api.js"
   },
   "keywords": [
     "github-readme",
