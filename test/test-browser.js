@@ -97,9 +97,6 @@ async function runBrowserTests() {
           loadPreset('eldenRing');
           assert(vp.innerHTML.includes('MALENIA'), 'Elden Ring preset loaded');
 
-          loadPreset('auto');
-          assert(isAutoMode === true, 'Auto preset enabled');
-
           // Back to single preset
           loadPreset('single');
 
@@ -122,8 +119,8 @@ async function runBrowserTests() {
           selectStageShake(0, 'heavy');
           assert(stages[0].shake === 'heavy', 'Shake heavy set');
 
-          selectStageShake(0, 'glitch');
-          assert(stages[0].shake === 'glitch', 'Shake glitch set');
+          selectStageShake(0, 'subtle');
+          assert(stages[0].shake === 'subtle', 'Shake subtle set');
 
           // Aesthetic switching
           selectAesthetic('cyberpunk');
@@ -151,10 +148,18 @@ async function runBrowserTests() {
           assert(currentAesthetic === 'souls', 'Current aesthetic set to souls');
           assert(vp.innerHTML.includes('Cinzel'), 'Souls font rendered');
 
-          // Animation selection
-          selectAnimation('glitch');
-          assert(currentAnimation === 'glitch', 'Animation glitch selected');
-          assert(document.getElementById('code-markdown').innerText.includes('anim=glitch'), 'Markdown includes anim=glitch');
+          // Defeated Banner Color & Damage Pop-up Color customization
+          const felledColorInput = document.getElementById('glob-felled-color');
+          felledColorInput.value = '#10B981';
+          felledColorInput.dispatchEvent(new Event('input', { bubbles: true }));
+          assert(vp.innerHTML.includes('#10B981') || vp.innerHTML.includes('#10b981'), 'Defeated banner color applied to SVG');
+          assert(document.getElementById('code-markdown').innerText.includes('felledColor=10B981'), 'Markdown includes felledColor');
+
+          const dmgPopColorInput = document.getElementById('glob-dmgpop-color');
+          dmgPopColorInput.value = '#38BDF8';
+          dmgPopColorInput.dispatchEvent(new Event('input', { bubbles: true }));
+          assert(vp.innerHTML.includes('#38BDF8') || vp.innerHTML.includes('#38bdf8'), 'Damage pop-up color applied to SVG');
+          assert(document.getElementById('code-markdown').innerText.includes('dmgPopColor=38BDF8'), 'Markdown includes dmgPopColor');
 
           // New aesthetic presets
           loadPreset('cyberpunk');

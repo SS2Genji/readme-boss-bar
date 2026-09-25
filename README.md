@@ -87,17 +87,17 @@ Once deployed to Vercel (or using the local asset), copy any line below and repl
 
 #### Cyberpunk Sci-Fi HUD
 ```markdown
-![Boss Bar](https://readme-boss-barr.vercel.app/api?name=TITAN+MECH&bars=8&dmg=2&style=cyberpunk&theme=cyan&shake=glitch&anim=glitch)
+![Boss Bar](https://readme-boss-barr.vercel.app/api?name=TITAN+MECH&bars=8&dmg=2&style=cyberpunk&theme=cyan&shake=heavy&felledColor=06b6d4)
 ```
 
 #### Bloodborne Eldritch Horror
 ```markdown
-![Boss Bar](https://readme-boss-barr.vercel.app/api?name=CLERIC+BEAST&bars=8&dmg=2&style=bloodborne&theme=crimson&shake=heavy&anim=burst)
+![Boss Bar](https://readme-boss-barr.vercel.app/api?name=CLERIC+BEAST&bars=8&dmg=2&style=bloodborne&theme=crimson&shake=heavy&felledColor=dc2626)
 ```
 
 #### 8-Bit NES Arcade
 ```markdown
-![Boss Bar](https://readme-boss-barr.vercel.app/api?name=CASTLE+OVERLORD&bars=8&dmg=2&style=pixel&theme=gold&anim=burst)
+![Boss Bar](https://readme-boss-barr.vercel.app/api?name=CASTLE+OVERLORD&bars=8&dmg=2&style=pixel&theme=gold&felledColor=facc15)
 ```
 
 #### Modern Sleek Dashboard (Minimal)
@@ -125,7 +125,7 @@ Prefer the command line? Run the step-by-step interactive wizard:
 npx readme-boss-bar wizard
 ```
 
-It walks you through aesthetic styles, boss names, health bars, speed, themes, and automatically exports your SVG and Markdown embed code!
+It walks you through aesthetic styles, boss names, health bars, speed, themes, banner colors, and automatically exports your SVG and Markdown embed code!
 
 ---
 
@@ -134,7 +134,7 @@ It walks you through aesthetic styles, boss names, health bars, speed, themes, a
 Defeat Phase 1, then summon Phase 2:
 
 ```markdown
-![Boss Bar](https://readme-boss-barr.vercel.app/api?boss=CIRCLE+01:4:4:0.4:1:crimson:medium:PHASE+1+CLEAR:souls:sweep&boss=CIRCLE+02:6:3:0.5:2:gold:heavy:PUSH_SWAP+FELLED:souls:pulse)
+![Boss Bar](https://readme-boss-barr.vercel.app/api?boss=CIRCLE+01:4:4:0.4:1:crimson:medium:PHASE+1+CLEAR:souls&boss=CIRCLE+02:6:3:0.5:2:gold:heavy:PUSH_SWAP+FELLED:souls)
 ```
 
 ---
@@ -143,10 +143,10 @@ Defeat Phase 1, then summon Phase 2:
 
 ### Boss Specification Syntax
 
-You can pass bosses using the extended 10-part shorthand format:
+You can pass bosses using the extended 9-part shorthand format:
 
 ```text
-NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT:THEME:SHAKE:FELLED_TEXT:STYLE:ANIMATION
+NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT:THEME:SHAKE:FELLED_TEXT:STYLE
 ```
 
 | Component | Type | Description | Default | Example |
@@ -157,10 +157,9 @@ NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT:THEME:SHAKE:FELLED_TEXT:STYLE:ANIMATIO
 | `INTERVAL` | Float | Seconds between hits | `0.5s` | `0.5` |
 | `DMG_PER_HIT` | Integer | Number of bars drained per hit | `1` | `3` |
 | `THEME` | String | Color theme preset or `#hex` | `crimson` | `purple` |
-| `SHAKE` | String | Screen shake intensity (`none`, `subtle`, `medium`, `heavy`, `glitch`) | `medium` | `heavy` |
+| `SHAKE` | String | Screen shake intensity (`none`, `subtle`, `medium`, `heavy`) | `medium` | `heavy` |
 | `FELLED_TEXT` | String | Defeat victory text overlay | Aesthetic default | `DEMIGOD FELLED` |
 | `STYLE` | String | Aesthetic style (`classic`, `souls`, `cyberpunk`, `pixel`, `bloodborne`, `minimal`) | `classic` | `souls` |
-| `ANIMATION` | String | Drain animation (`sweep`, `pulse`, `burst`, `glitch`) | Aesthetic default | `pulse` |
 
 *Note: Trailing components can be omitted (e.g. `?boss=RADAHN:10:::3::::souls` drains 3 bars every 0.5s with the Souls aesthetic until 10 bars are depleted).*
 
@@ -169,8 +168,9 @@ NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT:THEME:SHAKE:FELLED_TEXT:STYLE:ANIMATIO
 | Parameter | Type | Description | Example |
 | :--- | :--- | :--- | :--- |
 | `style`, `aesthetic` | String | Aesthetic style (`classic`, `souls`, `cyberpunk`, `pixel`, `bloodborne`, `minimal`) | `?style=cyberpunk` |
-| `anim`, `animation` | String | Drain animation (`sweep`, `pulse`, `burst`, `glitch`) | `?anim=glitch` |
-| `shake` | String | Screen shake intensity (`none`, `subtle`, `medium`, `heavy`, `glitch`) | `?shake=glitch` |
+| `shake` | String | Screen shake intensity (`none`, `subtle`, `medium`, `heavy`) | `?shake=heavy` |
+| `felledColor`, `bannerColor` | String | Custom color for defeated banner text and glow (`#hex` or `hex`) | `?felledColor=10b981` |
+| `dmgPopColor`, `popupColor` | String | Custom color for damage floating popup (`#hex` or `hex`) | `?dmgPopColor=38bdf8` |
 | `boss` | String | Repeatable boss specification shorthand | `?boss=RADAHN:10:2:0.5:3:purple:heavy` |
 | `bosses` | String | Comma-separated boss specifications | `?bosses=M1:3:3,M2:5:1` |
 | `b1`, `b2` | String | Numbered boss stages (sorted naturally) | `?b1=STAGE+1:4:4&b2=STAGE+2:6:2` |
@@ -220,16 +220,16 @@ Generate SVGs locally or directly in CI pipelines:
 npx readme-boss-bar wizard
 
 # 1. Generate Cyberpunk Mech HUD
-npx readme-boss-bar --style cyberpunk --anim glitch --shake glitch -b "CYBER MECH:10:3:0.4:3" -o assets/mech.svg
+npx readme-boss-bar --style cyberpunk --shake heavy --felled-color 06b6d4 -b "CYBER MECH:10:3:0.4:3" -o assets/mech.svg
 
 # 2. Generate Souls Gothic Radahn
 npx readme-boss-bar --style souls -b "RADAHN:10" --dmg 3 --interval 0.5 --theme purple --shake heavy -o assets/radahn.svg
 
-# 3. Generate Bloodborne Beast with visceral burst
-npx readme-boss-bar --style bloodborne --anim burst -b "CLERIC BEAST:8:4:0.35:2" -o assets/bloodborne.svg
+# 3. Generate Bloodborne Beast
+npx readme-boss-bar --style bloodborne -b "CLERIC BEAST:8:4:0.35:2" --felled-color dc2626 -o assets/bloodborne.svg
 
 # 4. Generate 8-Bit Arcade Boss
-npx readme-boss-bar --style pixel --anim burst -b "CASTLE OVERLORD:8:4:0.4:2" -o assets/pixel.svg
+npx readme-boss-bar --style pixel -b "CASTLE OVERLORD:8:4:0.4:2" --dmg-pop-color 38bdf8 -o assets/pixel.svg
 
 # 5. Generate Modern Minimal Dashboard
 npx readme-boss-bar --style minimal -b "SYSTEM INTEGRITY:6:3:0.5:2" -o assets/minimal.svg
@@ -254,7 +254,6 @@ npx readme-boss-bar --config config.example.json -o assets/boss_bar.svg
     "barColor": "purple",
     "shake": "heavy",
     "style": "souls",
-    "animation": "pulse",
     "dmgPop": "-{N} BARS"
   },
   {
@@ -266,8 +265,8 @@ npx readme-boss-bar --config config.example.json -o assets/boss_bar.svg
     "barColor": "gold",
     "shake": "heavy",
     "style": "souls",
-    "animation": "sweep",
-    "felledText": "DEMIGOD FELLED"
+    "felledText": "DEMIGOD FELLED",
+    "felledColor": "#f59e0b"
   }
 ]
 ```

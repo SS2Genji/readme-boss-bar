@@ -1,4 +1,4 @@
-const { generateBossBarSVG, resolveAesthetic, resolveAnimation } = require('../src/generator');
+const { generateBossBarSVG, resolveAesthetic } = require('../src/generator');
 
 function parseBossSpec(rawSpec, defaults = {}) {
   if (!rawSpec) return null;
@@ -44,10 +44,11 @@ function parseBossSpec(rawSpec, defaults = {}) {
   } else if (defaults.style !== undefined) {
     boss.style = defaults.style;
   }
-  if (parts.length >= 10 && parts[9] !== '') {
-    boss.animation = resolveAnimation(parts[9].trim());
-  } else if (defaults.animation !== undefined) {
-    boss.animation = defaults.animation;
+  if (defaults.felledColor !== undefined) {
+    boss.felledColor = defaults.felledColor;
+  }
+  if (defaults.dmgPopColor !== undefined) {
+    boss.dmgPopColor = defaults.dmgPopColor;
   }
   return boss;
 }
@@ -67,12 +68,15 @@ module.exports = (req, res) => {
     if (query.style || query.aesthetic) {
       options.style = resolveAesthetic(query.style || query.aesthetic).name;
     }
-    if (query.anim || query.animation) {
-      options.animation = resolveAnimation(query.anim || query.animation);
-    }
     if (query.shake) options.shake = query.shake;
     if (query.theme || query.barColor || query.color) {
       options.barColor = query.theme || query.barColor || query.color;
+    }
+    if (query.felledColor || query.bannerColor) {
+      options.felledColor = query.felledColor || query.bannerColor;
+    }
+    if (query.dmgPopColor || query.popupColor) {
+      options.dmgPopColor = query.dmgPopColor || query.popupColor;
     }
     if (query.sparks !== undefined) {
       options.sparks = query.sparks !== 'false' && query.sparks !== '0';
@@ -109,8 +113,9 @@ module.exports = (req, res) => {
     if (options.barColor) granularDefaults.barColor = options.barColor;
     if (options.shake) granularDefaults.shake = options.shake;
     if (options.felledText) granularDefaults.felledText = options.felledText;
+    if (options.felledColor) granularDefaults.felledColor = options.felledColor;
+    if (options.dmgPopColor) granularDefaults.dmgPopColor = options.dmgPopColor;
     if (options.style) granularDefaults.style = options.style;
-    if (options.animation) granularDefaults.animation = options.animation;
 
     // Parse repeated ?boss=... or comma-separated ?bosses=...
     const rawBosses = query.boss || query.bosses;

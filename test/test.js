@@ -341,47 +341,32 @@ aestheticsList.forEach((style, idx) => {
 });
 console.log("✔ Test 23 passed: All 6 visual aesthetics render distinct geometries, typography, particles & emblems cleanly!");
 
-// Test 24: All 4 Impact Drain Animations (sweep, pulse, burst, glitch)
-const animList = ['sweep', 'pulse', 'burst', 'glitch'];
-animList.forEach((anim, idx) => {
-  const svg = generateBossBarSVG([
-    { name: `ANIM ${anim.toUpperCase()}`, totalBars: 6, hits: 2, damagePerHit: 3 }
-  ], { animation: anim });
-
-  if (anim === 'sweep') {
-    if (!svg.includes('drain_0_0') || !svg.includes('fill: #fef08a')) {
-      throw new Error("Test 24 failed: Sweep animation missing expected keyframe structure");
-    }
-  } else if (anim === 'pulse') {
-    if (!svg.includes('drain_0_0') || !svg.includes('fill: #ef4444') || !svg.includes('width: 53px')) {
-      throw new Error("Test 24 failed: Pulse animation missing expected contracted pulse wave keyframe");
-    }
-  } else if (anim === 'burst') {
-    if (!svg.includes('fill: #fef08a') || svg.includes('width: 49px')) {
-      throw new Error("Test 24 failed: Burst animation missing expected instantaneous drop keyframe");
-    }
-  } else if (anim === 'glitch') {
-    if (!svg.includes('drain_0_0') || !svg.includes('fill: #ef4444') || !svg.includes('width: 49px') || !svg.includes('width: 23px')) {
-      throw new Error("Test 24 failed: Glitch animation missing expected staircase step keyframes");
-    }
-  }
-
-  const outPath = `/tmp/test_anim_${idx}_${anim}.svg`;
-  fs.writeFileSync(outPath, svg);
-  execSync(`rsvg-convert ${outPath} -o /tmp/test_anim_${idx}_${anim}.png`);
+// Test 24: Custom Defeated Banner Color (felledColor) and Damage Pop-up Color (dmgPopColor)
+const customColorBoss = [
+  { name: "MALENIA", totalBars: 6, hits: 2, damagePerHit: 3 }
+];
+const svg24 = generateBossBarSVG(customColorBoss, {
+  felledColor: '10b981',
+  dmgPopColor: '#38bdf8'
 });
-console.log("✔ Test 24 passed: All 4 impact drain animations compile cleanly!");
+if (!svg24.includes('fill: #10b981') || !svg24.includes('fill: #38bdf8')) {
+  throw new Error("Test 24 failed: Custom felledColor and dmgPopColor not found in generated SVG CSS");
+}
+fs.writeFileSync('/tmp/test_custom_colors_24.svg', svg24);
+execSync('rsvg-convert /tmp/test_custom_colors_24.svg -o /tmp/test_custom_colors_24.png');
+console.log("✔ Test 24 passed: Custom defeated banner color & damage popup color compile cleanly!");
 
-// Test 25: Screen Shake 'glitch' mode
+// Test 25: Defeated Banner Color per-boss stage override
 const svg25 = generateBossBarSVG([
-  { name: "GLITCH TARGET", totalBars: 6, hits: 2, shake: "glitch" }
+  { name: "STAGE 1", totalBars: 4, hits: 2, damagePerHit: 2, felledColor: "#ec4899" },
+  { name: "STAGE 2", totalBars: 4, hits: 2, damagePerHit: 2, felledColor: "3b82f6" }
 ]);
-if (!svg25.includes("translate(-5px, 0)") || !svg25.includes("translate(4px, 0)")) {
-  throw new Error("Test 25 failed: Glitch shake missing expected horizontal jitter keyframes");
+if (!svg25.includes('fill: #ec4899') || !svg25.includes('fill: #3b82f6')) {
+  throw new Error("Test 25 failed: Per-stage felledColor override missing");
 }
 fs.writeFileSync('/tmp/test_boss_25.svg', svg25);
 execSync('rsvg-convert /tmp/test_boss_25.svg -o /tmp/test_boss_25.png');
-console.log("✔ Test 25 passed: Digital glitch screen shake mode compiles cleanly!");
+console.log("✔ Test 25 passed: Per-stage defeated banner color override compiles cleanly!");
 
 // Test 26: Defeat Banners and Tags across all Aesthetics
 const bannerTests = [
@@ -409,7 +394,7 @@ bannerTests.forEach((bTest, idx) => {
 });
 console.log("✔ Test 26 passed: Defeat banners and contextual tags verified across all 6 aesthetics!");
 
-// Test 27: Shorthand 9-part and 10-part format
+// Test 27: Shorthand 9-part format
 const svg27 = generateBossBarSVG([
   {
     name: "MALENIA",
@@ -420,8 +405,7 @@ const svg27 = generateBossBarSVG([
     barColor: "gold",
     shake: "heavy",
     felledText: "DEMIGOD FELLED",
-    style: "souls",
-    animation: "sweep"
+    style: "souls"
   }
 ]);
 if (!svg27.includes("Cinzel") || !svg27.includes("DEMIGOD FELLED") || !svg27.includes("Golden Ember Particles")) {
@@ -429,19 +413,19 @@ if (!svg27.includes("Cinzel") || !svg27.includes("DEMIGOD FELLED") || !svg27.inc
 }
 fs.writeFileSync('/tmp/test_boss_27.svg', svg27);
 execSync('rsvg-convert /tmp/test_boss_27.svg -o /tmp/test_boss_27.png');
-console.log("✔ Test 27 passed: Extended boss configuration with style & animation compiles cleanly!");
+console.log("✔ Test 27 passed: Extended boss configuration with style compiles cleanly!");
 
-// Test 28: CLI Flags (--style, --anim, --shake glitch)
-execSync('node bin/cli.js --style cyberpunk --anim glitch --shake glitch -b "CYBER MECH:8:2:0.4:4" -o /tmp/test_cli_flags_28.svg');
+// Test 28: CLI Flags (--style, --shake, --felled-color, --dmg-pop-color)
+execSync('node bin/cli.js --style cyberpunk --shake heavy --felled-color 00ffff --dmg-pop-color ff0055 -b "CYBER MECH:8:2:0.4:4" -o /tmp/test_cli_flags_28.svg');
 if (!fs.existsSync('/tmp/test_cli_flags_28.svg')) {
-  throw new Error("Test 28 failed: CLI did not produce output SVG with --style and --anim flags!");
+  throw new Error("Test 28 failed: CLI did not produce output SVG with --style and color flags!");
 }
 const cliFlagSvg = fs.readFileSync('/tmp/test_cli_flags_28.svg', 'utf8');
-if (!cliFlagSvg.includes('CYBER MECH') || !cliFlagSvg.includes('Orbitron') || !cliFlagSvg.includes('skewX(-20)')) {
-  throw new Error("Test 28 failed: CLI generated SVG missing cyberpunk features");
+if (!cliFlagSvg.includes('CYBER MECH') || !cliFlagSvg.includes('Orbitron') || !cliFlagSvg.includes('#00ffff') || !cliFlagSvg.includes('#ff0055')) {
+  throw new Error("Test 28 failed: CLI generated SVG missing cyberpunk features or colors");
 }
 execSync('rsvg-convert /tmp/test_cli_flags_28.svg -o /tmp/test_cli_flags_28.png');
-console.log("✔ Test 28 passed: CLI flags (--style, --anim, --shake glitch) work cleanly!");
+console.log("✔ Test 28 passed: CLI flags (--style, --shake, --felled-color, --dmg-pop-color) work cleanly!");
 
 // Test 29: CLI Wizard execution of all new aesthetic presets (Cyberpunk, Bloodborne, Pixel, Minimal)
 const wizardPresets = [
@@ -466,20 +450,18 @@ wizardPresets.forEach((wp) => {
 });
 console.log("✔ Test 29 passed: CLI Wizard executes all dedicated aesthetic presets cleanly!");
 
-// Test 30: Full matrix stress test (6 Aesthetics x 4 Animations = 24 SVGs converted with rsvg-convert)
+// Test 30: Full matrix stress test (All 6 Aesthetics with custom banner and popup colors)
 let matrixCount = 0;
 aestheticsList.forEach(style => {
-  animList.forEach(anim => {
-    const matrixSvg = generateBossBarSVG([
-      { name: `MATRIX ${style.toUpperCase()}`, totalBars: 6, hits: 3, damagePerHit: 2 }
-    ], { style, animation: anim });
-    const p = `/tmp/test_matrix_${style}_${anim}.svg`;
-    fs.writeFileSync(p, matrixSvg);
-    execSync(`rsvg-convert ${p} -o /tmp/test_matrix_${style}_${anim}.png`);
-    matrixCount++;
-  });
+  const matrixSvg = generateBossBarSVG([
+    { name: `MATRIX ${style.toUpperCase()}`, totalBars: 6, hits: 3, damagePerHit: 2 }
+  ], { style, felledColor: 'f59e0b', dmgPopColor: '38bdf8' });
+  const p = `/tmp/test_matrix_${style}.svg`;
+  fs.writeFileSync(p, matrixSvg);
+  execSync(`rsvg-convert ${p} -o /tmp/test_matrix_${style}.png`);
+  matrixCount++;
 });
-console.log(`✔ Test 30 passed: Full matrix of ${matrixCount} style x animation combinations verified with 0 errors!`);
+console.log(`✔ Test 30 passed: Full matrix of ${matrixCount} aesthetics verified with 0 errors!`);
 
 // Test 31: Overlap prevention for high bar counts (25 and 40 bars in pixel, classic, and bloodborne styles)
 const highBarStyles = ['pixel', 'classic', 'bloodborne'];

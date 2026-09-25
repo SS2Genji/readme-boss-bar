@@ -545,6 +545,37 @@
       transform: scale(1.1);
     }
 
+    /* Color Picker Row */
+    .color-picker-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .color-swatch-input {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 0;
+    }
+    .color-swatch-input::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    .color-swatch-input::-webkit-color-swatch {
+      border: none;
+      border-radius: 3px;
+    }
+    .hex-input {
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
     /* Shake Buttons */
     .shake-buttons {
       display: grid;
@@ -748,9 +779,6 @@
             <button class="btn-preset" id="btn-p-demigod" onclick="loadPreset('demigod')">
               <span>🐉</span> 3-Phase
             </button>
-            <button class="btn-preset" id="btn-p-auto" onclick="loadPreset('auto')">
-              <span>⚙️</span> Auto
-            </button>
           </div>
         </section>
 
@@ -804,39 +832,30 @@
           </div>
         </section>
 
-        <!-- Global Canvas & Visual FX -->
+        <!-- Combat & Banner Customization -->
         <section class="section-card global-settings">
           <div class="section-title">
-            <span class="icon">⚙️</span> Combat & Canvas FX
+            <span class="icon">⚔️</span> Combat & Banner Colors
           </div>
           <div class="controls-grid">
             <div class="control-group">
-              <label class="control-label">Drain Animation</label>
-              <select id="glob-anim" class="control-select" onchange="selectAnimation(this.value)">
-                <option value="sweep" selected>Sequential Sweep (Smooth)</option>
-                <option value="pulse">Rhythmic Pulse (Flash)</option>
-                <option value="burst">Visceral Burst (Instant Shatter)</option>
-                <option value="glitch">Digital Glitch (Stutter)</option>
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label">Sparks & Particles</label>
-              <select id="glob-sparks" class="control-select" onchange="updateStudio()">
-                <option value="true" selected>Enabled (High Energy)</option>
-                <option value="false">Disabled (Minimalist)</option>
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label">Damage Pop-up</label>
+              <label class="control-label">Damage Pop-up Text</label>
               <input type="text" id="glob-dmgpop" class="control-input" value="-{N} BARS" oninput="updateStudio()" placeholder="-{N} BARS or false" />
             </div>
 
             <div class="control-group">
-              <label class="control-label">SVG Width <span class="val-tag" id="val-width">700px</span></label>
-              <div class="range-row">
-                <input type="range" id="glob-width" min="500" max="900" step="10" value="700" oninput="updateStudio()" />
+              <label class="control-label">Damage Pop-up Color</label>
+              <div class="color-picker-row">
+                <input type="color" id="glob-dmgpop-color-picker" class="color-swatch-input" value="#facc15" oninput="syncColorInput('glob-dmgpop-color', this.value)" />
+                <input type="text" id="glob-dmgpop-color" class="control-input hex-input" value="#facc15" maxlength="7" oninput="syncColorPicker('glob-dmgpop-color-picker', this.value)" placeholder="#facc15" />
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Defeated Banner Color</label>
+              <div class="color-picker-row">
+                <input type="color" id="glob-felled-color-picker" class="color-swatch-input" value="#f59e0b" oninput="syncColorInput('glob-felled-color', this.value)" />
+                <input type="text" id="glob-felled-color" class="control-input hex-input" value="" maxlength="7" oninput="syncColorPicker('glob-felled-color-picker', this.value)" placeholder="Default theme" />
               </div>
             </div>
           </div>
@@ -885,7 +904,6 @@
     const PRESETS = {
       single: {
         aesthetic: 'souls',
-        animation: 'pulse',
         stages: [
           {
             name: "STARCOURGE RADAHN",
@@ -896,14 +914,12 @@
             barColor: "purple",
             shake: "heavy",
             felledText: "DEMIGOD FELLED",
-            style: "souls",
-            animation: "pulse"
+            style: "souls"
           }
         ]
       },
       cyberpunk: {
         aesthetic: 'cyberpunk',
-        animation: 'glitch',
         stages: [
           {
             name: "TITAN MECH // 01",
@@ -912,16 +928,14 @@
             hitInterval: 0.4,
             hits: 4,
             barColor: "cyan",
-            shake: "glitch",
+            shake: "heavy",
             felledText: "// TARGET DESTROYED //",
-            style: "cyberpunk",
-            animation: "glitch"
+            style: "cyberpunk"
           }
         ]
       },
       bloodborne: {
         aesthetic: 'bloodborne',
-        animation: 'burst',
         stages: [
           {
             name: "CLERIC BEAST",
@@ -932,14 +946,12 @@
             barColor: "crimson",
             shake: "heavy",
             felledText: "PREY SLAUGHTERED",
-            style: "bloodborne",
-            animation: "burst"
+            style: "bloodborne"
           }
         ]
       },
       pixel: {
         aesthetic: 'pixel',
-        animation: 'burst',
         stages: [
           {
             name: "CASTLE OVERLORD",
@@ -950,14 +962,12 @@
             barColor: "gold",
             shake: "medium",
             felledText: "STAGE CLEAR",
-            style: "pixel",
-            animation: "burst"
+            style: "pixel"
           }
         ]
       },
       minimal: {
         aesthetic: 'minimal',
-        animation: 'sweep',
         stages: [
           {
             name: "SYSTEM INTEGRITY",
@@ -968,14 +978,12 @@
             barColor: "green",
             shake: "subtle",
             felledText: "STATUS: DEFEATED",
-            style: "minimal",
-            animation: "sweep"
+            style: "minimal"
           }
         ]
       },
       school42: {
         aesthetic: 'classic',
-        animation: 'sweep',
         stages: [
           {
             name: "CIRCLE 00 (LIBFT)",
@@ -986,8 +994,7 @@
             barColor: "crimson",
             shake: "medium",
             felledText: "LIBFT COMPLETED",
-            style: "classic",
-            animation: "sweep"
+            style: "classic"
           },
           {
             name: "CIRCLE 01 (FT_PRINTF)",
@@ -998,8 +1005,7 @@
             barColor: "cyan",
             shake: "medium",
             felledText: "PRINTF COMPLETED",
-            style: "classic",
-            animation: "sweep"
+            style: "classic"
           },
           {
             name: "CIRCLE 02 (PUSH_SWAP)",
@@ -1010,14 +1016,12 @@
             barColor: "gold",
             shake: "heavy",
             felledText: "PUSH_SWAP FELLED",
-            style: "classic",
-            animation: "sweep"
+            style: "classic"
           }
         ]
       },
       eldenRing: {
         aesthetic: 'souls',
-        animation: 'sweep',
         stages: [
           {
             name: "MARGIT, THE FELL OMEN",
@@ -1028,8 +1032,7 @@
             barColor: "crimson",
             shake: "heavy",
             felledText: "GREAT ENEMY FELLED",
-            style: "souls",
-            animation: "sweep"
+            style: "souls"
           },
           {
             name: "STARCOURGE RADAHN",
@@ -1040,8 +1043,7 @@
             barColor: "purple",
             shake: "heavy",
             felledText: "DEMIGOD FELLED",
-            style: "souls",
-            animation: "pulse"
+            style: "souls"
           },
           {
             name: "MALENIA, BLADE OF MIQUELLA",
@@ -1052,14 +1054,12 @@
             barColor: "gold",
             shake: "heavy",
             felledText: "DEMIGOD FELLED",
-            style: "souls",
-            animation: "sweep"
+            style: "souls"
           }
         ]
       },
       demigod: {
         aesthetic: 'souls',
-        animation: 'burst',
         stages: [
           {
             name: "LUDWIG THE ACCURSED",
@@ -1070,8 +1070,7 @@
             barColor: "green",
             shake: "subtle",
             felledText: "PHASE 1 COMPLETE",
-            style: "bloodborne",
-            animation: "burst"
+            style: "bloodborne"
           },
           {
             name: "LUDWIG, HOLY BLADE",
@@ -1082,8 +1081,7 @@
             barColor: "cyan",
             shake: "heavy",
             felledText: "PHASE 2 COMPLETE",
-            style: "souls",
-            animation: "sweep"
+            style: "souls"
           },
           {
             name: "ORPHAN OF KOS",
@@ -1094,16 +1092,9 @@
             barColor: "crimson",
             shake: "heavy",
             felledText: "NIGHTMARE SLAIN",
-            style: "bloodborne",
-            animation: "burst"
+            style: "bloodborne"
           }
         ]
-      },
-      auto: {
-        isAuto: true,
-        aesthetic: 'classic',
-        animation: 'sweep',
-        stages: []
       }
     };
 
@@ -1200,26 +1191,26 @@
       document.querySelectorAll('.btn-aesthetic').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.style === styleName);
       });
-      const defAnim = (window.AESTHETICS && window.AESTHETICS[styleName])
-        ? window.AESTHETICS[styleName].defaultAnim
-        : 'sweep';
-      currentAnimation = defAnim;
-      const animSelect = document.getElementById('glob-anim');
-      if (animSelect) animSelect.value = defAnim;
       stages.forEach(st => {
         st.style = styleName;
-        st.animation = defAnim;
       });
       renderStages();
       updateStudio();
     }
 
-    function selectAnimation(animName) {
-      currentAnimation = animName;
-      document.getElementById('glob-anim').value = animName;
-      stages.forEach(st => {
-        st.animation = animName;
-      });
+    function syncColorInput(inputId, val) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.value = val.toUpperCase();
+        updateStudio();
+      }
+    }
+
+    function syncColorPicker(pickerId, val) {
+      const picker = document.getElementById(pickerId);
+      if (picker && /^#[0-9A-Fa-f]{6}$/.test(val)) {
+        picker.value = val;
+      }
       updateStudio();
     }
 
@@ -1236,24 +1227,9 @@
           btn.classList.toggle('active', btn.dataset.style === currentAesthetic);
         });
       }
-      if (presetData && presetData.animation) {
-        currentAnimation = presetData.animation;
-        document.getElementById('glob-anim').value = currentAnimation;
-      }
 
-      if (presetKey === 'auto') {
-        isAutoMode = true;
-        document.getElementById('stages-container').style.opacity = '0.4';
-        document.getElementById('stages-container').style.pointerEvents = 'none';
-        document.getElementById('btn-add-stage').style.display = 'none';
-      } else {
-        isAutoMode = false;
-        document.getElementById('stages-container').style.opacity = '1';
-        document.getElementById('stages-container').style.pointerEvents = 'auto';
-        document.getElementById('btn-add-stage').style.display = 'flex';
-        stages = JSON.parse(JSON.stringify(PRESETS[presetKey].stages));
-        renderStages();
-      }
+      stages = JSON.parse(JSON.stringify(PRESETS[presetKey].stages));
+      renderStages();
       updateStudio();
     }
 
@@ -1276,8 +1252,7 @@
         barColor: chosenTheme,
         shake: 'medium',
         felledText: 'GREAT ENEMY FELLED',
-        style: currentAesthetic,
-        animation: currentAnimation
+        style: currentAesthetic
       });
       renderStages();
       updateStudio();
@@ -1338,16 +1313,6 @@
                 <option value="pixel" ${st.style === 'pixel' ? 'selected' : ''}>Pixel (8-Bit NES Arcade)</option>
                 <option value="bloodborne" ${st.style === 'bloodborne' ? 'selected' : ''}>Bloodborne (Eldritch Horror)</option>
                 <option value="minimal" ${st.style === 'minimal' ? 'selected' : ''}>Minimal (Modern Dashboard)</option>
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label">Drain Animation</label>
-              <select class="control-select" onchange="updateStageProp(${idx}, 'animation', this.value)">
-                <option value="sweep" ${st.animation === 'sweep' ? 'selected' : ''}>Sequential Sweep (Smooth)</option>
-                <option value="pulse" ${st.animation === 'pulse' ? 'selected' : ''}>Rhythmic Pulse (Flash)</option>
-                <option value="burst" ${st.animation === 'burst' ? 'selected' : ''}>Visceral Burst (Instant Shatter)</option>
-                <option value="glitch" ${st.animation === 'glitch' ? 'selected' : ''}>Digital Glitch (Stutter)</option>
               </select>
             </div>
 
@@ -1413,7 +1378,7 @@
             <div class="control-group">
               <label class="control-label">Screen Shake</label>
               <div class="shake-buttons">
-                ${['none', 'subtle', 'medium', 'heavy', 'glitch'].map(s => `
+                ${['none', 'subtle', 'medium', 'heavy'].map(s => `
                   <button class="btn-shake ${st.shake === s ? 'active' : ''}" 
                     onclick="selectStageShake(${idx}, '${s}')">${capitalize(s)}</button>
                 `).join('')}
@@ -1493,116 +1458,100 @@
     }
 
     function updateStudio() {
-      const sparks = document.getElementById('glob-sparks').value === 'true';
       const dmgPopVal = document.getElementById('glob-dmgpop').value.trim();
       const dmgPop = (dmgPopVal === 'false' || dmgPopVal === '0') ? false : (dmgPopVal || undefined);
-      const widthVal = parseInt(document.getElementById('glob-width').value, 10) || 700;
-      document.getElementById('val-width').innerText = widthVal + 'px';
+      const dmgPopColor = document.getElementById('glob-dmgpop-color').value.trim();
+      const felledColor = document.getElementById('glob-felled-color').value.trim();
 
       const options = {
-        width: widthVal,
+        width: 700,
         height: 95,
         barWidth: 480,
-        sparks: sparks,
         dmgPop: dmgPop,
+        dmgPopColor: dmgPopColor || undefined,
+        felledColor: felledColor || undefined,
         style: currentAesthetic,
-        animation: currentAnimation,
         id: 'studio'
       };
 
-      let svg = '';
+      const configuredStages = stages.map(s => ({
+        ...s,
+        dmgPop: dmgPop,
+        dmgPopColor: dmgPopColor || undefined,
+        felledColor: felledColor || undefined,
+        style: s.style || currentAesthetic
+      }));
+
+      const svg = generateBossBarSVG(configuredStages, options);
+
+      let totalBarsCount = 0;
+      let totalHitsCount = 0;
+      stages.forEach(s => {
+        totalBarsCount += s.totalBars;
+        const hits = s.hits || Math.ceil(s.totalBars / s.damagePerHit);
+        totalHitsCount += hits;
+      });
+      document.getElementById('stat-aesthetic').innerText = currentAesthetic;
+      document.getElementById('stat-stages').innerText = stages.length;
+      document.getElementById('stat-bars').innerText = totalBarsCount;
+      document.getElementById('stat-hits').innerText = totalHitsCount;
+      document.getElementById('stat-duration').innerText = (totalHitsCount * 0.5 + 2.5).toFixed(1) + 's';
+
       let mdUrl = '';
       let cliCmd = '';
       const baseUrl = (window.location.protocol.startsWith('http') && window.location.host && !window.location.host.includes('localhost') && !window.location.host.includes('127.0.0.1'))
         ? window.location.origin
         : 'https://readme-boss-barr.vercel.app';
 
-      if (isAutoMode) {
-        options.auto = true;
-        svg = generateBossBarSVG([], options);
-        mdUrl = `${baseUrl}/api?auto=true`;
-        if (currentAesthetic !== 'classic') mdUrl += `&style=${currentAesthetic}`;
-        cliCmd = 'npx readme-boss-bar --auto';
-        if (currentAesthetic !== 'classic') cliCmd += ` --style ${currentAesthetic}`;
-        cliCmd += ' -o boss_bar.svg';
+      const colorQuery = [];
+      let colorCli = '';
+      if (dmgPopColor && dmgPopColor.toUpperCase() !== '#FACC15') {
+        colorQuery.push(`dmgPopColor=${encodeURIComponent(dmgPopColor.replace(/^#/, ''))}`);
+        colorCli += ` --dmg-pop-color "${dmgPopColor}"`;
+      }
+      if (felledColor) {
+        colorQuery.push(`felledColor=${encodeURIComponent(felledColor.replace(/^#/, ''))}`);
+        colorCli += ` --felled-color "${felledColor}"`;
+      }
 
-        document.getElementById('stat-aesthetic').innerText = currentAesthetic;
-        document.getElementById('stat-stages').innerText = '2 (Auto)';
-        document.getElementById('stat-bars').innerText = '14';
-        document.getElementById('stat-hits').innerText = '5';
-        document.getElementById('stat-duration').innerText = '9.8s';
+      if (stages.length === 1) {
+        const st = stages[0];
+        const encName = encodeURIComponent(st.name);
+        const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
+        mdUrl = `${baseUrl}/api?name=${encName}&bars=${st.totalBars}&dmg=${st.damagePerHit}&interval=${st.hitInterval}&theme=${safeTheme}&shake=${st.shake}`;
+        if (st.style || currentAesthetic !== 'classic') {
+          mdUrl += `&style=${encodeURIComponent(st.style || currentAesthetic)}`;
+        }
+        const totalHitsToDefeat = Math.ceil(st.totalBars / st.damagePerHit);
+        if (st.hits !== undefined && st.hits !== totalHitsToDefeat) {
+          mdUrl += `&hits=${st.hits}`;
+        }
+        if (st.felledText && st.felledText !== 'GREAT ENEMY FELLED') {
+          mdUrl += `&felled=${encodeURIComponent(st.felledText)}`;
+        }
+        if (dmgPop !== '-{N} BARS') mdUrl += `&dmgPop=${encodeURIComponent(dmgPop || 'false')}`;
+        if (colorQuery.length > 0) mdUrl += `&${colorQuery.join('&')}`;
+
+        const safeNameCli = st.name.replace(/"/g, '\\"');
+        const safeFelledCli = (st.felledText || 'GREAT ENEMY FELLED').replace(/"/g, '\\"');
+        cliCmd = `npx readme-boss-bar -b "${safeNameCli}:${st.totalBars}:${st.hits !== undefined ? st.hits : totalHitsToDefeat}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}:${st.style || currentAesthetic}"${colorCli} -o boss_bar.svg`;
       } else {
-        const configuredStages = stages.map(s => ({
-          ...s,
-          sparks: sparks,
-          dmgPop: dmgPop,
-          style: s.style || currentAesthetic,
-          animation: s.animation || currentAnimation
-        }));
-
-        svg = generateBossBarSVG(configuredStages, options);
-
-        let totalBarsCount = 0;
-        let totalHitsCount = 0;
-        stages.forEach(s => {
-          totalBarsCount += s.totalBars;
-          const hits = s.hits || Math.ceil(s.totalBars / s.damagePerHit);
-          totalHitsCount += hits;
-        });
-        document.getElementById('stat-aesthetic').innerText = currentAesthetic;
-        document.getElementById('stat-stages').innerText = stages.length;
-        document.getElementById('stat-bars').innerText = totalBarsCount;
-        document.getElementById('stat-hits').innerText = totalHitsCount;
-        document.getElementById('stat-duration').innerText = (totalHitsCount * 0.5 + 2.5).toFixed(1) + 's';
-
-        // Build URLs
-        if (stages.length === 1) {
-          const st = stages[0];
-          const encName = encodeURIComponent(st.name);
+        const queryParts = stages.map((st, i) => {
+          const hits = st.hits !== undefined ? st.hits : Math.ceil(st.totalBars / st.damagePerHit);
           const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
-          mdUrl = `${baseUrl}/api?name=${encName}&bars=${st.totalBars}&dmg=${st.damagePerHit}&interval=${st.hitInterval}&theme=${safeTheme}&shake=${st.shake}`;
-          if (st.style || currentAesthetic !== 'classic') {
-            mdUrl += `&style=${encodeURIComponent(st.style || currentAesthetic)}`;
-          }
-          if (currentAnimation !== 'sweep') {
-            mdUrl += `&anim=${encodeURIComponent(currentAnimation)}`;
-          }
-          const totalHitsToDefeat = Math.ceil(st.totalBars / st.damagePerHit);
-          if (st.hits !== undefined && st.hits !== totalHitsToDefeat) {
-            mdUrl += `&hits=${st.hits}`;
-          }
-          if (st.felledText && st.felledText !== 'GREAT ENEMY FELLED') {
-            mdUrl += `&felled=${encodeURIComponent(st.felledText)}`;
-          }
-          if (!sparks) mdUrl += `&sparks=false`;
-          if (dmgPop !== '-{N} BARS') mdUrl += `&dmgPop=${encodeURIComponent(dmgPop || 'false')}`;
+          return `b${i + 1}=${encodeURIComponent(st.name)}:${st.totalBars}:${hits}:${st.hitInterval}:${st.damagePerHit}:${safeTheme}:${st.shake}:${encodeURIComponent(st.felledText || 'GREAT ENEMY FELLED')}:${st.style || currentAesthetic}`;
+        }).join('&');
+        mdUrl = `${baseUrl}/api?${queryParts}`;
+        if (currentAesthetic !== 'classic') mdUrl += `&style=${currentAesthetic}`;
+        if (colorQuery.length > 0) mdUrl += `&${colorQuery.join('&')}`;
 
+        const bArgs = stages.map(st => {
+          const hits = st.hits !== undefined ? st.hits : Math.ceil(st.totalBars / st.damagePerHit);
           const safeNameCli = st.name.replace(/"/g, '\\"');
           const safeFelledCli = (st.felledText || 'GREAT ENEMY FELLED').replace(/"/g, '\\"');
-          cliCmd = `npx readme-boss-bar -b "${safeNameCli}:${st.totalBars}:${st.hits !== undefined ? st.hits : totalHitsToDefeat}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}:${st.style || currentAesthetic}:${currentAnimation}"`;
-          if (!sparks) cliCmd += ` --no-sparks`;
-          cliCmd += ` -o boss_bar.svg`;
-        } else {
-          const queryParts = stages.map((st, i) => {
-            const hits = st.hits !== undefined ? st.hits : Math.ceil(st.totalBars / st.damagePerHit);
-            const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
-            return `b${i + 1}=${encodeURIComponent(st.name)}:${st.totalBars}:${hits}:${st.hitInterval}:${st.damagePerHit}:${safeTheme}:${st.shake}:${encodeURIComponent(st.felledText || 'GREAT ENEMY FELLED')}:${st.style || currentAesthetic}:${st.animation || currentAnimation}`;
-          }).join('&');
-          mdUrl = `${baseUrl}/api?${queryParts}`;
-          if (currentAesthetic !== 'classic') mdUrl += `&style=${currentAesthetic}`;
-          if (currentAnimation !== 'sweep') mdUrl += `&anim=${currentAnimation}`;
-          if (!sparks) mdUrl += `&sparks=false`;
-
-          const bArgs = stages.map(st => {
-            const hits = st.hits !== undefined ? st.hits : Math.ceil(st.totalBars / st.damagePerHit);
-            const safeNameCli = st.name.replace(/"/g, '\\"');
-            const safeFelledCli = (st.felledText || 'GREAT ENEMY FELLED').replace(/"/g, '\\"');
-            return `-b "${safeNameCli}:${st.totalBars}:${hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}:${st.style || currentAesthetic}:${st.animation || currentAnimation}"`;
-          }).join(' ');
-          cliCmd = `npx readme-boss-bar ${bArgs}`;
-          if (!sparks) cliCmd += ` --no-sparks`;
-          cliCmd += ` -o boss_bar.svg`;
-        }
+          return `-b "${safeNameCli}:${st.totalBars}:${hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}:${st.style || currentAesthetic}"`;
+        }).join(' ');
+        cliCmd = `npx readme-boss-bar ${bArgs}${colorCli} -o boss_bar.svg`;
       }
 
       currentSvg = svg;

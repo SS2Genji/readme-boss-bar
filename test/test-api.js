@@ -306,82 +306,86 @@ aliasChecks.forEach(ac => {
   );
 });
 
-// 20. Animation query parameters (?anim=glitch, ?animation=burst, ?anim=pulse)
+// 20. Defeated banner color query parameters (?felledColor=10b981 and ?bannerColor=10b981)
 runApiTest(
   {
     boss: "TEST:6:2:0.5:3",
-    anim: "glitch"
+    felledColor: "10b981"
   },
   (svg) => {
-    assert(svg.includes("drain_0_") && svg.includes("fill: #ef4444"), "Glitch animation must generate staircase step keyframes with pulse fill");
+    assert(svg.includes("fill: #10b981"), "felledColor must apply to defeated banner fill");
+    assert(svg.includes("drop-shadow(0 0 6px #10b981)"), "felledColor must apply to banner glow drop-shadow");
   },
-  "Animation parameter (?anim=glitch)"
+  "Defeated banner color parameter (?felledColor=10b981)"
 );
 
 runApiTest(
   {
     boss: "TEST:6:2:0.5:3",
-    animation: "burst"
+    bannerColor: "#ec4899"
   },
   (svg) => {
-    assert(svg.includes("drain_0_") && svg.includes("fill: #fef08a"), "Burst animation must generate instantaneous drop keyframe with flash hold");
+    assert(svg.includes("fill: #ec4899"), "bannerColor alias must apply to defeated banner fill");
   },
-  "Animation parameter (?animation=burst)"
+  "Defeated banner color alias (?bannerColor=#ec4899)"
+);
+
+// 21. Damage pop-up color query parameters (?dmgPopColor=38bdf8 and ?popupColor=38bdf8)
+runApiTest(
+  {
+    boss: "TEST:6:2:0.5:3",
+    dmgPopColor: "38bdf8"
+  },
+  (svg) => {
+    assert(svg.includes("fill: #38bdf8"), "dmgPopColor must apply to damage popup fill");
+  },
+  "Damage pop-up color parameter (?dmgPopColor=38bdf8)"
 );
 
 runApiTest(
   {
     boss: "TEST:6:2:0.5:3",
-    anim: "pulse"
+    popupColor: "#f43f5e"
   },
   (svg) => {
-    assert(svg.includes("drain_0_") && svg.includes("fill: #ef4444"), "Pulse animation must generate contracted pulse wave keyframe");
+    assert(svg.includes("fill: #f43f5e"), "popupColor alias must apply to damage popup fill");
   },
-  "Animation parameter (?anim=pulse)"
+  "Damage pop-up color alias (?popupColor=#f43f5e)"
 );
 
-// 21. Glitch screen shake parameter (?shake=glitch)
+// 22. 9-part shorthand query
 runApiTest(
   {
-    boss: "TEST:6:2:0.5:3",
-    shake: "glitch"
-  },
-  (svg) => {
-    assert(svg.includes("translate(-5px, 0)"));
-  },
-  "Screen shake parameter (?shake=glitch)"
-);
-
-// 22. 10-part shorthand query
-runApiTest(
-  {
-    boss: "TITAN MECH:10:4:0.4:3:cyan:glitch:// TARGET DESTROYED //:cyberpunk:glitch"
+    boss: "TITAN MECH:10:4:0.4:3:cyan:heavy:// TARGET DESTROYED //:cyberpunk"
   },
   (svg) => {
     assert(svg.includes("TITAN MECH"));
     assert(svg.includes("Orbitron"));
     assert(svg.includes("// TARGET DESTROYED //"));
-    assert(svg.includes("translate(-5px, 0)"));
+    assert(svg.includes("-4px, 3px")); // heavy shake
   },
-  "10-part shorthand (TITAN MECH:10:4:0.4:3:cyan:glitch:// TARGET DESTROYED //:cyberpunk:glitch)"
+  "9-part shorthand (TITAN MECH:10:4:0.4:3:cyan:heavy:// TARGET DESTROYED //:cyberpunk)"
 );
 
-// 23. Single boss query with style and anim
+// 23. Single boss query with style, felledColor, and dmgPopColor
 runApiTest(
   {
     name: "LUDWIG",
     bars: "8",
     dmg: "2",
     style: "bloodborne",
-    anim: "burst"
+    felledColor: "dc2626",
+    dmgPopColor: "facc15"
   },
   (svg) => {
     assert(svg.includes("LUDWIG"));
     assert(svg.includes("IM Fell English"));
     assert(svg.includes("Hunter's Mark Rune"));
     assert(svg.includes("PREY SLAUGHTERED"));
+    assert(svg.includes("fill: #dc2626"));
+    assert(svg.includes("fill: #facc15"));
   },
-  "Single boss query with style & anim (?name=LUDWIG&bars=8&style=bloodborne&anim=burst)"
+  "Single boss query with style & colors (?name=LUDWIG&bars=8&style=bloodborne&felledColor=dc2626&dmgPopColor=facc15)"
 );
 
 console.log("\nALL 24 API TESTS PASSED SUCCESSFULLY!");
