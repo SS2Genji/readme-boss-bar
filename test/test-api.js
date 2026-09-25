@@ -21,6 +21,7 @@ function runApiTest(query, validator, desc) {
 
   assert.strictEqual(statusCode, 200, `Expected 200 for ${desc}`);
   assert(headers['Content-Type'].includes('image/svg+xml'), `Expected SVG Content-Type for ${desc}`);
+  assert.strictEqual(headers['Access-Control-Allow-Origin'], '*', `Expected CORS header for ${desc}`);
   assert(bodyContent.includes('<svg'), `Body must contain <svg for ${desc}`);
   validator(bodyContent);
   console.log(`✔ API test passed: ${desc}`);
@@ -180,7 +181,33 @@ runApiTest(
   "Scoped ID parameter (?id=api_scope)"
 );
 
-console.log("\nALL 11 API TESTS PASSED SUCCESSFULLY!");
+// 12. Escaped colon in boss spec (?boss=RADAHN\: GENERAL:8:4:0.5:2)
+runApiTest(
+  {
+    boss: "RADAHN\\: GENERAL:8:4:0.5:2"
+  },
+  (svg) => {
+    assert(svg.includes("RADAHN: GENERAL"), "Must preserve escaped colon in boss title");
+  },
+  "Escaped colon in shorthand (?boss=RADAHN\\: GENERAL:8:4:0.5:2)"
+);
+
+// 13. Single boss query with explicit hits parameter (?name=RADAHN&bars=10&dmg=3&hits=2)
+runApiTest(
+  {
+    name: "RADAHN",
+    bars: "10",
+    dmg: "3",
+    hits: "2"
+  },
+  (svg) => {
+    const hitsCount = (svg.match(/-3 BARS/g) || []).length;
+    assert.strictEqual(hitsCount, 2, "Must execute exactly 2 hits as requested");
+  },
+  "Single boss with explicit hits count (?name=RADAHN&bars=10&dmg=3&hits=2)"
+);
+
+console.log("\nALL 13 API TESTS PASSED SUCCESSFULLY!");
 
 
 

@@ -272,8 +272,8 @@ if (!fs.existsSync('/tmp/cli_wizard_test22.svg')) {
   throw new Error("Test 22 failed: CLI wizard did not generate output file!");
 }
 const wizSvg = fs.readFileSync('/tmp/cli_wizard_test22.svg', 'utf8');
-if (!wizSvg.includes('STARCOURGE RADAHN') || !wizSvg.includes('-3 BARS')) {
-  throw new Error("Test 22 failed: Wizard output missing expected preset content!");
+if (!wizSvg.includes('STARCOURGE RADAHN') || !wizSvg.includes('-3 BARS') || !wizSvg.includes('DEMIGOD FELLED')) {
+  throw new Error("Test 22 failed: Wizard output missing expected preset content or victory banner!");
 }
 execSync('rsvg-convert /tmp/cli_wizard_test22.svg -o /tmp/cli_wizard_test22.png');
 
@@ -290,7 +290,21 @@ if (!customSvg.includes('STAGE ONE') || !customSvg.includes('STAGE TWO') || !cus
   throw new Error("Test 22 failed: Wizard custom output missing stage content!");
 }
 execSync('rsvg-convert /tmp/cli_wizard_custom22.svg -o /tmp/cli_wizard_custom22.png');
-console.log("✔ Test 22 passed: Interactive CLI Wizard executed both preset & custom flows cleanly!");
+
+// Test 22c: Wizard custom flow with 0 hits and custom hex theme
+execSync('node bin/cli.js wizard', {
+  input: '5\n1\nUNDAMAGED FOE\n8\n2\n0.5\n0\n#a855f7\nmedium\nVICTORY\n/tmp/cli_wizard_zero_hits.svg\n',
+  stdio: ['pipe', 'pipe', 'pipe']
+});
+if (!fs.existsSync('/tmp/cli_wizard_zero_hits.svg')) {
+  throw new Error("Test 22c failed: Wizard zero-hits flow did not generate output file!");
+}
+const zeroSvg = fs.readFileSync('/tmp/cli_wizard_zero_hits.svg', 'utf8');
+if (!zeroSvg.includes('UNDAMAGED FOE') || !zeroSvg.includes('#a855f7') || zeroSvg.includes('-2 BARS')) {
+  throw new Error("Test 22c failed: Zero-hits bar should not have damage popups!");
+}
+execSync('rsvg-convert /tmp/cli_wizard_zero_hits.svg -o /tmp/cli_wizard_zero_hits.png');
+console.log("✔ Test 22 passed: Interactive CLI Wizard executed preset, multi-stage, and 0-hit flows cleanly!");
 
 console.log("\nALL 22 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
 

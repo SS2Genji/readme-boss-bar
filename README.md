@@ -36,27 +36,27 @@ A dynamic, zero-dependency SVG generator that brings authentic 16-bit retro RPG 
 
 Just copy **one line** below and replace `YOUR+NAME` with your project, milestone, or boss name:
 
-#### 🩸 Classic Souls Crimson (Red)
+#### Classic Souls Crimson (Red)
 ```markdown
 ![Boss Bar](https://readme-boss-bar.vercel.app/api?name=YOUR+NAME&bars=10&dmg=2&theme=crimson)
 ```
 
-#### 🔮 Void Gravity (Purple)
+#### Void Gravity (Purple)
 ```markdown
 ![Boss Bar](https://readme-boss-bar.vercel.app/api?name=YOUR+NAME&bars=8&dmg=2&theme=purple&shake=heavy)
 ```
 
-#### ⚡ Glintstone Sorcery (Cyan)
+#### Glintstone Sorcery (Cyan)
 ```markdown
 ![Boss Bar](https://readme-boss-bar.vercel.app/api?name=YOUR+NAME&bars=6&dmg=3&theme=cyan&shake=medium)
 ```
 
-#### 👑 Golden Erdtree (Gold)
+#### Golden Erdtree (Gold)
 ```markdown
 ![Boss Bar](https://readme-boss-bar.vercel.app/api?name=YOUR+NAME&bars=10&dmg=3&theme=gold&felled=DEMIGOD+FELLED)
 ```
 
-#### 🤖 Zero-Config Cinematic Auto Mode
+#### Zero-Config Cinematic Auto Mode
 ```markdown
 ![Boss Bar](https://readme-boss-bar.vercel.app/api?auto=true)
 ```

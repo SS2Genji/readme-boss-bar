@@ -704,7 +704,7 @@
             totalBars: 10,
             damagePerHit: 3,
             hitInterval: 0.5,
-            hits: 2,
+            hits: 4,
             barColor: "purple",
             shake: "heavy",
             felledText: "DEMIGOD FELLED"
@@ -762,7 +762,7 @@
             totalBars: 10,
             damagePerHit: 3,
             hitInterval: 0.5,
-            hits: 2,
+            hits: 4,
             barColor: "purple",
             shake: "heavy",
             felledText: "DEMIGOD FELLED"
@@ -851,11 +851,19 @@
     function fallbackCopy(text, successMsg) {
       const el = document.createElement('textarea');
       el.value = text;
+      el.setAttribute('readonly', '');
+      el.style.position = 'fixed';
+      el.style.left = '-9999px';
+      el.style.top = '-9999px';
       document.body.appendChild(el);
       el.select();
-      document.execCommand('copy');
+      try {
+        document.execCommand('copy');
+        showToast(successMsg);
+      } catch (err) {
+        showToast('❌ Copy failed');
+      }
       document.body.removeChild(el);
-      showToast(successMsg);
     }
 
     function copyMarkdown() {
@@ -876,7 +884,7 @@
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
       showToast("✔ Downloaded boss_bar.svg");
     }
 
@@ -910,7 +918,13 @@
       updateStudio();
     }
 
+    function clearActivePreset() {
+      activePreset = null;
+      document.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+    }
+
     function addStage() {
+      clearActivePreset();
       const idx = stages.length;
       const themeKeys = Object.keys(THEME_COLORS);
       const chosenTheme = themeKeys[idx % themeKeys.length];
@@ -930,6 +944,7 @@
 
     function removeStage(index) {
       if (stages.length <= 1) return;
+      clearActivePreset();
       stages.splice(index, 1);
       renderStages();
       updateStudio();
@@ -938,6 +953,7 @@
     function updateStageProp(index, prop, value) {
       if (!stages[index]) return;
       stages[index][prop] = value;
+      clearActivePreset();
       updateStudio();
     }
 
@@ -958,7 +974,7 @@
           <div class="stage-card-header">
             <div class="stage-card-title">
               <span class="badge badge-gold">Phase ${idx + 1}</span>
-              <span>${escapeHtml(st.name)}</span>
+              <span id="stage-title-${idx}">${escapeHtml(st.name)}</span>
             </div>
             <button class="btn-remove-stage" ${isOnly ? 'disabled' : ''} onclick="removeStage(${idx})">
               🗑️ Remove Phase
@@ -969,7 +985,7 @@
             <div class="control-group">
               <label class="control-label">Boss / Milestone Name</label>
               <input type="text" class="control-input" value="${escapeHtml(st.name)}" 
-                oninput="updateStageProp(${idx}, 'name', this.value.trim() || 'BOSS')" />
+                oninput="const val = this.value || 'BOSS'; document.getElementById('stage-title-${idx}').innerText = val; updateStageProp(${idx}, 'name', val)" />
             </div>
 
             <div class="control-group">
@@ -1027,7 +1043,7 @@
                 `).join('')}
                 <input type="text" class="control-input" style="width: 85px; padding: 4px 8px; font-size: 11px;" 
                   placeholder="#hex" value="${st.barColor.startsWith('#') ? st.barColor : ''}"
-                  oninput="selectStageTheme(${idx}, this.value)" />
+                  oninput="onHexInput(${idx}, this.value)" />
               </div>
             </div>
 
@@ -1055,14 +1071,45 @@
     function selectStageTheme(index, color) {
       if (!stages[index]) return;
       stages[index].barColor = color;
-      renderStages();
+      clearActivePreset();
+      const swatches = document.querySelectorAll(`#swatches-${index} .swatch`);
+      swatches.forEach(sw => {
+        if (sw.getAttribute('title') === color) {
+          sw.classList.add('selected');
+        } else {
+          sw.classList.remove('selected');
+        }
+      });
+      const hexInput = document.querySelector(`#swatches-${index} input`);
+      if (hexInput && !color.startsWith('#')) {
+        hexInput.value = '';
+      }
+      updateStudio();
+    }
+
+    function onHexInput(index, val) {
+      if (!stages[index]) return;
+      stages[index].barColor = val;
+      clearActivePreset();
+      const swatches = document.querySelectorAll(`#swatches-${index} .swatch`);
+      swatches.forEach(sw => sw.classList.remove('selected'));
       updateStudio();
     }
 
     function selectStageShake(index, shake) {
       if (!stages[index]) return;
       stages[index].shake = shake;
-      renderStages();
+      clearActivePreset();
+      const card = document.getElementById(`stage-card-${index}`);
+      if (card) {
+        card.querySelectorAll('.btn-shake').forEach(btn => {
+          if (btn.innerText.toLowerCase() === shake.toLowerCase()) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
       updateStudio();
     }
 
@@ -1137,8 +1184,10 @@
         if (stages.length === 1) {
           const st = stages[0];
           const encName = encodeURIComponent(st.name);
-          mdUrl = `https://readme-boss-bar.vercel.app/api?name=${encName}&bars=${st.totalBars}&dmg=${st.damagePerHit}&interval=${st.hitInterval}&theme=${st.barColor}&shake=${st.shake}`;
-          if (st.hits !== undefined && st.hits !== Math.ceil(st.totalBars / st.damagePerHit)) {
+          const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
+          mdUrl = `https://readme-boss-bar.vercel.app/api?name=${encName}&bars=${st.totalBars}&dmg=${st.damagePerHit}&interval=${st.hitInterval}&theme=${safeTheme}&shake=${st.shake}`;
+          const totalHitsToDefeat = Math.ceil(st.totalBars / st.damagePerHit);
+          if (st.hits !== undefined && st.hits !== totalHitsToDefeat) {
             mdUrl += `&hits=${st.hits}`;
           }
           if (st.felledText && st.felledText !== 'GREAT ENEMY FELLED') {
@@ -1147,20 +1196,25 @@
           if (!sparks) mdUrl += `&sparks=false`;
           if (dmgPop !== '-{N} BARS') mdUrl += `&dmgPop=${encodeURIComponent(dmgPop || 'false')}`;
 
-          cliCmd = `npx readme-boss-bar -b "${st.name}:${st.totalBars}:${st.hits || Math.ceil(st.totalBars/st.damagePerHit)}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${st.felledText}"`;
+          const safeNameCli = st.name.replace(/"/g, '\\"');
+          const safeFelledCli = (st.felledText || 'GREAT ENEMY FELLED').replace(/"/g, '\\"');
+          cliCmd = `npx readme-boss-bar -b "${safeNameCli}:${st.totalBars}:${st.hits !== undefined ? st.hits : totalHitsToDefeat}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}"`;
           if (!sparks) cliCmd += ` --no-sparks`;
           cliCmd += ` -o boss_bar.svg`;
         } else {
           const queryParts = stages.map((st, i) => {
-            const hits = st.hits || Math.ceil(st.totalBars / st.damagePerHit);
-            return `b${i + 1}=${encodeURIComponent(st.name)}:${st.totalBars}:${hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${encodeURIComponent(st.felledText)}`;
+            const hits = st.hits !== undefined ? st.hits : Math.ceil(st.totalBars / st.damagePerHit);
+            const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
+            return `b${i + 1}=${encodeURIComponent(st.name)}:${st.totalBars}:${hits}:${st.hitInterval}:${st.damagePerHit}:${safeTheme}:${st.shake}:${encodeURIComponent(st.felledText || 'GREAT ENEMY FELLED')}`;
           }).join('&');
           mdUrl = `https://readme-boss-bar.vercel.app/api?${queryParts}`;
           if (!sparks) mdUrl += `&sparks=false`;
 
           const bArgs = stages.map(st => {
-            const hits = st.hits || Math.ceil(st.totalBars / st.damagePerHit);
-            return `-b "${st.name}:${st.totalBars}:${hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${st.felledText}"`;
+            const hits = st.hits !== undefined ? st.hits : Math.ceil(st.totalBars / st.damagePerHit);
+            const safeNameCli = st.name.replace(/"/g, '\\"');
+            const safeFelledCli = (st.felledText || 'GREAT ENEMY FELLED').replace(/"/g, '\\"');
+            return `-b "${safeNameCli}:${st.totalBars}:${hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}"`;
           }).join(' ');
           cliCmd = `npx readme-boss-bar ${bArgs}`;
           if (!sparks) cliCmd += ` --no-sparks`;

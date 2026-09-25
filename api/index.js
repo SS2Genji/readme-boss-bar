@@ -2,7 +2,7 @@ const { generateBossBarSVG } = require('../src/generator');
 
 function parseBossSpec(rawSpec, defaults = {}) {
   if (!rawSpec) return null;
-  const parts = String(rawSpec).split(':');
+  const parts = String(rawSpec).split(/(?<!\\):/).map(s => s.replace(/\\:/g, ':'));
   const boss = {
     name: parts[0]?.trim() || 'BOSS'
   };
@@ -135,10 +135,12 @@ module.exports = (req, res) => {
     const svg = generateBossBarSVG(bosses, options);
 
     res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=3600, stale-while-revalidate=86400');
     return res.status(200).send(svg);
   } catch (err) {
     res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     const errSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="40"><text x="10" y="25" fill="red" font-family="monospace">Error: ${err.message}</text></svg>`;
     return res.status(500).send(errSvg);
   }

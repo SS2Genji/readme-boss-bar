@@ -133,7 +133,7 @@ async function runWizard() {
       {
         name: 'STARCOURGE RADAHN',
         totalBars: 10,
-        hits: 2,
+        hits: 4,
         damagePerHit: 3,
         hitInterval: 0.5,
         barColor: 'purple',
@@ -152,7 +152,7 @@ async function runWizard() {
   } else if (mode === '3') {
     stages = [
       { name: 'MARGIT, THE FELL OMEN', totalBars: 6, hits: 3, damagePerHit: 2, hitInterval: 0.5, barColor: 'crimson', shake: 'heavy', felledText: 'GREAT ENEMY FELLED' },
-      { name: 'STARCOURGE RADAHN', totalBars: 10, hits: 2, damagePerHit: 3, hitInterval: 0.5, barColor: 'purple', shake: 'heavy', felledText: 'DEMIGOD FELLED' },
+      { name: 'STARCOURGE RADAHN', totalBars: 10, hits: 4, damagePerHit: 3, hitInterval: 0.5, barColor: 'purple', shake: 'heavy', felledText: 'DEMIGOD FELLED' },
       { name: 'MALENIA, BLADE OF MIQUELLA', totalBars: 8, hits: 4, damagePerHit: 2, hitInterval: 0.35, barColor: 'gold', shake: 'heavy', felledText: 'DEMIGOD FELLED' }
     ];
     console.log('\n✔ Selected: Elden Ring Boss Run (3 bosses)');
@@ -178,7 +178,8 @@ async function runWizard() {
       const hitInterval = Math.max(0.1, parseFloat(intervalStr) || 0.5);
       const totalHitsToDefeat = Math.ceil(totalBars / damagePerHit);
       const hitsStr = await askVal(`Hits executed (Enter for full defeat: ${totalHitsToDefeat} hits)`, `${totalHitsToDefeat}`);
-      const hits = parseInt(hitsStr, 10) || totalHitsToDefeat;
+      const parsedHits = parseInt(hitsStr, 10);
+      const hits = isNaN(parsedHits) ? totalHitsToDefeat : Math.max(0, parsedHits);
       const theme = await askVal(`Theme (crimson, purple, cyan, gold, green, orange, or #hex)`, 'crimson');
       const shake = await askVal(`Screen shake (none, subtle, medium, heavy)`, 'medium');
       const felled = await askVal(`Victory banner text`, 'GREAT ENEMY FELLED');
@@ -212,17 +213,29 @@ async function runWizard() {
   if (stages.length === 1) {
     const st = stages[0];
     const encodedName = encodeURIComponent(st.name);
-    mdUrl = `https://readme-boss-bar.vercel.app/api?name=${encodedName}&bars=${st.totalBars}&dmg=${st.damagePerHit}&interval=${st.hitInterval}&theme=${st.barColor}&shake=${st.shake}`;
+    const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
+    mdUrl = `https://readme-boss-bar.vercel.app/api?name=${encodedName}&bars=${st.totalBars}&dmg=${st.damagePerHit}&interval=${st.hitInterval}&theme=${safeTheme}&shake=${st.shake}`;
+    const totalHitsToDefeat = Math.ceil(st.totalBars / st.damagePerHit);
+    if (st.hits !== undefined && st.hits !== totalHitsToDefeat) {
+      mdUrl += `&hits=${st.hits}`;
+    }
     if (st.felledText && st.felledText !== 'GREAT ENEMY FELLED') {
       mdUrl += `&felled=${encodeURIComponent(st.felledText)}`;
     }
-    cliCmd = `npx readme-boss-bar -b "${st.name}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${st.felledText}" -o ${outFile}`;
+    const safeNameCli = st.name.replace(/"/g, '\\"');
+    const safeFelledCli = (st.felledText || 'GREAT ENEMY FELLED').replace(/"/g, '\\"');
+    cliCmd = `npx readme-boss-bar -b "${safeNameCli}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}" -o ${outFile}`;
   } else {
     const queryParts = stages.map((st, idx) => {
-      return `b${idx + 1}=${encodeURIComponent(st.name)}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${encodeURIComponent(st.felledText)}`;
+      const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
+      return `b${idx + 1}=${encodeURIComponent(st.name)}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${safeTheme}:${st.shake}:${encodeURIComponent(st.felledText || 'GREAT ENEMY FELLED')}`;
     }).join('&');
     mdUrl = `https://readme-boss-bar.vercel.app/api?${queryParts}`;
-    const bArgs = stages.map(st => `-b "${st.name}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${st.felledText}"`).join(' ');
+    const bArgs = stages.map(st => {
+      const safeNameCli = st.name.replace(/"/g, '\\"');
+      const safeFelledCli = (st.felledText || 'GREAT ENEMY FELLED').replace(/"/g, '\\"');
+      return `-b "${safeNameCli}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}"`;
+    }).join(' ');
     cliCmd = `npx readme-boss-bar ${bArgs} -o ${outFile}`;
   }
 
@@ -250,7 +263,7 @@ if (args.includes('--wizard') || args.includes('wizard') || args.includes('-W'))
 
 function parseBossSpec(val) {
   if (!val) return null;
-  const parts = val.split(':');
+  const parts = String(val).split(/(?<!\\):/).map(s => s.replace(/\\:/g, ':'));
   const boss = {
     name: parts[0]?.trim() || 'BOSS'
   };
