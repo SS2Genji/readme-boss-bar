@@ -18,7 +18,7 @@ function escapeXml(unsafe) {
 
 function generateBossBarSVG(bossesConfig = [], options = {}) {
   // Default fallback if no config given
-  const bosses = bossesConfig.length > 0 ? bossesConfig : [
+  const rawBosses = bossesConfig.length > 0 ? bossesConfig : [
     { name: "MILESTONE 1", totalBars: 3, hits: 3 },
     { name: "MILESTONE 2", totalBars: 5, hits: 1 }
   ];
@@ -26,47 +26,71 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
   const svgWidth = options.width || 700;
   const svgHeight = options.height || 95;
   const containerWidth = options.barWidth || 480;
-  const containerX = Math.round((svgWidth - containerWidth) / 2);
   const containerY = 36;
   const barHeight = 16;
 
+  // Helper to calculate segment layout for a given totalBars
+  function getBarLayout(totalBars) {
+    let gap = 8;
+    if (totalBars >= 10) gap = 3;
+    else if (totalBars >= 6) gap = 5;
+    const segWidth = Math.floor((containerWidth - (totalBars - 1) * gap) / totalBars);
+    const actualWidth = totalBars * segWidth + (totalBars - 1) * gap;
+    return { gap, segWidth, actualWidth };
+  }
+
   // 1. Calculate Timelines for each Boss
-  // We need to know when each boss appears, gets hit, and transitions.
+  // Adaptive hit speed: scales down interval for high hit counts so animations stay punchy
   let timeline = [];
   let currentTime = 0;
 
-  bosses.forEach((boss, bIndex) => {
-    const isDefeated = boss.hits >= boss.totalBars;
+  rawBosses.forEach((boss, bIndex) => {
+    const totalBars = Math.max(1, parseInt(boss.totalBars, 10) || 1);
+    const hits = Math.max(0, Math.min(totalBars, parseInt(boss.hits, 10) || 0));
+    const isDefeated = hits >= totalBars;
+    const name = String(boss.name || `BOSS ${bIndex + 1}`).trim();
     const startTime = currentTime;
     const hitTimes = [];
 
-    const leadIn = isDefeated ? 0.6 : 1.2; // fill time or aim time
-    let hitT = startTime + leadIn;
-
-    for (let h = 0; h < boss.hits; h++) {
-      hitTimes.push(hitT);
-      hitT += 1.0; // 1s between hits
+    // Adaptive hit interval: 10 hits shouldn't take 10 seconds!
+    let hitInterval = 0.9;
+    if (hits > 6) {
+      hitInterval = 0.32; // rapid flurry
+    } else if (hits > 3) {
+      hitInterval = 0.55; // medium tempo
     }
 
-    const duration = isDefeated 
-      ? (leadIn + boss.hits * 1.0 + 2.2) 
-      : (leadIn + boss.hits * 1.0 + 4.5); // hold time for active boss
+    const leadIn = isDefeated ? 0.5 : 0.8;
+    let hitT = startTime + leadIn;
 
+    for (let h = 0; h < hits; h++) {
+      hitTimes.push(hitT);
+      hitT += hitInterval;
+    }
+
+    const holdTime = isDefeated ? 1.8 : 3.8;
+    const duration = leadIn + (hits * hitInterval) + holdTime;
     const endTime = startTime + duration;
     currentTime = endTime + 0.3; // brief gap between bosses
 
+    const layout = getBarLayout(totalBars);
+
     timeline.push({
-      ...boss,
+      name,
+      totalBars,
+      hits,
       bIndex,
       isDefeated,
+      hitInterval,
       startTime,
       endTime,
       duration,
-      hitTimes
+      hitTimes,
+      layout
     });
   });
 
-  const totalTime = Math.max(currentTime, 10.0); // At least 10s total loop
+  const totalTime = Math.max(currentTime, 8.0);
 
   // Helper to convert seconds to percentage string
   const pct = (t) => Math.min(100, Math.max(0, (t / totalTime) * 100)).toFixed(2) + '%';
@@ -74,7 +98,6 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
   // 2. Generate Dynamic CSS Keyframes
   let cssRules = [];
 
-  // General pixel text & base animations
   cssRules.push(`
     .pixel-txt {
       font-family: 'Courier New', 'Fira Code', 'JetBrains Mono', monospace;
@@ -95,8 +118,8 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
   timeline.forEach((tb) => {
     const b = tb.bIndex;
     const startP = pct(tb.startTime);
-    const inP = pct(tb.startTime + 0.3);
-    const outStartP = pct(tb.endTime - 0.3);
+    const inP = pct(tb.startTime + 0.25);
+    const outStartP = pct(tb.endTime - 0.25);
     const endP = pct(tb.endTime);
 
     // Layer lifecycle (fade in & fade out)
@@ -115,15 +138,11 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
     // Screen Shake Animation for this boss
     let shakeKeyframes = [`0%, ${pct(tb.startTime)} { transform: translate(0, 0); }`];
     tb.hitTimes.forEach((ht) => {
-      const h0 = pct(ht);
-      const h1 = pct(ht + 0.08);
-      const h2 = pct(ht + 0.16);
-      const h3 = pct(ht + 0.24);
+      const shakeDur = Math.min(0.08, tb.hitInterval / 3);
       shakeKeyframes.push(`
-        ${h0} { transform: translate(-2px, 2px); }
-        ${h1} { transform: translate(2px, -2px); }
-        ${h2} { transform: translate(-2px, 1px); }
-        ${h3} { transform: translate(0, 0); }
+        ${pct(ht)} { transform: translate(-2px, 2px); }
+        ${pct(ht + shakeDur)} { transform: translate(2px, -2px); }
+        ${pct(ht + shakeDur * 2)} { transform: translate(0, 0); }
       `);
     });
     shakeKeyframes.push(`${endP}, 100% { transform: translate(0, 0); }`);
@@ -139,21 +158,18 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
 
     // Segment widths and drainage
     const totalBars = tb.totalBars;
-    const gap = totalBars > 4 ? 6 : 8;
-    const segWidth = Math.floor((containerWidth - (totalBars - 1) * gap) / totalBars);
+    const { segWidth } = tb.layout;
 
-    // Calculate which bars get hit (RIGHT TO LEFT)
-    // Hit 0 hits (totalBars - 1)
-    // Hit 1 hits (totalBars - 2)...
     for (let i = 0; i < totalBars; i++) {
-      const hitIndex = (totalBars - 1) - i; // if hitIndex < tb.hits, this bar gets hit at tb.hitTimes[hitIndex]
+      const hitIndex = (totalBars - 1) - i;
       const getsHit = hitIndex < tb.hits;
 
       if (getsHit) {
         const hitT = tb.hitTimes[hitIndex];
-        const hitP0 = pct(hitT - 0.05);
+        const hitP0 = pct(hitT - 0.04);
         const hitPFlash = pct(hitT);
-        const hitPDrain = pct(hitT + 0.18);
+        const drainTime = Math.min(0.15, tb.hitInterval * 0.6);
+        const hitPDrain = pct(hitT + drainTime);
 
         cssRules.push(`
           .bar-${b}-${i} {
@@ -161,7 +177,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
           }
           @keyframes drain_${b}_${i} {
             0%, ${startP} { width: 0px; }
-            ${pct(tb.startTime + 0.4)}, ${hitP0} { width: ${segWidth}px; fill: #dc2626; }
+            ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: #dc2626; }
             ${hitPFlash} { fill: #fef08a; }
             ${hitPDrain}, ${endP} { width: 0px; fill: #dc2626; }
             100% { width: 0px; }
@@ -174,7 +190,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
           @keyframes sparkAnim_${b}_${i} {
             0%, ${hitP0} { opacity: 0; transform: scale(0.6); }
             ${hitPFlash} { opacity: 1; transform: scale(1.2); }
-            ${pct(hitT + 0.15)} { opacity: 0; transform: scale(1.6); }
+            ${pct(hitT + drainTime * 0.9)} { opacity: 0; transform: scale(1.5); }
             100% { opacity: 0; }
           }
         `);
@@ -186,7 +202,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
           }
           @keyframes alive_${b}_${i} {
             0%, ${startP} { width: 0px; }
-            ${pct(tb.startTime + 0.4)}, ${endP} { width: ${segWidth}px; }
+            ${pct(tb.startTime + 0.3)}, ${endP} { width: ${segWidth}px; }
             100% { width: 0px; }
           }
         `);
@@ -196,7 +212,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
     // Tags & Defeat Text
     if (tb.isDefeated) {
       const finalHitT = tb.hitTimes[tb.hitTimes.length - 1] || tb.startTime;
-      const deathP = pct(finalHitT + 0.2);
+      const deathP = pct(finalHitT + 0.15);
 
       cssRules.push(`
         .tag-live-${b} {
@@ -204,7 +220,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
         }
         @keyframes tagLiveAnim${b} {
           0%, ${deathP} { opacity: 1; }
-          ${pct(finalHitT + 0.25)}, 100% { opacity: 0; }
+          ${pct(finalHitT + 0.2)}, 100% { opacity: 0; }
         }
 
         .tag-felled-${b} {
@@ -213,46 +229,46 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
         }
         @keyframes tagFelledAnim${b} {
           0%, ${deathP} { opacity: 0; }
-          ${pct(finalHitT + 0.3)}, ${outStartP} { opacity: 1; }
+          ${pct(finalHitT + 0.25)}, ${outStartP} { opacity: 1; }
           ${endP}, 100% { opacity: 0; }
         }
 
         .felled-text-${b} {
           opacity: 0;
           animation: felledBannerAnim${b} ${totalTime.toFixed(1)}s infinite;
-          font-family: 'Courier New', monospace;
-          font-size: 13px;
+          font-family: 'Times New Roman', 'Georgia', serif;
+          font-size: 15px;
           font-weight: 900;
-          fill: #f59e0b;
-          letter-spacing: 4px;
+          letter-spacing: 5px;
+          fill: #fef08a;
+          filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
         }
         @keyframes felledBannerAnim${b} {
           0%, ${deathP} { opacity: 0; }
-          ${pct(finalHitT + 0.3)}, ${outStartP} { opacity: 1; }
+          ${pct(finalHitT + 0.25)}, ${outStartP} { opacity: 1; }
           ${endP}, 100% { opacity: 0; }
         }
       `);
-    } else {
+    } else if (tb.hits > 0) {
       // Active boss pop-up
       const firstHitT = tb.hitTimes[0];
-      if (firstHitT) {
-        cssRules.push(`
-          .dmg-pop-${b} {
-            opacity: 0;
-            animation: dmgPopAnim${b} ${totalTime.toFixed(1)}s infinite;
-            font-family: 'Courier New', monospace;
-            font-size: 11px;
-            font-weight: 900;
-            fill: #facc15;
-          }
-          @keyframes dmgPopAnim${b} {
-            0%, ${pct(firstHitT)} { opacity: 0; transform: translateY(0); }
-            ${pct(firstHitT + 0.08)} { opacity: 1; transform: translateY(-3px); }
-            ${pct(firstHitT + 0.8)} { opacity: 1; transform: translateY(-13px); }
-            ${pct(firstHitT + 1.4)}, 100% { opacity: 0; transform: translateY(-18px); }
-          }
-        `);
-      }
+      const lastHitT = tb.hitTimes[tb.hitTimes.length - 1];
+      cssRules.push(`
+        .dmg-pop-${b} {
+          opacity: 0;
+          animation: dmgPopAnim${b} ${totalTime.toFixed(1)}s infinite;
+          font-family: 'Courier New', monospace;
+          font-size: 11px;
+          font-weight: 900;
+          fill: #facc15;
+        }
+        @keyframes dmgPopAnim${b} {
+          0%, ${pct(firstHitT)} { opacity: 0; transform: translateY(0); }
+          ${pct(firstHitT + 0.08)} { opacity: 1; transform: translateY(-3px); }
+          ${pct(lastHitT + 0.7)} { opacity: 1; transform: translateY(-13px); }
+          ${pct(lastHitT + 1.2)}, 100% { opacity: 0; transform: translateY(-18px); }
+        }
+      `);
     }
   });
 
@@ -262,8 +278,8 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
   timeline.forEach((tb) => {
     const b = tb.bIndex;
     const totalBars = tb.totalBars;
-    const gap = totalBars > 4 ? 6 : 8;
-    const segWidth = Math.floor((containerWidth - (totalBars - 1) * gap) / totalBars);
+    const { gap, segWidth, actualWidth } = tb.layout;
+    const containerX = Math.round((svgWidth - actualWidth) / 2);
 
     let segmentsMarkup = [];
 
@@ -283,10 +299,10 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
           ${getsHit ? `
           <!-- Golden Pixel Sparks -->
           <g class="sparks-${b}-${i}" transform="translate(${Math.round(segWidth / 2)}, ${Math.round(barHeight / 2)})">
-            <rect x="-6" y="-6" width="3" height="3" fill="#fef08a" />
-            <rect x="6" y="-4" width="3" height="3" fill="#f59e0b" />
-            <rect x="-4" y="5" width="3" height="3" fill="#f59e0b" />
-            <rect x="5" y="6" width="3" height="3" fill="#fef08a" />
+            <rect x="-4" y="-4" width="2.5" height="2.5" fill="#fef08a" />
+            <rect x="4" y="-3" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="-3" y="4" width="2.5" height="2.5" fill="#f59e0b" />
+            <rect x="3" y="4" width="2.5" height="2.5" fill="#fef08a" />
           </g>` : ''}
         </g>
       `);
@@ -315,10 +331,10 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
             
             ${tb.isDefeated ? `
             <!-- Live & Felled Tags -->
-            <text x="${containerWidth - 70}" y="11" fill="${tagLiveColor}" class="pixel-txt tag-live-${b}">${tagLive}</text>
-            <text x="${containerWidth - 75}" y="11" fill="#f59e0b" class="pixel-txt tag-felled-${b}">[FELLED]</text>
+            <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagLiveColor}" class="pixel-txt tag-live-${b}">${tagLive}</text>
+            <text x="${actualWidth}" text-anchor="end" y="11" fill="#f59e0b" class="pixel-txt tag-felled-${b}">[FELLED]</text>
             ` : `
-            <text x="${containerWidth - 110}" y="11" fill="${tagLiveColor}" class="pixel-txt">${tagLive}</text>
+            <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagLiveColor}" class="pixel-txt">${tagLive}</text>
             `}
           </g>
 
@@ -329,11 +345,11 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
 
           ${tb.isDefeated ? `
           <!-- Felled Banner Overlay -->
-          <text x="${Math.round(svgWidth / 2) - 100}" y="49" class="felled-text-${b}">GREAT ENEMY FELLED</text>
-          ` : `
+          <text x="${Math.round(svgWidth / 2)}" text-anchor="middle" y="48" class="felled-text-${b}">GREAT ENEMY FELLED</text>
+          ` : (tb.hits > 0 ? `
           <!-- Hit Damage Pop-up -->
-          <text x="${firstHitX}" y="30" class="dmg-pop-${b}">-1 BAR</text>
-          `}
+          <text x="${firstHitX}" text-anchor="middle" y="30" class="dmg-pop-${b}">-${tb.hits} ${tb.hits > 1 ? 'BARS' : 'BAR'}</text>
+          ` : '')}
         </g>
       </g>
     `);

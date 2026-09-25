@@ -31,4 +31,25 @@ fs.writeFileSync('/tmp/test_boss_3.svg', svg3);
 execSync('rsvg-convert /tmp/test_boss_3.svg -o /tmp/test_boss_3.png');
 console.log("✔ Test 3 passed: 3-boss chain compiles cleanly!");
 
+// Test 4: 4 bosses with 10 bars each (Stress & high-bar test)
+const svg4 = generateBossBarSVG([
+  { name: "PHASE 1: MARGIT", totalBars: 10, hits: 10 },
+  { name: "PHASE 2: GODRICK", totalBars: 10, hits: 10 },
+  { name: "PHASE 3: RADAHN", totalBars: 10, hits: 10 },
+  { name: "PHASE 4: MALENIA", totalBars: 10, hits: 4 }
+]);
+fs.writeFileSync('/tmp/test_boss_4.svg', svg4);
+execSync('rsvg-convert /tmp/test_boss_4.svg -o /tmp/test_boss_4.png');
+console.log("✔ Test 4 passed: 4 bosses x 10 bars compiles cleanly!");
+
+// Test 5: Clamping and extreme bars (20 bars, 0 hits, overkill hits)
+const svg5 = generateBossBarSVG([
+  { name: "ELDEN BEAST", totalBars: 20, hits: 20 },
+  { name: "UNTOUCHED", totalBars: 10, hits: 0 },
+  { name: "OVERKILL", totalBars: 4, hits: 99 }
+]);
+fs.writeFileSync('/tmp/test_boss_5.svg', svg5);
+execSync('rsvg-convert /tmp/test_boss_5.svg -o /tmp/test_boss_5.png');
+console.log("✔ Test 5 passed: 20-bar scale and safety clamping compile cleanly!");
+
 console.log("\nALL TESTS PASSED WITH 0 XML / RSVG ERRORS!");
