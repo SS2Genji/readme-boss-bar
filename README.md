@@ -27,14 +27,28 @@ A dynamic, zero-dependency SVG generator that brings authentic 16-bit retro RPG 
 ### 1. Visual Web Studio (Easiest - 1 Click)
 
 > 🎮 **Design your boss bar visually in your browser with real-time preview:**  
-> 👉 **[readme-boss-bar.vercel.app](https://readme-boss-bar.vercel.app)**  
-> Pick a preset, adjust sliders, and click **"Copy Markdown for README"**!
+> Open `index.html` or `preview.html` locally in any browser, or visit your deployed URL!  
+> Pick a preset, adjust sliders, and click **"Copy Markdown for README"** or **"Download SVG"**!
 
 ---
 
-### 2. Copy & Paste into your GitHub README
+### 2. Deploy with Vercel (1-Click Free Hosting)
 
-Just copy **one line** below and replace `YOUR+NAME` with your project, milestone, or boss name:
+Deploy your own live serverless endpoint to get real-time dynamic SVG URLs for your GitHub README:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FSS2Genji%2Freadme-boss-bar)
+
+> **No Vercel Account? Zero-Server Option:**  
+> You can also download the SVG directly from the Web Studio (or run `npx readme-boss-bar -o assets/boss_bar.svg`), commit it to your repository, and embed it locally:
+> ```markdown
+> ![Boss Bar](./assets/boss_bar.svg)
+> ```
+
+---
+
+### 3. Copy & Paste into your GitHub README
+
+Once deployed to Vercel (or using the local asset), just copy **one line** below and replace `YOUR+NAME` with your project, milestone, or boss name:
 
 #### Classic Souls Crimson (Red)
 ```markdown
