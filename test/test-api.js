@@ -388,7 +388,55 @@ runApiTest(
   "Single boss query with style & colors (?name=LUDWIG&bars=8&style=bloodborne&felledColor=dc2626&dmgPopColor=facc15)"
 );
 
-console.log("\nALL 24 API TESTS PASSED SUCCESSFULLY!");
+// 24. Custom status tag text (?tag=[GOLDEN ORDER]&felledTag=[GOD SLAIN])
+runApiTest(
+  {
+    name: "RADAGON",
+    bars: "8",
+    dmg: "2",
+    tag: "[GOLDEN ORDER]",
+    felledTag: "[GOD SLAIN]"
+  },
+  (svg) => {
+    assert(svg.includes("[GOLDEN ORDER]"), "Must include custom live tag text");
+    assert(svg.includes("[GOD SLAIN]"), "Must include custom defeated tag text");
+  },
+  "Custom status tag text (?tag=[GOLDEN ORDER]&felledTag=[GOD SLAIN])"
+);
+
+// 25. Custom status tag colors (?tagColor=10b981&tagFelledColor=ec4899)
+runApiTest(
+  {
+    name: "RADAGON",
+    bars: "8",
+    dmg: "2",
+    tagColor: "10b981",
+    tagFelledColor: "ec4899"
+  },
+  (svg) => {
+    assert(svg.includes('fill="#10b981"'), "Must include custom live tag color");
+    assert(svg.includes('fill="#ec4899"'), "Must include custom defeated tag color");
+  },
+  "Custom status tag colors (?tagColor=10b981&tagFelledColor=ec4899)"
+);
+
+// 26. 13-part shorthand with style, tag, and tag colors
+runApiTest(
+  {
+    boss: "ELDEN BEAST:12:4:0.5:3:gold:heavy:GOD SLAIN:souls:[VASSAL]:#38bdf8:[REST IN PEACE]:#f43f5e"
+  },
+  (svg) => {
+    assert(svg.includes("ELDEN BEAST"), "Must include boss name");
+    assert(svg.includes("[VASSAL]"), "Must include custom live tag");
+    assert(svg.includes('fill="#38bdf8"'), "Must include custom live tag color");
+    assert(svg.includes("[REST IN PEACE]"), "Must include custom defeated tag");
+    assert(svg.includes('fill="#f43f5e"'), "Must include custom defeated tag color");
+  },
+  "13-part shorthand (ELDEN BEAST:...:[VASSAL]:#38bdf8:[REST IN PEACE]:#f43f5e)"
+);
+
+console.log("\nALL 27 API TESTS PASSED SUCCESSFULLY!");
+
 
 
 

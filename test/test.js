@@ -518,4 +518,48 @@ test32Aesthetics.forEach((t) => {
 });
 console.log("✔ Test 32 passed: Enhanced visual signatures, ornate filigree, stepped pixel brackets, thorn spikes & defeat backdrops verified!");
 
-console.log("\nALL 32 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
+// Test 33: Custom Status Tags & Colors (Live and Defeated)
+const test33Svg = generateBossBarSVG([
+  {
+    name: 'MALIKETH',
+    totalBars: 8,
+    hits: 4,
+    damagePerHit: 2,
+    tagLive: '[SHADOW OF THE ERDTREE]',
+    tagLiveColor: '#38bdf8',
+    tagFelled: '[DESTINED DEATH]',
+    tagFelledColor: '#ec4899'
+  }
+], { style: 'souls' });
+
+if (!test33Svg.includes('[SHADOW OF THE ERDTREE]')) {
+  throw new Error('Test 33 failed: Custom live tag text not found in SVG');
+}
+if (!test33Svg.includes('[DESTINED DEATH]')) {
+  throw new Error('Test 33 failed: Custom defeated tag text not found in SVG');
+}
+if (!test33Svg.includes('fill="#38bdf8" class="pixel-txt')) {
+  throw new Error('Test 33 failed: Custom live tag color fill not found in SVG text');
+}
+if (!test33Svg.includes('fill="#ec4899" class="pixel-txt')) {
+  throw new Error('Test 33 failed: Custom defeated tag color fill not found in SVG text');
+}
+
+const p33 = '/tmp/test_custom_tags.svg';
+fs.writeFileSync(p33, test33Svg);
+execSync(`rsvg-convert ${p33} -o /tmp/test_custom_tags.png`);
+console.log("✔ Test 33 passed: Custom status tag text and tag colors compile cleanly with 0 errors!");
+
+// Test 34: CLI Flags for Tags (--tag, --tag-color, --tag-felled, --tag-felled-color)
+const cliOutputTags = '/tmp/test_cli_tags.svg';
+execSync(`node bin/cli.js -b "GODFREY:8:4:0.5:2" --tag "[FIRST ELDEN LORD]" --tag-color 10b981 --tag-felled "[FALLEN LORD]" --tag-felled-color f43f5e -o ${cliOutputTags}`);
+const cliTagsSvg = fs.readFileSync(cliOutputTags, 'utf8');
+if (!cliTagsSvg.includes('[FIRST ELDEN LORD]')) throw new Error('CLI failed to apply --tag');
+if (!cliTagsSvg.includes('fill="#10b981"')) throw new Error('CLI failed to apply --tag-color');
+if (!cliTagsSvg.includes('[FALLEN LORD]')) throw new Error('CLI failed to apply --tag-felled');
+if (!cliTagsSvg.includes('fill="#f43f5e"')) throw new Error('CLI failed to apply --tag-felled-color');
+execSync(`rsvg-convert ${cliOutputTags} -o /tmp/test_cli_tags.png`);
+console.log("✔ Test 34 passed: CLI flags for custom tag texts and colors work cleanly!");
+
+console.log("\nALL 34 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
+

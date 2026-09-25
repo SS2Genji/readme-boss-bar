@@ -50,6 +50,26 @@ function parseBossSpec(rawSpec, defaults = {}) {
   if (defaults.dmgPopColor !== undefined) {
     boss.dmgPopColor = defaults.dmgPopColor;
   }
+  if (parts.length >= 10 && parts[9] !== '') {
+    boss.tagLive = parts[9].trim();
+  } else if (defaults.tagLive !== undefined) {
+    boss.tagLive = defaults.tagLive;
+  }
+  if (parts.length >= 11 && parts[10] !== '') {
+    boss.tagLiveColor = parts[10].trim();
+  } else if (defaults.tagLiveColor !== undefined) {
+    boss.tagLiveColor = defaults.tagLiveColor;
+  }
+  if (parts.length >= 12 && parts[11] !== '') {
+    boss.tagFelled = parts[11].trim();
+  } else if (defaults.tagFelled !== undefined) {
+    boss.tagFelled = defaults.tagFelled;
+  }
+  if (parts.length >= 13 && parts[12] !== '') {
+    boss.tagFelledColor = parts[12].trim();
+  } else if (defaults.tagFelledColor !== undefined) {
+    boss.tagFelledColor = defaults.tagFelledColor;
+  }
   return boss;
 }
 
@@ -77,6 +97,18 @@ module.exports = (req, res) => {
     }
     if (query.dmgPopColor || query.popupColor) {
       options.dmgPopColor = query.dmgPopColor || query.popupColor;
+    }
+    if (query.tag || query.tagLive) {
+      options.tagLive = query.tag || query.tagLive;
+    }
+    if (query.tagColor || query.tagLiveColor) {
+      options.tagLiveColor = query.tagColor || query.tagLiveColor;
+    }
+    if (query.tagFelled || query.felledTag) {
+      options.tagFelled = query.tagFelled || query.felledTag;
+    }
+    if (query.tagFelledColor || query.felledTagColor) {
+      options.tagFelledColor = query.tagFelledColor || query.felledTagColor;
     }
     if (query.sparks !== undefined) {
       options.sparks = query.sparks !== 'false' && query.sparks !== '0';
@@ -115,6 +147,10 @@ module.exports = (req, res) => {
     if (options.felledText) granularDefaults.felledText = options.felledText;
     if (options.felledColor) granularDefaults.felledColor = options.felledColor;
     if (options.dmgPopColor) granularDefaults.dmgPopColor = options.dmgPopColor;
+    if (options.tagLive) granularDefaults.tagLive = options.tagLive;
+    if (options.tagLiveColor) granularDefaults.tagLiveColor = options.tagLiveColor;
+    if (options.tagFelled) granularDefaults.tagFelled = options.tagFelled;
+    if (options.tagFelledColor) granularDefaults.tagFelledColor = options.tagFelledColor;
     if (options.style) granularDefaults.style = options.style;
 
     // Parse repeated ?boss=... or comma-separated ?bosses=...
@@ -149,6 +185,12 @@ module.exports = (req, res) => {
         barColor: options.barColor,
         shake: options.shake,
         felledText: options.felledText,
+        felledColor: options.felledColor,
+        dmgPopColor: options.dmgPopColor,
+        tagLive: options.tagLive,
+        tagLiveColor: options.tagLiveColor,
+        tagFelled: options.tagFelled,
+        tagFelledColor: options.tagFelledColor,
         hitFlash: options.hitFlash,
         sparks: options.sparks,
         dmgPop: options.dmgPop,

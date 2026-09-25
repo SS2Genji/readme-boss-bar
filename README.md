@@ -169,6 +169,10 @@ NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT:THEME:SHAKE:FELLED_TEXT:STYLE
 | :--- | :--- | :--- | :--- |
 | `style`, `aesthetic` | String | Aesthetic style (`classic`, `souls`, `cyberpunk`, `pixel`, `bloodborne`, `minimal`) | `?style=cyberpunk` |
 | `shake` | String | Screen shake intensity (`none`, `subtle`, `medium`, `heavy`) | `?shake=heavy` |
+| `tag`, `tagLive` | String | Custom active status badge text (top-right) | `?tag=[BOSS]` |
+| `tagColor`, `tagLiveColor` | String | Color for active status badge (`#hex` or `hex`) | `?tagColor=38bdf8` |
+| `tagFelled`, `felledTag` | String | Custom defeated status badge text (top-right) | `?tagFelled=[CLEARED]` |
+| `tagFelledColor` | String | Color for defeated status badge (`#hex` or `hex`) | `?tagFelledColor=f59e0b` |
 | `felledColor`, `bannerColor` | String | Custom color for defeated banner text and glow (`#hex` or `hex`) | `?felledColor=10b981` |
 | `dmgPopColor`, `popupColor` | String | Custom color for damage floating popup (`#hex` or `hex`) | `?dmgPopColor=38bdf8` |
 | `boss` | String | Repeatable boss specification shorthand | `?boss=RADAHN:10:2:0.5:3:purple:heavy` |
@@ -279,6 +283,8 @@ Visit **[readme-boss-barr.vercel.app](https://readme-boss-barr.vercel.app)** or 
 - **Aesthetic Selector**: Switch seamlessly between Classic, Souls, Cyberpunk, Pixel, Bloodborne, and Minimal styles.
 - **1-Click Presets**: Dedicated presets for every aesthetic style plus 42 School and Elden Ring runs.
 - **Interactive Stage Manager**: Add and remove multiple encounter phases on the fly.
+- **Status Tags & Color Tuning**: Customize top-right badges (e.g. `[CURRENT FOE]`, `[BOSS]`, `[FELLED]`) and hex colors for both live and defeated states.
+- **Reset to Defaults**: 1-click reset to cleanly restore default boss presets and controls.
 - **Real-Time Live Preview**: Instant rendering with live damage animations and screen shakes as you type or adjust sliders.
 - **1-Click Export Bar**: Copy GitHub README Markdown embeds, download SVG files, or copy CLI commands.
 

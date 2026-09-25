@@ -30,6 +30,10 @@ Aesthetic & Style Options:
   --theme, --color <name|hex>   Color theme: crimson, purple, cyan, gold, green, orange, or #hex
   --felled-color <hex>          Color for defeated banner text (default: based on aesthetic)
   --dmg-pop-color <hex>         Color for damage pop-up numbers (default: #facc15)
+  --tag, --tag-live <txt>       Active status tag text (e.g. "[BOSS]", "[CURRENT FOE]")
+  --tag-color <name|hex>        Color for active status tag text (default: based on aesthetic)
+  --tag-felled, --felled-tag <txt> Defeated status tag text (e.g. "[FELLED]", "[CLEAR]")
+  --tag-felled-color <name|hex> Color for defeated status tag text (default: based on aesthetic)
   --dmg, --damage <bars>        Damage per hit in segments (e.g. 3)
   --interval, --speed <sec>     Seconds between hits (e.g. 0.5)
   --hits <count>                Total hit actions to execute
@@ -338,6 +342,18 @@ function parseBossSpec(val) {
   if (parts.length >= 9 && parts[8] !== '') {
     boss.style = resolveAesthetic(parts[8].trim()).name;
   }
+  if (parts.length >= 10 && parts[9] !== '') {
+    boss.tagLive = parts[9].trim();
+  }
+  if (parts.length >= 11 && parts[10] !== '') {
+    boss.tagLiveColor = parts[10].trim();
+  }
+  if (parts.length >= 12 && parts[11] !== '') {
+    boss.tagFelled = parts[11].trim();
+  }
+  if (parts.length >= 13 && parts[12] !== '') {
+    boss.tagFelledColor = parts[12].trim();
+  }
   return boss;
 }
 
@@ -394,6 +410,10 @@ for (let i = 0; i < normalizedArgs.length; i++) {
           }
           if (parsed.felledColor || parsed.bannerColor) options.felledColor = parsed.felledColor || parsed.bannerColor;
           if (parsed.dmgPopColor || parsed.popupColor) options.dmgPopColor = parsed.dmgPopColor || parsed.popupColor;
+          if (parsed.tag || parsed.tagLive) options.tagLive = parsed.tag || parsed.tagLive;
+          if (parsed.tagColor || parsed.tagLiveColor) options.tagLiveColor = parsed.tagColor || parsed.tagLiveColor;
+          if (parsed.tagFelled || parsed.felledTag) options.tagFelled = parsed.tagFelled || parsed.felledTag;
+          if (parsed.tagFelledColor || parsed.felledTagColor) options.tagFelledColor = parsed.tagFelledColor || parsed.felledTagColor;
           if (parsed.sparks !== undefined) options.sparks = parsed.sparks;
           if (parsed.hitFlash || parsed.flash) options.hitFlash = parsed.hitFlash || parsed.flash;
           if (parsed.felledText) options.felledText = parsed.felledText;
@@ -431,6 +451,14 @@ for (let i = 0; i < normalizedArgs.length; i++) {
     options.felledColor = normalizedArgs[++i];
   } else if (arg === '--dmg-pop-color' || arg === '--popup-color') {
     options.dmgPopColor = normalizedArgs[++i];
+  } else if (arg === '--tag' || arg === '--tag-live') {
+    options.tagLive = normalizedArgs[++i];
+  } else if (arg === '--tag-color' || arg === '--tag-live-color') {
+    options.tagLiveColor = normalizedArgs[++i];
+  } else if (arg === '--tag-felled' || arg === '--felled-tag') {
+    options.tagFelled = normalizedArgs[++i];
+  } else if (arg === '--tag-felled-color' || arg === '--felled-tag-color') {
+    options.tagFelledColor = normalizedArgs[++i];
   } else if (arg === '--shake') {
     options.shake = normalizedArgs[++i];
   } else if (arg === '--theme' || arg === '--color' || arg === '--bar-color') {

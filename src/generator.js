@@ -118,6 +118,7 @@ const AESTHETICS = {
     tagFelled: '[FELLED]',
     tagLiveDefeatedColor: '#ef4444',
     tagLiveColor: '#38bdf8',
+    tagFelledColor: '#f59e0b',
     defaultShake: 'medium',
     defaultTheme: 'crimson'
   },
@@ -140,6 +141,7 @@ const AESTHETICS = {
     tagFelled: '[FELLED]',
     tagLiveDefeatedColor: '#f59e0b',
     tagLiveColor: '#facc15',
+    tagFelledColor: '#f59e0b',
     defaultShake: 'heavy',
     defaultTheme: 'gold'
   },
@@ -162,6 +164,7 @@ const AESTHETICS = {
     tagFelled: '// NEUTRALIZED //',
     tagLiveDefeatedColor: '#06b6d4',
     tagLiveColor: '#38bdf8',
+    tagFelledColor: '#06b6d4',
     defaultShake: 'medium',
     defaultTheme: 'cyan'
   },
@@ -184,6 +187,7 @@ const AESTHETICS = {
     tagFelled: '[CLEAR]',
     tagLiveDefeatedColor: '#ef4444',
     tagLiveColor: '#22c55e',
+    tagFelledColor: '#facc15',
     defaultShake: 'medium',
     defaultTheme: 'crimson'
   },
@@ -206,6 +210,7 @@ const AESTHETICS = {
     tagFelled: '[SLAUGHTERED]',
     tagLiveDefeatedColor: '#ef4444',
     tagLiveColor: '#dc2626',
+    tagFelledColor: '#ef4444',
     defaultShake: 'heavy',
     defaultTheme: 'crimson'
   },
@@ -228,6 +233,7 @@ const AESTHETICS = {
     tagFelled: '[RESOLVED]',
     tagLiveDefeatedColor: '#38bdf8',
     tagLiveColor: '#22c55e',
+    tagFelledColor: '#38bdf8',
     defaultShake: 'subtle',
     defaultTheme: 'green'
   }
@@ -779,9 +785,18 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
     const rawDmgPopColor = boss.dmgPopColor || boss.popupColor || options.dmgPopColor || options.popupColor;
     const dmgPopColor = rawDmgPopColor ? (rawDmgPopColor.startsWith('#') ? rawDmgPopColor : '#' + rawDmgPopColor) : null;
 
-    // Tags
-    const tagLive = boss.tagLive || (isDefeated ? (bossAesthetic.tagLiveDefeated || '[BOSS]') : (bossAesthetic.tagLive || '[CURRENT FOE]'));
-    const tagFelled = boss.tagFelled || bossAesthetic.tagFelled || '[FELLED]';
+    // Tags & Colors
+    const defaultTagLive = isDefeated ? (bossAesthetic.tagLiveDefeated || '[BOSS]') : (bossAesthetic.tagLive || '[CURRENT FOE]');
+    const tagLive = String(boss.tagLive || boss.tag || options.tagLive || options.tag || defaultTagLive).trim();
+    const tagFelled = String(boss.tagFelled || boss.felledTag || options.tagFelled || options.felledTag || bossAesthetic.tagFelled || '[FELLED]').trim();
+
+    const rawTagLiveColor = boss.tagLiveColor || boss.tagColor || options.tagLiveColor || options.tagColor;
+    const defaultTagLiveColor = isDefeated ? (bossAesthetic.tagLiveDefeatedColor || '#ef4444') : (bossAesthetic.tagLiveColor || '#38bdf8');
+    const tagLiveColor = rawTagLiveColor ? (rawTagLiveColor.startsWith('#') ? rawTagLiveColor : '#' + rawTagLiveColor) : defaultTagLiveColor;
+
+    const rawTagFelledColor = boss.tagFelledColor || boss.felledTagColor || options.tagFelledColor || options.felledTagColor;
+    const defaultTagFelledColor = bossAesthetic.tagFelledColor || '#f59e0b';
+    const tagFelledColor = rawTagFelledColor ? (rawTagFelledColor.startsWith('#') ? rawTagFelledColor : '#' + rawTagFelledColor) : defaultTagFelledColor;
 
     const startTime = currentTime;
     const leadIn = isDefeated ? 0.5 : 0.8;
@@ -825,7 +840,9 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
       dmgPopColor,
       aesthetic: bossAesthetic,
       tagLive,
-      tagFelled
+      tagFelled,
+      tagLiveColor,
+      tagFelledColor
     });
   });
 
@@ -1223,7 +1240,8 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
     }
 
     // Top Header info
-    const tagLiveColor = tb.isDefeated ? (tb.aesthetic.tagLiveDefeatedColor || '#ef4444') : (tb.aesthetic.tagLiveColor || '#38bdf8');
+    const tagLiveColor = tb.tagLiveColor;
+    const tagFelledColor = tb.tagFelledColor;
 
     // Damage popups markup
     let popupsMarkup = [];
@@ -1271,7 +1289,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
             ${tb.isDefeated ? `
             <!-- Live & Felled Tags -->
             <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagLiveColor}" class="pixel-txt ${pfx}txt-${b} ${pfx}tag-live-${b}">${escapeXml(tb.tagLive)}</text>
-            <text x="${actualWidth}" text-anchor="end" y="11" fill="#f59e0b" class="pixel-txt ${pfx}txt-${b} ${pfx}tag-felled-${b}">${escapeXml(tb.tagFelled)}</text>
+            <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagFelledColor}" class="pixel-txt ${pfx}txt-${b} ${pfx}tag-felled-${b}">${escapeXml(tb.tagFelled)}</text>
             ` : `
             <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagLiveColor}" class="pixel-txt ${pfx}txt-${b}">${escapeXml(tb.tagLive)}</text>
             `}

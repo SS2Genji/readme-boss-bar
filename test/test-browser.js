@@ -181,7 +181,49 @@ async function runBrowserTests() {
           // Reset to single preset for final title and toast checks
           loadPreset('single');
 
-          // Defeated banner update
+          // Custom Tag Text & Tag Color customization
+          const liveTagInput = document.querySelector('#stage-card-0 input[placeholder="Default: [CURRENT FOE]"]');
+          assert(liveTagInput, 'Live tag input exists');
+          liveTagInput.value = '[TARGET ACQUIRED]';
+          liveTagInput.dispatchEvent(new Event('input', { bubbles: true }));
+          assert(vp.innerHTML.includes('[TARGET ACQUIRED]'), 'Live tag text reflected in SVG');
+          assert(document.getElementById('code-markdown').innerText.includes('tag=%5BTARGET%20ACQUIRED%5D'), 'Live tag reflected in markdown URL');
+
+          const felledTagInput = document.querySelector('#stage-card-0 input[placeholder="Default: [FELLED]"]');
+          assert(felledTagInput, 'Felled tag input exists');
+          felledTagInput.value = '[ANNIHILATED]';
+          felledTagInput.dispatchEvent(new Event('input', { bubbles: true }));
+          assert(vp.innerHTML.includes('[ANNIHILATED]'), 'Felled tag text reflected in SVG');
+          assert(document.getElementById('code-markdown').innerText.includes('felledTag=%5BANNIHILATED%5D'), 'Felled tag reflected in markdown URL');
+
+          const liveTagColorInput = document.getElementById('stage-tag-color-0');
+          assert(liveTagColorInput, 'Live tag color input exists');
+          liveTagColorInput.value = '#10B981';
+          liveTagColorInput.dispatchEvent(new Event('input', { bubbles: true }));
+          assert(vp.innerHTML.includes('fill="#10B981"') || vp.innerHTML.includes('fill="#10b981"'), 'Live tag color reflected in SVG');
+
+          const felledTagColorInput = document.getElementById('stage-tag-felled-color-0');
+          assert(felledTagColorInput, 'Felled tag color input exists');
+          felledTagColorInput.value = '#F43F5E';
+          felledTagColorInput.dispatchEvent(new Event('input', { bubbles: true }));
+          assert(vp.innerHTML.includes('fill="#F43F5E"') || vp.innerHTML.includes('fill="#f43f5e"'), 'Felled tag color reflected in SVG');
+
+          // Global tag color overrides
+          const globTagColor = document.getElementById('glob-tag-color');
+          globTagColor.value = '#06B6D4';
+          globTagColor.dispatchEvent(new Event('input', { bubbles: true }));
+          assert(document.getElementById('code-markdown').innerText.includes('tagColor=06B6D4'), 'Global tag color reflected in URL');
+
+          // Reset to defaults button
+          const resetBtn = document.getElementById('btn-reset-defaults');
+          assert(resetBtn, 'Reset to defaults button exists');
+          resetBtn.click();
+          assert(stages[0].name === 'STARCOURGE RADAHN', 'Reset restored Radahn preset');
+          assert(document.getElementById('glob-dmgpop').value === '-{N} BARS', 'Reset restored damage pop-up');
+          assert(document.getElementById('toast-text').innerText.includes('Reset'), 'Reset toast shown');
+          assert(vp.innerHTML.includes('STARCOURGE RADAHN'), 'SVG viewport restored after reset');
+
+          // Boss name update
           const nameInput = document.querySelector('#stage-card-0 input[type="text"]');
           nameInput.value = 'MOGH, LORD OF BLOOD';
           nameInput.dispatchEvent(new Event('input', { bubbles: true }));
