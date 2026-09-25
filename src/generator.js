@@ -106,15 +106,17 @@ function resolveTheme(colorNameOrHex, index = 0) {
   if (THEMES[key]) {
     return THEMES[key];
   }
-  if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(key)) {
+  const hexMatch = key.match(/^#?([0-9a-f]{3}|[0-9a-f]{6})$/i);
+  if (hexMatch) {
+    const hexColor = '#' + hexMatch[1];
     return {
       name: `custom_${index}`,
-      bar: key,
-      pulse: key,
+      bar: hexColor,
+      pulse: hexColor,
       frameOuter: '#78350f',
       frameInner: '#d97706',
       frameBg: '#1f1515',
-      emblem: key,
+      emblem: hexColor,
       flash: '#fef08a',
       sparks: ['#fef08a', '#f59e0b']
     };
@@ -123,15 +125,15 @@ function resolveTheme(colorNameOrHex, index = 0) {
 }
 
 function resolveShake(shake, defaultValue = 'medium') {
-  if (shake === false || shake === 'false' || shake === 'none') return 'none';
+  if (shake === false || shake === 'false' || shake === 'none' || shake === '0') return 'none';
   if (shake === 'subtle') return 'subtle';
   if (shake === 'heavy') return 'heavy';
-  if (shake === 'medium' || shake === true || shake === 'true') return 'medium';
+  if (shake === 'medium' || shake === true || shake === 'true' || shake === '1') return 'medium';
   return defaultValue;
 }
 
 function resolveSparks(sparks) {
-  if (sparks === false || sparks === 'false' || sparks === 'none') return false;
+  if (sparks === false || sparks === 'false' || sparks === 'none' || sparks === '0') return false;
   return true;
 }
 
@@ -163,11 +165,17 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
   // Helper to calculate segment layout for a given totalBars
   function getBarLayout(totalBars) {
     let gap = 8;
-    if (totalBars >= 16) gap = 2;
-    else if (totalBars >= 10) gap = 3;
+    if (totalBars >= 25) gap = 2;
+    else if (totalBars >= 16) gap = 3;
+    else if (totalBars >= 10) gap = 4;
     else if (totalBars >= 6) gap = 5;
-    const segWidth = Math.max(4, Math.floor((containerWidth - (totalBars - 1) * gap) / totalBars));
-    const actualWidth = totalBars * segWidth + (totalBars - 1) * gap;
+    let segWidth = Math.max(3, Math.floor((containerWidth - (totalBars - 1) * gap) / totalBars));
+    let actualWidth = totalBars * segWidth + (totalBars - 1) * gap;
+    if (actualWidth > containerWidth) {
+      gap = Math.max(1, Math.floor(gap / 2));
+      segWidth = Math.max(2, Math.floor((containerWidth - (totalBars - 1) * gap) / totalBars));
+      actualWidth = totalBars * segWidth + (totalBars - 1) * gap;
+    }
     return { gap, segWidth, actualWidth };
   }
 
@@ -177,13 +185,14 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
   const uniqueThemes = new Map();
 
   rawBosses.forEach((boss, bIndex) => {
-    const isBossAuto = isGlobalAuto || boss.auto === true || boss.auto === 'true';
+    const isBossAuto = isGlobalAuto || boss.auto === true || boss.auto === 'true' || boss.auto === '1';
     const totalBars = Math.max(1, parseInt(boss.totalBars, 10) || (isBossAuto ? 6 : 5));
 
-    // Resolve damage per hit
+    // Resolve damage per hit (bars drained per hit action)
     let damagePerHit = parseInt(
-      boss.damagePerHit || boss.damage || boss.dmg || boss.dmgPerHit ||
-      options.damagePerHit || options.damage || options.dmg || options.dmgPerHit,
+      boss.damagePerHit || boss.dmgPerHit ||
+      options.damagePerHit || options.dmgPerHit ||
+      boss.dmg || options.dmg,
       10
     );
     if (!damagePerHit || damagePerHit < 1) {
@@ -205,7 +214,9 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
         totalDamage = Math.max(1, Math.floor(totalBars * 0.5)); // Active foe partially damaged
       }
     } else {
-      totalDamage = 0;
+      // In manual mode without explicit hits or damage specified,
+      // default to draining the entire bar (full boss battle sequence)
+      totalDamage = totalBars;
     }
 
     const hitsCount = totalDamage > 0 ? Math.ceil(totalDamage / damagePerHit) : 0;
@@ -217,7 +228,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
     const rawInterval = boss.hitInterval ?? boss.interval ?? boss.speed ??
       options.hitInterval ?? options.interval ?? options.speed;
     if (rawInterval !== undefined && rawInterval !== null && rawInterval !== '') {
-      hitInterval = Math.max(0.1, parseFloat(rawInterval) || 0.5);
+      hitInterval = Math.max(0.08, parseFloat(rawInterval) || 0.5);
     } else if (isBossAuto) {
       hitInterval = hitsCount > 4 ? 0.38 : (hitsCount > 2 ? 0.5 : 0.7);
     } else if (hitsCount > 6) {
@@ -403,7 +414,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
             animation: drain_${b}_${i} ${totalTime.toFixed(1)}s infinite;
           }
           @keyframes drain_${b}_${i} {
-            0%, ${startP} { width: 0px; }
+            0%, ${startP} { width: 0px; fill: ${tb.theme.bar}; }
             ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
             ${hitPFlash} { fill: ${tb.hitFlash}; }
             ${hitPDrain}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
@@ -429,7 +440,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
         // Stays full / alive
         cssRules.push(`
           .bar-${b}-${i} {
-            animation: alive_${b}_${i} ${totalTime.toFixed(1)}s infinite;
+            animation: alive_${b}_${i} ${totalTime.toFixed(1)}s infinite, pulse_${tb.theme.name} 2s infinite alternate;
           }
           @keyframes alive_${b}_${i} {
             0%, ${startP} { width: 0px; }
@@ -529,7 +540,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
           <rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" fill="${tb.theme.frameInner}" />
           <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="${tb.theme.frameBg}" />
           <!-- Animated Fill Bar -->
-          <rect x="0" y="0" height="${barHeight}" class="bar-${b}-${i} ${!getsHit ? `pulse-${tb.theme.name}` : ''}" />
+          <rect x="0" y="0" height="${barHeight}" fill="${tb.theme.bar}" class="bar-${b}-${i}" />
           ${getsHit && tb.sparks ? `
           <!-- Golden/Themed Pixel Sparks -->
           <g class="sparks-${b}-${i}" transform="translate(${Math.round(segWidth / 2)}, ${Math.round(barHeight / 2)})">

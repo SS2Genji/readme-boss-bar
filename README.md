@@ -57,31 +57,35 @@ Defeat Milestone 1, then battle Milestone 2:
 You can pass bosses using the shorthand format:
 
 ```text
-NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT
+NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT:THEME:SHAKE:FELLED_TEXT
 ```
 
 | Component | Type | Description | Default | Example |
 | :--- | :--- | :--- | :--- | :--- |
 | `NAME` | String | Boss title / milestone name | `BOSS` | `RADAHN` |
 | `TOTAL_BARS` | Integer | Total number of health segments | `5` | `10` |
-| `HITS` | Integer | Total hits to execute | `0` | `2` |
-| `INTERVAL` | Float | Seconds between hits | Adaptive (`0.5s`) | `0.5` |
+| `HITS` | Integer | Total hits to execute (if omitted, drains until defeated) | `All bars` | `2` |
+| `INTERVAL` | Float | Seconds between hits | `0.5s` | `0.5` |
 | `DMG_PER_HIT` | Integer | Number of bars drained per hit | `1` | `3` |
+| `THEME` | String | Color theme preset or `#hex` | `crimson` | `purple` |
+| `SHAKE` | String | Screen shake intensity (`none`, `subtle`, `medium`, `heavy`) | `medium` | `heavy` |
+| `FELLED_TEXT` | String | Defeat victory text overlay | `GREAT ENEMY FELLED` | `DEMIGOD FELLED` |
 
-*Note: Trailing components can be omitted (e.g. `?boss=RADAHN:10:2` uses default interval and 1 bar per hit).*
+*Note: Trailing components can be omitted (e.g. `?boss=RADAHN:10:::3` drains 3 bars every 0.5s until 10 bars are depleted).*
 
 ### Query Parameters
 
 | Parameter | Type | Description | Example |
 | :--- | :--- | :--- | :--- |
-| `boss` | String | Repeatable boss specification shorthand | `?boss=RADAHN:10:2:0.5:3` |
+| `boss` | String | Repeatable boss specification shorthand | `?boss=RADAHN:10:2:0.5:3:purple:heavy` |
 | `bosses` | String | Comma-separated boss specifications | `?bosses=M1:3:3,M2:5:1` |
-| `b1`, `b2` | String | Numbered boss stages | `?b1=STAGE+1:4:4&b2=STAGE+2:6:2` |
+| `b1`, `b2` | String | Numbered boss stages (sorted naturally) | `?b1=STAGE+1:4:4&b2=STAGE+2:6:2` |
+| `name`, `bars` | String / Int | Single boss definition | `?name=RADAHN&bars=10&dmg=3&interval=0.5` |
 | `auto` | Boolean | Enable automatic cinematic mode | `?auto=true` |
 | `theme` | String | Color theme (`crimson`, `purple`, `cyan`, `gold`, `green`, `orange`, `#hex`) | `?theme=purple` |
 | `shake` | String | Screen shake intensity (`none`, `subtle`, `medium`, `heavy`) | `?shake=heavy` |
-| `interval` | Float | Global default hit interval in seconds | `?interval=0.5` |
-| `dmg` | Integer | Global default damage per hit in bars | `?dmg=3` |
+| `interval`, `speed` | Float | Global default hit interval in seconds | `?interval=0.5` |
+| `dmg`, `damage` | Integer | Global default damage per hit in bars | `?dmg=3` |
 | `sparks` | Boolean | Toggle golden/themed pixel sparks (`true`, `false`) | `?sparks=false` |
 | `flash` | String | Hit flash color | `?flash=%23ffffff` |
 | `felled` | String | Custom defeat banner text | `?felled=DEMIGOD+FELLED` |
@@ -101,7 +105,7 @@ NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT
 | `gold` | Erdtree / Golden Order | `#d97706` | `#f59e0b` |
 | `green` | Scarlet Rot / Poison Miasma | `#16a34a` | `#22c55e` |
 | `orange` | Flame of Frenzy / Giant Flame | `#ea580c` | `#f97316` |
-| Custom `#hex` | Any 3- or 6-digit hex code | `user-defined` | `user-defined` |
+| Custom `#hex` | Any 3- or 6-digit hex (with or without `#`) | `user-defined` | `user-defined` |
 
 ---
 
@@ -113,11 +117,11 @@ Generate SVGs locally or directly in CI pipelines:
 # 1. Automatic cinematic mode
 npx readme-boss-bar --auto -o assets/boss_bar.svg
 
-# 2. Granular multi-bar combat (10 bars, 2 hits of 3 bars every 0.5s)
-npx readme-boss-bar -b "RADAHN:10:2:0.5:3" --theme purple --shake heavy -o assets/radahn.svg
+# 2. Granular multi-bar combat (10 bars, 3 bars per hit every 0.5s)
+npx readme-boss-bar -b "RADAHN:10" --dmg 3 --interval 0.5 --theme purple --shake heavy -o assets/radahn.svg
 
-# 3. Defeated boss with custom defeat banner
-npx readme-boss-bar -b "MALENIA:8:4:0.35:2" --theme gold --felled-text "DEMIGOD FELLED" -o assets/malenia.svg
+# 3. Defeated boss with custom defeat banner via extended shorthand
+npx readme-boss-bar -b "MALENIA:8:4:0.35:2:gold:heavy:DEMIGOD FELLED" -o assets/malenia.svg
 
 # 4. Multi-boss sequential milestones
 npx readme-boss-bar -b "MILESTONE 1:3:3" -b "MILESTONE 2:5:1" -o assets/boss_bar.svg

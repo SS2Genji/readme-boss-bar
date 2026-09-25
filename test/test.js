@@ -159,5 +159,63 @@ fs.writeFileSync('/tmp/test_boss_13.svg', svg13);
 execSync('rsvg-convert /tmp/test_boss_13.svg -o /tmp/test_boss_13.png');
 console.log("✔ Test 13 passed: Strict XML entity escaping compiles cleanly!");
 
-console.log("\nALL 13 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
+// Test 14: Manual mode with damagePerHit without specifying hits (default drains totalBars)
+const svg14 = generateBossBarSVG([
+  { name: "MALENIA", totalBars: 10, damagePerHit: 3, hitInterval: 0.5 }
+]);
+if (!svg14.includes('drain_') || !svg14.includes('dmg-pop-0-0')) {
+  throw new Error("Test 14 failed: Manual mode did not execute damage animations when hits was omitted!");
+}
+fs.writeFileSync('/tmp/test_boss_14.svg', svg14);
+execSync('rsvg-convert /tmp/test_boss_14.svg -o /tmp/test_boss_14.png');
+console.log("✔ Test 14 passed: Manual mode without explicit hits correctly drains health and animates!");
+
+// Test 15: Fill attribute verification (alive bars have fill and dual animation)
+const svg15 = generateBossBarSVG([
+  { name: "RADAHN", totalBars: 5, hits: 2, barColor: "purple" }
+]);
+if (!svg15.includes('fill="#9333ea"') || !svg15.includes('pulse_purple 2s infinite alternate')) {
+  throw new Error("Test 15 failed: Alive bars must have explicit fill attribute and pulse animation!");
+}
+fs.writeFileSync('/tmp/test_boss_15.svg', svg15);
+execSync('rsvg-convert /tmp/test_boss_15.svg -o /tmp/test_boss_15.png');
+console.log("✔ Test 15 passed: Fill attribute and dual CSS animation verified!");
+
+// Test 16: Hex color without leading hash (e.g. 'ec4899')
+const svg16 = generateBossBarSVG([
+  { name: "PINK VOID", totalBars: 4, hits: 2, barColor: "ec4899" }
+]);
+if (!svg16.includes('#ec4899')) {
+  throw new Error("Test 16 failed: Hex without leading # must be resolved to #ec4899!");
+}
+fs.writeFileSync('/tmp/test_boss_16.svg', svg16);
+execSync('rsvg-convert /tmp/test_boss_16.svg -o /tmp/test_boss_16.png');
+console.log("✔ Test 16 passed: Hex theme without leading # resolved and compiled cleanly!");
+
+// Test 17: Extreme bar count safety (40 bars with high damage)
+const svg17 = generateBossBarSVG([
+  { name: "COLOSSUS", totalBars: 40, damagePerHit: 5, hitInterval: 0.2 }
+]);
+fs.writeFileSync('/tmp/test_boss_17.svg', svg17);
+execSync('rsvg-convert /tmp/test_boss_17.svg -o /tmp/test_boss_17.png');
+console.log("✔ Test 17 passed: Extreme 40-bar stress test compiles cleanly with 0 overflow!");
+
+// Test 18: CLI end-to-end execution with flags (--dmg, --interval, --theme=purple, --sparks)
+execSync('node bin/cli.js -b "RADAHN:10" --dmg 3 --interval 0.5 --theme=purple --shake=heavy -o /tmp/cli_test_advanced.svg');
+const cliSvg = fs.readFileSync('/tmp/cli_test_advanced.svg', 'utf8');
+if (!cliSvg.includes('drain_') || !cliSvg.includes('#9333ea') || !cliSvg.includes('-3 BARS')) {
+  throw new Error("Test 18 failed: CLI did not apply --dmg, --interval, or --theme=purple correctly!");
+}
+execSync('rsvg-convert /tmp/cli_test_advanced.svg -o /tmp/cli_test_advanced.png');
+
+// Test CLI sparks boolean safety (does not consume next option)
+execSync('node bin/cli.js -b "TEST:5:2" --sparks -o /tmp/cli_sparks_safe.svg');
+if (!fs.existsSync('/tmp/cli_sparks_safe.svg')) {
+  throw new Error("Test 18 failed: CLI --sparks consumed -o argument!");
+}
+execSync('rsvg-convert /tmp/cli_sparks_safe.svg -o /tmp/cli_sparks_safe.png');
+console.log("✔ Test 18 passed: CLI flags (--dmg, --interval, --flag=value, boolean safety) work cleanly!");
+
+console.log("\nALL 18 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
+
 

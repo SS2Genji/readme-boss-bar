@@ -14,18 +14,24 @@ Usage:
 
 Boss Options:
   -b, --boss <spec>             Boss definition in shorthand format (repeatable):
-                                "NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT"
+                                "NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT:THEME:SHAKE:FELLED_TEXT"
                                 (e.g. "RADAHN:10:2:0.5:3" or "MILESTONE 1:3:3")
   -c, --config <file.json>      Path to JSON configuration file
   --auto                        Enable automatic cinematic mode (auto speeds, combos, themes)
+  --no-auto                     Disable automatic mode
 
 Animation & Style Options:
+  --dmg, --damage <bars>        Damage per hit in segments (e.g. 3)
+  --interval, --speed <sec>     Seconds between hits (e.g. 0.5)
+  --hits <count>                Total hit actions to execute
   --shake <level>               Screen shake: none, subtle, medium, heavy (default: medium)
   --theme, --color <name|hex>   Color theme: crimson, purple, cyan, gold, green, orange, or #hex
-  --sparks <bool>               Toggle pixel sparks: true or false (default: true)
+  --sparks [bool]               Toggle pixel sparks (default: true)
+  --no-sparks                   Disable pixel sparks
   --flash, --hit-flash <color>  Flash highlight color upon hit (default: #fef08a)
-  --felled-text <string>        Defeated banner text (default: "GREAT ENEMY FELLED")
-  --dmg-pop <template|bool>     Damage pop-up template (e.g. "-{N} BARS", "-{N} HP", or false)
+  --felled-text, --felled <txt> Defeated banner text (default: "GREAT ENEMY FELLED")
+  --dmg-pop [template]          Damage pop-up template (e.g. "-{N} BARS", "-{N} HP", or false)
+  --no-dmg-pop                  Disable damage pop-ups
 
 Canvas Options:
   -o, --output <file.svg>       Output SVG file path (default: boss_bar.svg)
@@ -36,8 +42,8 @@ Canvas Options:
 
 Examples:
   readme-boss-bar --auto -o boss_bar.svg
-  readme-boss-bar -b "RADAHN:10:2:0.5:3" --theme purple --shake heavy -o radahn.svg
-  readme-boss-bar -b "MALENIA:12:4:0.35:3" --felled-text "DEMIGOD FELLED" -o malenia.svg
+  readme-boss-bar -b "RADAHN:10" --dmg 3 --interval 0.5 --theme purple --shake heavy -o radahn.svg
+  readme-boss-bar -b "MALENIA:12:4:0.35:3:gold:heavy:DEMIGOD FELLED" -o malenia.svg
   readme-boss-bar -b "MILESTONE 1:3:3" -b "MILESTONE 2:5:1" -o assets/boss_bar.svg
   readme-boss-bar --config config.example.json -o boss_bar.svg
   `);
@@ -48,6 +54,36 @@ if (args.includes('-h') || args.includes('--help')) {
   process.exit(0);
 }
 
+function parseBossSpec(val) {
+  if (!val) return null;
+  const parts = val.split(':');
+  const boss = {
+    name: parts[0]?.trim() || 'BOSS'
+  };
+  if (parts.length >= 2 && parts[1] !== '') {
+    boss.totalBars = parseInt(parts[1], 10);
+  }
+  if (parts.length >= 3 && parts[2] !== '') {
+    boss.hits = parseInt(parts[2], 10);
+  }
+  if (parts.length >= 4 && parts[3] !== '') {
+    boss.hitInterval = parseFloat(parts[3]);
+  }
+  if (parts.length >= 5 && parts[4] !== '') {
+    boss.damagePerHit = parseInt(parts[4], 10);
+  }
+  if (parts.length >= 6 && parts[5] !== '') {
+    boss.barColor = parts[5].trim();
+  }
+  if (parts.length >= 7 && parts[6] !== '') {
+    boss.shake = parts[6].trim();
+  }
+  if (parts.length >= 8 && parts[7] !== '') {
+    boss.felledText = parts[7].trim();
+  }
+  return boss;
+}
+
 let bosses = [];
 let outputFile = 'boss_bar.svg';
 let options = {
@@ -56,32 +92,34 @@ let options = {
   barWidth: 480
 };
 
+// Normalize arguments to support --flag=value as well as --flag value
+const normalizedArgs = [];
 for (let i = 0; i < args.length; i++) {
   const arg = args[i];
+  if (arg.startsWith('--') && arg.includes('=')) {
+    const eqIdx = arg.indexOf('=');
+    normalizedArgs.push(arg.slice(0, eqIdx));
+    normalizedArgs.push(arg.slice(eqIdx + 1));
+  } else if (arg.startsWith('-b=') || arg.startsWith('-o=') || arg.startsWith('-c=') || arg.startsWith('-w=')) {
+    const eqIdx = arg.indexOf('=');
+    normalizedArgs.push(arg.slice(0, eqIdx));
+    normalizedArgs.push(arg.slice(eqIdx + 1));
+  } else {
+    normalizedArgs.push(arg);
+  }
+}
+
+for (let i = 0; i < normalizedArgs.length; i++) {
+  const arg = normalizedArgs[i];
 
   if (arg === '-b' || arg === '--boss') {
-    const val = args[++i];
+    const val = normalizedArgs[++i];
     if (val) {
-      const parts = val.split(':');
-      const boss = {
-        name: parts[0]?.trim() || 'BOSS'
-      };
-      if (parts.length >= 2 && parts[1] !== '') {
-        boss.totalBars = parseInt(parts[1], 10);
-      }
-      if (parts.length >= 3 && parts[2] !== '') {
-        boss.hits = parseInt(parts[2], 10);
-      }
-      if (parts.length >= 4 && parts[3] !== '') {
-        boss.hitInterval = parseFloat(parts[3]);
-      }
-      if (parts.length >= 5 && parts[4] !== '') {
-        boss.damagePerHit = parseInt(parts[4], 10);
-      }
-      bosses.push(boss);
+      const boss = parseBossSpec(val);
+      if (boss) bosses.push(boss);
     }
   } else if (arg === '-c' || arg === '--config') {
-    const configFile = args[++i];
+    const configFile = normalizedArgs[++i];
     if (configFile && fs.existsSync(configFile)) {
       try {
         const raw = fs.readFileSync(configFile, 'utf8');
@@ -104,6 +142,12 @@ for (let i = 0; i < args.length; i++) {
           if (parsed.width) options.width = parseInt(parsed.width, 10);
           if (parsed.height) options.height = parseInt(parsed.height, 10);
           if (parsed.barWidth) options.barWidth = parseInt(parsed.barWidth, 10);
+          if (parsed.interval || parsed.speed || parsed.hitInterval) {
+            options.hitInterval = parseFloat(parsed.interval || parsed.speed || parsed.hitInterval);
+          }
+          if (parsed.dmg || parsed.damagePerHit || parsed.damage) {
+            options.damagePerHit = parseInt(parsed.dmg || parsed.damagePerHit || parsed.damage, 10);
+          }
         }
       } catch (err) {
         console.error("Error reading config file:", err.message);
@@ -114,29 +158,60 @@ for (let i = 0; i < args.length; i++) {
       process.exit(1);
     }
   } else if (arg === '-o' || arg === '--output') {
-    outputFile = args[++i] || outputFile;
+    outputFile = normalizedArgs[++i] || outputFile;
   } else if (arg === '-w' || arg === '--width') {
-    options.width = parseInt(args[++i], 10) || options.width;
+    options.width = parseInt(normalizedArgs[++i], 10) || options.width;
   } else if (arg === '--height') {
-    options.height = parseInt(args[++i], 10) || options.height;
+    options.height = parseInt(normalizedArgs[++i], 10) || options.height;
   } else if (arg === '--bar-width') {
-    options.barWidth = parseInt(args[++i], 10) || options.barWidth;
+    options.barWidth = parseInt(normalizedArgs[++i], 10) || options.barWidth;
   } else if (arg === '--shake') {
-    options.shake = args[++i];
+    options.shake = normalizedArgs[++i];
   } else if (arg === '--theme' || arg === '--color' || arg === '--bar-color') {
-    options.barColor = args[++i];
+    options.barColor = normalizedArgs[++i];
   } else if (arg === '--sparks') {
-    const val = args[++i];
-    options.sparks = val === 'true' || val === '1';
+    const next = normalizedArgs[i + 1];
+    if (next !== undefined && !next.startsWith('-')) {
+      options.sparks = next !== 'false' && next !== '0';
+      i++;
+    } else {
+      options.sparks = true;
+    }
+  } else if (arg === '--no-sparks') {
+    options.sparks = false;
   } else if (arg === '--flash' || arg === '--hit-flash') {
-    options.hitFlash = args[++i];
-  } else if (arg === '--felled-text') {
-    options.felledText = args[++i];
+    options.hitFlash = normalizedArgs[++i];
+  } else if (arg === '--felled-text' || arg === '--felled') {
+    options.felledText = normalizedArgs[++i];
   } else if (arg === '--dmg-pop' || arg === '--popup') {
-    const val = args[++i];
-    options.dmgPop = (val === 'false' || val === '0') ? false : val;
+    const next = normalizedArgs[i + 1];
+    if (next !== undefined && !next.startsWith('-')) {
+      options.dmgPop = (next === 'false' || next === '0') ? false : next;
+      i++;
+    } else {
+      options.dmgPop = true;
+    }
+  } else if (arg === '--no-dmg-pop') {
+    options.dmgPop = false;
+  } else if (arg === '--interval' || arg === '--speed') {
+    options.hitInterval = parseFloat(normalizedArgs[++i]);
+  } else if (arg === '--dmg' || arg === '--damage' || arg === '--damage-per-hit') {
+    options.damagePerHit = parseInt(normalizedArgs[++i], 10);
+  } else if (arg === '--hits') {
+    options.hits = parseInt(normalizedArgs[++i], 10);
   } else if (arg === '--auto') {
-    options.auto = true;
+    const next = normalizedArgs[i + 1];
+    if (next === 'false' || next === '0') {
+      options.auto = false;
+      i++;
+    } else if (next === 'true' || next === '1') {
+      options.auto = true;
+      i++;
+    } else {
+      options.auto = true;
+    }
+  } else if (arg === '--no-auto') {
+    options.auto = false;
   }
 }
 

@@ -90,5 +90,83 @@ runApiTest(
   "Numbered bosses (?b1 & ?b2)"
 );
 
-console.log("\nALL API TESTS PASSED SUCCESSFULLY!");
+// 6. Boss shorthand without hits (?boss=RADAHN:10&dmg=3&interval=0.5) drains all bars
+runApiTest(
+  {
+    boss: "RADAHN:10",
+    dmg: "3",
+    interval: "0.5"
+  },
+  (svg) => {
+    assert(svg.includes("RADAHN"));
+    assert(svg.includes("drain_0_0"));
+    assert(svg.includes("-3 BARS"));
+    assert(svg.includes("-1 BAR"));
+    assert(svg.includes("GREAT ENEMY FELLED"));
+  },
+  "Shorthand without hits (?boss=RADAHN:10&dmg=3&interval=0.5) drains to completion"
+);
+
+// 7. Extended 8-part shorthand (?boss=RADAHN:6:2:0.5:3:purple:heavy:CONQUEROR FELLED)
+runApiTest(
+  {
+    boss: "RADAHN:6:2:0.5:3:purple:heavy:CONQUEROR FELLED"
+  },
+  (svg) => {
+    assert(svg.includes("RADAHN"));
+    assert(svg.includes("#9333ea"));
+    assert(svg.includes("-4px, 3px")); // heavy shake
+    assert(svg.includes("CONQUEROR FELLED"));
+  },
+  "Extended 8-part shorthand with theme, shake, and felled text"
+);
+
+// 8. Single boss query params (?name=GODFREY&bars=8&dmg=2&interval=0.4&theme=gold)
+runApiTest(
+  {
+    name: "GODFREY",
+    bars: "8",
+    dmg: "2",
+    interval: "0.4",
+    theme: "gold"
+  },
+  (svg) => {
+    assert(svg.includes("GODFREY"));
+    assert(svg.includes("#d97706"));
+    assert(svg.includes("drain_0_0"));
+    assert(svg.includes("-2 BARS"));
+  },
+  "Single boss query parameters (?name=GODFREY&bars=8&dmg=2...)"
+);
+
+// 9. Natural numerical sorting of numbered stages (?b1, ?b2, ?b10)
+runApiTest(
+  {
+    b10: "STAGE 10:4:4",
+    b1: "STAGE 1:4:4",
+    b2: "STAGE 2:4:4"
+  },
+  (svg) => {
+    const idx1 = svg.indexOf("STAGE 1");
+    const idx2 = svg.indexOf("STAGE 2");
+    const idx10 = svg.indexOf("STAGE 10");
+    assert(idx1 < idx2 && idx2 < idx10, "Stages must be sorted naturally (b1 < b2 < b10)");
+  },
+  "Natural numerical sorting for ?b1, ?b2, ?b10"
+);
+
+// 10. Hex theme without leading hash (?boss=M1:3:3&theme=a855f7)
+runApiTest(
+  {
+    boss: "M1:3:3",
+    theme: "a855f7"
+  },
+  (svg) => {
+    assert(svg.includes("#a855f7"));
+  },
+  "Hex theme without leading hash (?theme=a855f7)"
+);
+
+console.log("\nALL 10 API TESTS PASSED SUCCESSFULLY!");
+
 

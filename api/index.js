@@ -11,6 +11,8 @@ function parseBossSpec(rawSpec, defaults = {}) {
   }
   if (parts.length >= 3 && parts[2] !== '') {
     boss.hits = parseInt(parts[2], 10);
+  } else if (defaults.hits !== undefined) {
+    boss.hits = defaults.hits;
   }
   if (parts.length >= 4 && parts[3] !== '') {
     boss.hitInterval = parseFloat(parts[3]);
@@ -21,6 +23,21 @@ function parseBossSpec(rawSpec, defaults = {}) {
     boss.damagePerHit = parseInt(parts[4], 10);
   } else if (defaults.damagePerHit !== undefined) {
     boss.damagePerHit = defaults.damagePerHit;
+  }
+  if (parts.length >= 6 && parts[5] !== '') {
+    boss.barColor = parts[5].trim();
+  } else if (defaults.barColor !== undefined) {
+    boss.barColor = defaults.barColor;
+  }
+  if (parts.length >= 7 && parts[6] !== '') {
+    boss.shake = parts[6].trim();
+  } else if (defaults.shake !== undefined) {
+    boss.shake = defaults.shake;
+  }
+  if (parts.length >= 8 && parts[7] !== '') {
+    boss.felledText = parts[7].trim();
+  } else if (defaults.felledText !== undefined) {
+    boss.felledText = defaults.felledText;
   }
   return boss;
 }
@@ -67,6 +84,12 @@ module.exports = (req, res) => {
       granularDefaults.damagePerHit = parseInt(query.dmg || query.damage || query.damagePerHit, 10);
       options.damagePerHit = granularDefaults.damagePerHit;
     }
+    if (query.hits !== undefined) {
+      granularDefaults.hits = parseInt(query.hits, 10);
+    }
+    if (options.barColor) granularDefaults.barColor = options.barColor;
+    if (options.shake) granularDefaults.shake = options.shake;
+    if (options.felledText) granularDefaults.felledText = options.felledText;
 
     // Parse repeated ?boss=... or comma-separated ?bosses=...
     const rawBosses = query.boss || query.bosses;
@@ -78,8 +101,12 @@ module.exports = (req, res) => {
       });
     }
 
-    // Also support ?b1=Name:Total:Hits...&b2=...
-    const bKeys = Object.keys(query).filter(k => /^b\d+$/i.test(k)).sort();
+    // Also support ?b1=Name:Total:Hits...&b2=... with natural numerical sorting
+    const bKeys = Object.keys(query).filter(k => /^b\d+$/i.test(k)).sort((a, b) => {
+      const numA = parseInt(a.replace(/\D/g, ''), 10);
+      const numB = parseInt(b.replace(/\D/g, ''), 10);
+      return numA - numB;
+    });
     for (let k of bKeys) {
       const boss = parseBossSpec(query[k], granularDefaults);
       if (boss) bosses.push(boss);
@@ -92,7 +119,13 @@ module.exports = (req, res) => {
         totalBars: parseInt(query.bars || query.totalBars, 10) || 5,
         hits: query.hits !== undefined ? parseInt(query.hits, 10) : undefined,
         hitInterval: granularDefaults.hitInterval,
-        damagePerHit: granularDefaults.damagePerHit
+        damagePerHit: granularDefaults.damagePerHit,
+        barColor: options.barColor,
+        shake: options.shake,
+        felledText: options.felledText,
+        hitFlash: options.hitFlash,
+        sparks: options.sparks,
+        dmgPop: options.dmgPop
       });
     }
 
