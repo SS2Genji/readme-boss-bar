@@ -74,6 +74,9 @@ module.exports = (req, res) => {
     if (query.auto === 'true' || query.auto === '1') {
       options.auto = true;
     }
+    if (query.id || query.prefix) {
+      options.id = query.id || query.prefix;
+    }
 
     const granularDefaults = {};
     if (query.interval || query.speed) {

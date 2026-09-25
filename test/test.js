@@ -216,6 +216,35 @@ if (!fs.existsSync('/tmp/cli_sparks_safe.svg')) {
 execSync('rsvg-convert /tmp/cli_sparks_safe.svg -o /tmp/cli_sparks_safe.png');
 console.log("✔ Test 18 passed: CLI flags (--dmg, --interval, --flag=value, boolean safety) work cleanly!");
 
-console.log("\nALL 18 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
+// Test 19: Multi-bar sequential right-to-left drainage verification
+const svg19 = generateBossBarSVG([
+  { name: "MULTI-HIT BOSS", totalBars: 6, hits: 1, damagePerHit: 2, hitInterval: 0.5 }
+]);
+const kfBar4Idx = svg19.indexOf("@keyframes drain_0_4");
+if (kfBar4Idx === -1) {
+  throw new Error("Test 19 failed: Could not find @keyframes drain_0_4!");
+}
+const kfBar4 = svg19.slice(kfBar4Idx, svg19.indexOf("}", svg19.indexOf("100%", kfBar4Idx)) + 1);
+// Bar 4 (left of bar 5) must hold full width (75px) with flash highlight while bar 5 drains
+if (!kfBar4.includes("width: 75px; fill: #fef08a;")) {
+  throw new Error("Test 19 failed: Bar 4 did not hold width during multi-bar strike!");
+}
+fs.writeFileSync('/tmp/test_boss_19.svg', svg19);
+execSync('rsvg-convert /tmp/test_boss_19.svg -o /tmp/test_boss_19.png');
+console.log("✔ Test 19 passed: Multi-bar sequential right-to-left drainage verified cleanly!");
+
+// Test 20: Scoped ID prefixing isolation
+const svg20 = generateBossBarSVG([
+  { name: "SCOPED BOSS", totalBars: 4, hits: 2 }
+], { id: "test_scope" });
+if (!svg20.includes('test_scope-bar-0-0') || !svg20.includes('test_scope_drain_0_3') || !svg20.includes('test_scope_alive_0_0') || !svg20.includes('test_scope_shakeAnim0')) {
+  throw new Error("Test 20 failed: SVG did not prefix classes and keyframes with test_scope!");
+}
+fs.writeFileSync('/tmp/test_boss_20.svg', svg20);
+execSync('rsvg-convert /tmp/test_boss_20.svg -o /tmp/test_boss_20.png');
+console.log("✔ Test 20 passed: Scoped ID prefixing isolation compiles cleanly!");
+
+console.log("\nALL 20 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
+
 
 

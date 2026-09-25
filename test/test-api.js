@@ -167,6 +167,20 @@ runApiTest(
   "Hex theme without leading hash (?theme=a855f7)"
 );
 
-console.log("\nALL 10 API TESTS PASSED SUCCESSFULLY!");
+// 11. Scoped ID parameter (?boss=M1:3:3&id=api_scope)
+runApiTest(
+  {
+    boss: "M1:3:3",
+    id: "api_scope"
+  },
+  (svg) => {
+    assert(svg.includes("api_scope-bar-0-0"));
+    assert(svg.includes("api_scope_drain_0_2"));
+  },
+  "Scoped ID parameter (?id=api_scope)"
+);
+
+console.log("\nALL 11 API TESTS PASSED SUCCESSFULLY!");
+
 
 

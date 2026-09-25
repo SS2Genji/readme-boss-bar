@@ -139,6 +139,10 @@ function resolveSparks(sparks) {
 
 function generateBossBarSVG(bossesConfig = [], options = {}) {
   const isGlobalAuto = options.auto === true || options.auto === 'true' || options.auto === '1';
+  const rawId = options.id || options.prefix || '';
+  const id = String(rawId).replace(/[^a-zA-Z0-9_-]/g, '');
+  const pfx = id ? `${id}-` : '';
+  const kfPfx = id ? `${id}_` : '';
 
   // Fallback defaults if no bosses provided
   let rawBosses;
@@ -323,10 +327,10 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
   // Pulse animation rules for each unique theme
   uniqueThemes.forEach((th) => {
     cssRules.push(`
-      .pulse-${th.name} {
-        animation: pulse_${th.name} 2s infinite alternate;
+      .${pfx}pulse-${th.name} {
+        animation: ${kfPfx}pulse_${th.name} 2s infinite alternate;
       }
-      @keyframes pulse_${th.name} {
+      @keyframes ${kfPfx}pulse_${th.name} {
         0% { fill: ${th.bar}; }
         100% { fill: ${th.pulse}; }
       }
@@ -343,11 +347,11 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
 
     // Layer lifecycle (fade in & fade out)
     cssRules.push(`
-      .boss-layer-${b} {
+      .${pfx}boss-layer-${b} {
         opacity: 0;
-        animation: bossLife${b} ${totalTime.toFixed(1)}s infinite;
+        animation: ${kfPfx}bossLife${b} ${totalTime.toFixed(1)}s infinite;
       }
-      @keyframes bossLife${b} {
+      @keyframes ${kfPfx}bossLife${b} {
         0%, ${startP} { opacity: 0; transform: translateY(3px); }
         ${inP}, ${outStartP} { opacity: 1; transform: translateY(0); }
         ${endP}, 100% { opacity: 0; transform: translateY(-3px); }
@@ -385,10 +389,10 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
     shakeKeyframes.push(`${endP}, 100% { transform: translate(0, 0); }`);
 
     cssRules.push(`
-      .shake-${b} {
-        animation: shakeAnim${b} ${totalTime.toFixed(1)}s infinite;
+      .${pfx}shake-${b} {
+        animation: ${kfPfx}shakeAnim${b} ${totalTime.toFixed(1)}s infinite;
       }
-      @keyframes shakeAnim${b} {
+      @keyframes ${kfPfx}shakeAnim${b} {
         ${shakeKeyframes.join('\n')}
       }
     `);
@@ -402,36 +406,59 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
       const getsHit = drainIndex < tb.totalDamage;
 
       if (getsHit) {
-        const hitActionIndex = Math.floor(drainIndex / tb.damagePerHit);
-        const hitT = tb.hitTimes[hitActionIndex];
+        const h = Math.floor(drainIndex / tb.damagePerHit);
+        const hitT = tb.hitTimes[h];
+        const fromDrain = h * tb.damagePerHit;
+        const toDrain = Math.min(tb.totalDamage - 1, (h + 1) * tb.damagePerHit - 1);
+        const K = toDrain - fromDrain + 1; // Number of bars drained in this strike
+        const p = drainIndex - fromDrain;   // 0 = rightmost, K - 1 = leftmost
+
+        // Scale total drain duration with K while keeping well within interval
+        const maxDrain = Math.min(0.35, tb.hitInterval * 0.75);
+        const drainDuration = Math.min(maxDrain, Math.max(0.16, 0.08 + K * 0.06));
+        const dt = drainDuration / K;
+
+        const tStart = hitT + p * dt;
+        const tEnd = hitT + (p + 1) * dt;
+
         const hitP0 = pct(hitT - 0.04);
         const hitPFlash = pct(hitT);
-        const drainTime = Math.min(0.18, tb.hitInterval * 0.6);
-        const hitPDrain = pct(hitT + drainTime);
 
-        cssRules.push(`
-          .bar-${b}-${i} {
-            animation: drain_${b}_${i} ${totalTime.toFixed(1)}s infinite;
-          }
-          @keyframes drain_${b}_${i} {
+        const drainKeyframes = (p === 0)
+          ? `
             0%, ${startP} { width: 0px; fill: ${tb.theme.bar}; }
             ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
-            ${hitPFlash} { fill: ${tb.hitFlash}; }
-            ${hitPDrain}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
+            ${hitPFlash} { width: ${segWidth}px; fill: ${tb.hitFlash}; }
+            ${pct(tEnd)}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
             100% { width: 0px; }
+          `
+          : `
+            0%, ${startP} { width: 0px; fill: ${tb.theme.bar}; }
+            ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
+            ${hitPFlash}, ${pct(tStart)} { width: ${segWidth}px; fill: ${tb.hitFlash}; }
+            ${pct(tEnd)}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
+            100% { width: 0px; }
+          `;
+
+        cssRules.push(`
+          .${pfx}bar-${b}-${i} {
+            animation: ${kfPfx}drain_${b}_${i} ${totalTime.toFixed(1)}s infinite;
+          }
+          @keyframes ${kfPfx}drain_${b}_${i} {
+            ${drainKeyframes.trim()}
           }
         `);
 
         if (tb.sparks) {
           cssRules.push(`
-            .sparks-${b}-${i} {
+            .${pfx}sparks-${b}-${i} {
               opacity: 0;
-              animation: sparkAnim_${b}_${i} ${totalTime.toFixed(1)}s infinite;
+              animation: ${kfPfx}sparkAnim_${b}_${i} ${totalTime.toFixed(1)}s infinite;
             }
-            @keyframes sparkAnim_${b}_${i} {
+            @keyframes ${kfPfx}sparkAnim_${b}_${i} {
               0%, ${hitP0} { opacity: 0; transform: scale(0.6); }
               ${hitPFlash} { opacity: 1; transform: scale(1.2); }
-              ${pct(hitT + drainTime * 0.9)} { opacity: 0; transform: scale(1.5); }
+              ${pct(hitT + drainDuration * 0.9)} { opacity: 0; transform: scale(1.5); }
               100% { opacity: 0; }
             }
           `);
@@ -439,10 +466,10 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
       } else {
         // Stays full / alive
         cssRules.push(`
-          .bar-${b}-${i} {
-            animation: alive_${b}_${i} ${totalTime.toFixed(1)}s infinite, pulse_${tb.theme.name} 2s infinite alternate;
+          .${pfx}bar-${b}-${i} {
+            animation: ${kfPfx}alive_${b}_${i} ${totalTime.toFixed(1)}s infinite, ${kfPfx}pulse_${tb.theme.name} 2s infinite alternate;
           }
-          @keyframes alive_${b}_${i} {
+          @keyframes ${kfPfx}alive_${b}_${i} {
             0%, ${startP} { width: 0px; }
             ${pct(tb.startTime + 0.3)}, ${endP} { width: ${segWidth}px; }
             100% { width: 0px; }
@@ -456,15 +483,15 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
       for (let h = 0; h < tb.hitsCount; h++) {
         const hitT = tb.hitTimes[h];
         cssRules.push(`
-          .dmg-pop-${b}-${h} {
+          .${pfx}dmg-pop-${b}-${h} {
             opacity: 0;
-            animation: dmgPopAnim_${b}_${h} ${totalTime.toFixed(1)}s infinite;
+            animation: ${kfPfx}dmgPopAnim_${b}_${h} ${totalTime.toFixed(1)}s infinite;
             font-family: 'Courier New', monospace;
             font-size: 11px;
             font-weight: 900;
             fill: #facc15;
           }
-          @keyframes dmgPopAnim_${b}_${h} {
+          @keyframes ${kfPfx}dmgPopAnim_${b}_${h} {
             0%, ${pct(hitT)} { opacity: 0; transform: translateY(0); }
             ${pct(hitT + 0.06)} { opacity: 1; transform: translateY(-4px); }
             ${pct(hitT + 0.45)} { opacity: 1; transform: translateY(-13px); }
@@ -480,27 +507,27 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
       const deathP = pct(finalHitT + 0.15);
 
       cssRules.push(`
-        .tag-live-${b} {
-          animation: tagLiveAnim${b} ${totalTime.toFixed(1)}s infinite;
+        .${pfx}tag-live-${b} {
+          animation: ${kfPfx}tagLiveAnim${b} ${totalTime.toFixed(1)}s infinite;
         }
-        @keyframes tagLiveAnim${b} {
+        @keyframes ${kfPfx}tagLiveAnim${b} {
           0%, ${deathP} { opacity: 1; }
           ${pct(finalHitT + 0.2)}, 100% { opacity: 0; }
         }
 
-        .tag-felled-${b} {
+        .${pfx}tag-felled-${b} {
           opacity: 0;
-          animation: tagFelledAnim${b} ${totalTime.toFixed(1)}s infinite;
+          animation: ${kfPfx}tagFelledAnim${b} ${totalTime.toFixed(1)}s infinite;
         }
-        @keyframes tagFelledAnim${b} {
+        @keyframes ${kfPfx}tagFelledAnim${b} {
           0%, ${deathP} { opacity: 0; }
           ${pct(finalHitT + 0.25)}, ${outStartP} { opacity: 1; }
           ${endP}, 100% { opacity: 0; }
         }
 
-        .felled-text-${b} {
+        .${pfx}felled-text-${b} {
           opacity: 0;
-          animation: felledBannerAnim${b} ${totalTime.toFixed(1)}s infinite;
+          animation: ${kfPfx}felledBannerAnim${b} ${totalTime.toFixed(1)}s infinite;
           font-family: 'Times New Roman', 'Georgia', serif;
           font-size: 15px;
           font-weight: 900;
@@ -508,7 +535,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
           fill: #fef08a;
           filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
         }
-        @keyframes felledBannerAnim${b} {
+        @keyframes ${kfPfx}felledBannerAnim${b} {
           0%, ${deathP} { opacity: 0; }
           ${pct(finalHitT + 0.25)}, ${outStartP} { opacity: 1; }
           ${endP}, 100% { opacity: 0; }
@@ -540,10 +567,10 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
           <rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" fill="${tb.theme.frameInner}" />
           <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="${tb.theme.frameBg}" />
           <!-- Animated Fill Bar -->
-          <rect x="0" y="0" height="${barHeight}" fill="${tb.theme.bar}" class="bar-${b}-${i}" />
+          <rect x="0" y="0" height="${barHeight}" fill="${tb.theme.bar}" class="${pfx}bar-${b}-${i}" />
           ${getsHit && tb.sparks ? `
           <!-- Golden/Themed Pixel Sparks -->
-          <g class="sparks-${b}-${i}" transform="translate(${Math.round(segWidth / 2)}, ${Math.round(barHeight / 2)})">
+          <g class="${pfx}sparks-${b}-${i}" transform="translate(${Math.round(segWidth / 2)}, ${Math.round(barHeight / 2)})">
             <rect x="-4" y="-4" width="2.5" height="2.5" fill="${tb.theme.sparks[0]}" />
             <rect x="4" y="-3" width="2.5" height="2.5" fill="${tb.theme.sparks[1]}" />
             <rect x="-3" y="4" width="2.5" height="2.5" fill="${tb.theme.sparks[1]}" />
@@ -582,14 +609,14 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
         }
 
         popupsMarkup.push(`
-          <text x="${hitCenterX}" text-anchor="middle" y="30" class="dmg-pop-${b}-${h}">${escapeXml(popText)}</text>
+          <text x="${hitCenterX}" text-anchor="middle" y="30" class="${pfx}dmg-pop-${b}-${h}">${escapeXml(popText)}</text>
         `);
       }
     }
 
     svgBodies.push(`
-      <g class="boss-layer-${b}">
-        <g class="shake-${b}">
+      <g class="${pfx}boss-layer-${b}">
+        <g class="${pfx}shake-${b}">
           <!-- Header (Name & Emblem) -->
           <g transform="translate(${containerX}, 22)">
             <!-- Pixel Emblem -->
@@ -604,8 +631,8 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
             
             ${tb.isDefeated ? `
             <!-- Live & Felled Tags -->
-            <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagLiveColor}" class="pixel-txt tag-live-${b}">${tagLive}</text>
-            <text x="${actualWidth}" text-anchor="end" y="11" fill="#f59e0b" class="pixel-txt tag-felled-${b}">[FELLED]</text>
+            <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagLiveColor}" class="pixel-txt ${pfx}tag-live-${b}">${tagLive}</text>
+            <text x="${actualWidth}" text-anchor="end" y="11" fill="#f59e0b" class="pixel-txt ${pfx}tag-felled-${b}">[FELLED]</text>
             ` : `
             <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagLiveColor}" class="pixel-txt">${tagLive}</text>
             `}
@@ -618,7 +645,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
 
           ${tb.isDefeated ? `
           <!-- Felled Banner Overlay -->
-          <text x="${Math.round(svgWidth / 2)}" text-anchor="middle" y="48" class="felled-text-${b}">${escapeXml(tb.felledText)}</text>
+          <text x="${Math.round(svgWidth / 2)}" text-anchor="middle" y="48" class="${pfx}felled-text-${b}">${escapeXml(tb.felledText)}</text>
           ` : ''}
 
           <!-- Hit Damage Pop-ups -->

@@ -212,6 +212,8 @@ for (let i = 0; i < normalizedArgs.length; i++) {
     }
   } else if (arg === '--no-auto') {
     options.auto = false;
+  } else if (arg === '--id' || arg === '--prefix') {
+    options.id = normalizedArgs[++i];
   }
 }
 
