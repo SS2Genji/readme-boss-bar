@@ -214,7 +214,7 @@ async function runWizard() {
     const st = stages[0];
     const encodedName = encodeURIComponent(st.name);
     const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
-    mdUrl = `https://readme-boss-bar.vercel.app/api?name=${encodedName}&bars=${st.totalBars}&dmg=${st.damagePerHit}&interval=${st.hitInterval}&theme=${safeTheme}&shake=${st.shake}`;
+    mdUrl = `https://readme-boss-barr.vercel.app/api?name=${encodedName}&bars=${st.totalBars}&dmg=${st.damagePerHit}&interval=${st.hitInterval}&theme=${safeTheme}&shake=${st.shake}`;
     const totalHitsToDefeat = Math.ceil(st.totalBars / st.damagePerHit);
     if (st.hits !== undefined && st.hits !== totalHitsToDefeat) {
       mdUrl += `&hits=${st.hits}`;
@@ -230,7 +230,7 @@ async function runWizard() {
       const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
       return `b${idx + 1}=${encodeURIComponent(st.name)}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${safeTheme}:${st.shake}:${encodeURIComponent(st.felledText || 'GREAT ENEMY FELLED')}`;
     }).join('&');
-    mdUrl = `https://readme-boss-bar.vercel.app/api?${queryParts}`;
+    mdUrl = `https://readme-boss-barr.vercel.app/api?${queryParts}`;
     const bArgs = stages.map(st => {
       const safeNameCli = st.name.replace(/"/g, '\\"');
       const safeFelledCli = (st.felledText || 'GREAT ENEMY FELLED').replace(/"/g, '\\"');
@@ -247,7 +247,7 @@ async function runWizard() {
   console.log('💻 Re-run CLI Command:');
   console.log(`${cliCmd}\n`);
   console.log('🎮 Or customize visually in your browser:');
-  console.log('https://readme-boss-bar.vercel.app\n');
+  console.log('https://readme-boss-barr.vercel.app\n');
   process.exit(0);
 }
 

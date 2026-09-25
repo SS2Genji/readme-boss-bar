@@ -52,27 +52,27 @@ Once deployed to Vercel (or using the local asset), just copy **one line** below
 
 #### Classic Souls Crimson (Red)
 ```markdown
-![Boss Bar](https://readme-boss-bar.vercel.app/api?name=YOUR+NAME&bars=10&dmg=2&theme=crimson)
+![Boss Bar](https://readme-boss-barr.vercel.app/api?name=YOUR+NAME&bars=10&dmg=2&theme=crimson)
 ```
 
 #### Void Gravity (Purple)
 ```markdown
-![Boss Bar](https://readme-boss-bar.vercel.app/api?name=YOUR+NAME&bars=8&dmg=2&theme=purple&shake=heavy)
+![Boss Bar](https://readme-boss-barr.vercel.app/api?name=YOUR+NAME&bars=8&dmg=2&theme=purple&shake=heavy)
 ```
 
 #### Glintstone Sorcery (Cyan)
 ```markdown
-![Boss Bar](https://readme-boss-bar.vercel.app/api?name=YOUR+NAME&bars=6&dmg=3&theme=cyan&shake=medium)
+![Boss Bar](https://readme-boss-barr.vercel.app/api?name=YOUR+NAME&bars=6&dmg=3&theme=cyan&shake=medium)
 ```
 
 #### Golden Erdtree (Gold)
 ```markdown
-![Boss Bar](https://readme-boss-bar.vercel.app/api?name=YOUR+NAME&bars=10&dmg=3&theme=gold&felled=DEMIGOD+FELLED)
+![Boss Bar](https://readme-boss-barr.vercel.app/api?name=YOUR+NAME&bars=10&dmg=3&theme=gold&felled=DEMIGOD+FELLED)
 ```
 
 #### Zero-Config Cinematic Auto Mode
 ```markdown
-![Boss Bar](https://readme-boss-bar.vercel.app/api?auto=true)
+![Boss Bar](https://readme-boss-barr.vercel.app/api?auto=true)
 ```
 
 ---
@@ -94,7 +94,7 @@ It walks you through boss names, health bars, speed, themes, and automatically e
 Defeat Milestone 1, then battle Milestone 2:
 
 ```markdown
-![Boss Bar](https://readme-boss-bar.vercel.app/api?boss=MILESTONE+1:3:3:0.5:1&boss=MILESTONE+2:5:1:0.6:1)
+![Boss Bar](https://readme-boss-barr.vercel.app/api?boss=MILESTONE+1:3:3:0.5:1&boss=MILESTONE+2:5:1:0.6:1)
 ```
 
 ---
@@ -214,7 +214,7 @@ npx readme-boss-bar --config config.example.json -o assets/boss_bar.svg
 
 ## Interactive Studio (Web App)
 
-Visit **[readme-boss-bar.vercel.app](https://readme-boss-bar.vercel.app)** or open `index.html` / `preview.html` locally in any web browser to access the **Interactive Boss Bar Studio**:
+Visit **[readme-boss-barr.vercel.app](https://readme-boss-barr.vercel.app)** or open `index.html` / `preview.html` locally in any web browser to access the **Interactive Boss Bar Studio**:
 - **1-Click Presets**: Quick Single Boss, 42 School Milestones, Elden Ring Boss Run, and Epic 3-Phase Demigod.
 - **Interactive Stage Manager**: Add and remove multiple encounter phases on the fly.
 - **Real-Time Live Preview**: Instant rendering with live damage animations and screen shakes as you type or adjust sliders.
