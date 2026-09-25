@@ -263,7 +263,36 @@ fs.writeFileSync('/tmp/test_boss_21.svg', svg21);
 execSync('rsvg-convert /tmp/test_boss_21.svg -o /tmp/test_boss_21.png');
 console.log("✔ Test 21 passed: Multi-hit multi-bar strictly monotonic sequential sweep verified cleanly!");
 
-console.log("\nALL 21 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
+// Test 22: Interactive CLI Wizard execution with presets and custom flows
+execSync('node bin/cli.js --wizard', {
+  input: '1\n/tmp/cli_wizard_test22.svg\n',
+  stdio: ['pipe', 'pipe', 'pipe']
+});
+if (!fs.existsSync('/tmp/cli_wizard_test22.svg')) {
+  throw new Error("Test 22 failed: CLI wizard did not generate output file!");
+}
+const wizSvg = fs.readFileSync('/tmp/cli_wizard_test22.svg', 'utf8');
+if (!wizSvg.includes('STARCOURGE RADAHN') || !wizSvg.includes('-3 BARS')) {
+  throw new Error("Test 22 failed: Wizard output missing expected preset content!");
+}
+execSync('rsvg-convert /tmp/cli_wizard_test22.svg -o /tmp/cli_wizard_test22.png');
+
+// Test 22b: Wizard custom flow with multi-stage
+execSync('node bin/cli.js wizard', {
+  input: '5\n2\nSTAGE ONE\n4\n1\n0.4\n4\ncrimson\nmedium\nSTAGE ONE FELLED\nSTAGE TWO\n6\n2\n0.5\n3\ncyan\nheavy\nSTAGE TWO FELLED\n/tmp/cli_wizard_custom22.svg\n',
+  stdio: ['pipe', 'pipe', 'pipe']
+});
+if (!fs.existsSync('/tmp/cli_wizard_custom22.svg')) {
+  throw new Error("Test 22 failed: Wizard custom flow did not generate output file!");
+}
+const customSvg = fs.readFileSync('/tmp/cli_wizard_custom22.svg', 'utf8');
+if (!customSvg.includes('STAGE ONE') || !customSvg.includes('STAGE TWO') || !customSvg.includes('STAGE TWO FELLED')) {
+  throw new Error("Test 22 failed: Wizard custom output missing stage content!");
+}
+execSync('rsvg-convert /tmp/cli_wizard_custom22.svg -o /tmp/cli_wizard_custom22.png');
+console.log("✔ Test 22 passed: Interactive CLI Wizard executed both preset & custom flows cleanly!");
+
+console.log("\nALL 22 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
 
 
 

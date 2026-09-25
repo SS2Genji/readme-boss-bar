@@ -22,25 +22,60 @@ A dynamic, zero-dependency SVG generator that brings authentic 16-bit retro RPG 
 
 ---
 
-## Quick Start
+## Quick Start (Choose Your Style)
 
-### Automatic Mode (Zero Config)
+### 1. Visual Web Studio (Easiest - 1 Click)
 
-Add the following to your GitHub Profile `README.md`:
+> 🎮 **Design your boss bar visually in your browser with real-time preview:**  
+> 👉 **[readme-boss-bar.vercel.app](https://readme-boss-bar.vercel.app)**  
+> Pick a preset, adjust sliders, and click **"Copy Markdown for README"**!
 
+---
+
+### 2. Copy & Paste into your GitHub README
+
+Just copy **one line** below and replace `YOUR+NAME` with your project, milestone, or boss name:
+
+#### 🩸 Classic Souls Crimson (Red)
+```markdown
+![Boss Bar](https://readme-boss-bar.vercel.app/api?name=YOUR+NAME&bars=10&dmg=2&theme=crimson)
+```
+
+#### 🔮 Void Gravity (Purple)
+```markdown
+![Boss Bar](https://readme-boss-bar.vercel.app/api?name=YOUR+NAME&bars=8&dmg=2&theme=purple&shake=heavy)
+```
+
+#### ⚡ Glintstone Sorcery (Cyan)
+```markdown
+![Boss Bar](https://readme-boss-bar.vercel.app/api?name=YOUR+NAME&bars=6&dmg=3&theme=cyan&shake=medium)
+```
+
+#### 👑 Golden Erdtree (Gold)
+```markdown
+![Boss Bar](https://readme-boss-bar.vercel.app/api?name=YOUR+NAME&bars=10&dmg=3&theme=gold&felled=DEMIGOD+FELLED)
+```
+
+#### 🤖 Zero-Config Cinematic Auto Mode
 ```markdown
 ![Boss Bar](https://readme-boss-bar.vercel.app/api?auto=true)
 ```
 
-### Manual Customization (Multi-Bar Hits)
+---
 
-A 10-bar health bar taking 3 bars per hit every 0.5 seconds with purple void styling and heavy screen shake:
+### 3. Interactive CLI Wizard (Terminal)
 
-```markdown
-![Boss Bar](https://readme-boss-bar.vercel.app/api?boss=STARCOURGE+RADAHN:10:2:0.5:3&theme=purple&shake=heavy)
+Prefer the command line? Run the step-by-step interactive wizard:
+
+```bash
+npx readme-boss-bar wizard
 ```
 
-### Multi-Boss Sequential Chain
+It walks you through boss names, health bars, speed, themes, and automatically exports your SVG and Markdown embed code!
+
+---
+
+### 4. Advanced: Multi-Boss Milestone Chains
 
 Defeat Milestone 1, then battle Milestone 2:
 
@@ -115,6 +150,9 @@ NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT:THEME:SHAKE:FELLED_TEXT
 Generate SVGs locally or directly in CI pipelines:
 
 ```bash
+# 0. Interactive step-by-step wizard (Recommended for quick setup)
+npx readme-boss-bar wizard
+
 # 1. Automatic cinematic mode
 npx readme-boss-bar --auto -o assets/boss_bar.svg
 
@@ -160,12 +198,13 @@ npx readme-boss-bar --config config.example.json -o assets/boss_bar.svg
 
 ---
 
-## Interactive Studio
+## Interactive Studio (Web App)
 
-Open `preview.html` in any web browser to access the **Interactive Boss Bar Studio**:
-- Live sliders for health bars, damage per hit, hit counts, and interval speed.
-- Real-time previews of screen shake, color themes, and sparks.
-- Instant export of Markdown image embed codes and CLI commands.
+Visit **[readme-boss-bar.vercel.app](https://readme-boss-bar.vercel.app)** or open `index.html` / `preview.html` locally in any web browser to access the **Interactive Boss Bar Studio**:
+- **1-Click Presets**: Quick Single Boss, 42 School Milestones, Elden Ring Boss Run, and Epic 3-Phase Demigod.
+- **Interactive Stage Manager**: Add and remove multiple encounter phases on the fly.
+- **Real-Time Live Preview**: Instant rendering with live damage animations and screen shakes as you type or adjust sliders.
+- **1-Click Export Bar**: Copy GitHub README Markdown embeds, download SVG files, or copy CLI commands.
 
 ---
 

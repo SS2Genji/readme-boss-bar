@@ -2,11 +2,17 @@
   "version": 2,
   "rewrites": [
     { "source": "/api(.*)", "destination": "/api/index.js" },
-    { "source": "/(.*)", "destination": "/api/index.js" }
+    { "source": "/", "has": [{ "type": "query", "key": "boss" }], "destination": "/api/index.js" },
+    { "source": "/", "has": [{ "type": "query", "key": "name" }], "destination": "/api/index.js" },
+    { "source": "/", "has": [{ "type": "query", "key": "auto" }], "destination": "/api/index.js" },
+    { "source": "/", "has": [{ "type": "query", "key": "bosses" }], "destination": "/api/index.js" },
+    { "source": "/", "has": [{ "type": "query", "key": "b1" }], "destination": "/api/index.js" },
+    { "source": "/preview", "destination": "/index.html" },
+    { "source": "/preview.html", "destination": "/index.html" }
   ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/api(.*)",
       "headers": [
         { "key": "Content-Type", "value": "image/svg+xml; charset=utf-8" },
         { "key": "Access-Control-Allow-Origin", "value": "*" }

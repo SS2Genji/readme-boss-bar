@@ -11,6 +11,10 @@ function printHelp() {
 Readme Boss Bar Generator - CLI
 Usage:
   readme-boss-bar [options]
+  readme-boss-bar wizard
+
+Wizard Mode:
+  -W, --wizard, wizard          Launch the interactive step-by-step setup wizard
 
 Boss Options:
   -b, --boss <spec>             Boss definition in shorthand format (repeatable):
@@ -42,6 +46,7 @@ Canvas Options:
   -h, --help                    Show this help message
 
 Examples:
+  readme-boss-bar wizard
   readme-boss-bar --auto -o boss_bar.svg
   readme-boss-bar -b "RADAHN:10" --dmg 3 --interval 0.5 --theme purple --shake heavy -o radahn.svg
   readme-boss-bar -b "MALENIA:12:4:0.35:3:gold:heavy:DEMIGOD FELLED" -o malenia.svg
@@ -50,9 +55,197 @@ Examples:
   `);
 }
 
+function createLineReader() {
+  const readline = require('readline');
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    terminal: false
+  });
+  const queue = [];
+  let waitingResolve = null;
+
+  rl.on('line', (line) => {
+    if (waitingResolve) {
+      const resolve = waitingResolve;
+      waitingResolve = null;
+      resolve(line);
+    } else {
+      queue.push(line);
+    }
+  });
+
+  rl.on('close', () => {
+    if (waitingResolve) {
+      const resolve = waitingResolve;
+      waitingResolve = null;
+      resolve(null);
+    }
+  });
+
+  return {
+    async ask(question, defaultVal = '') {
+      const prompt = defaultVal !== '' ? `${question} [${defaultVal}]: ` : `${question}: `;
+      process.stdout.write(prompt);
+      if (queue.length > 0) {
+        const line = queue.shift();
+        const trimmed = line.trim();
+        return trimmed === '' ? defaultVal : trimmed;
+      }
+      return new Promise((resolve) => {
+        waitingResolve = (ans) => {
+          if (ans === null) {
+            resolve(defaultVal);
+          } else {
+            const trimmed = ans.trim();
+            resolve(trimmed === '' ? defaultVal : trimmed);
+          }
+        };
+      });
+    },
+    close() {
+      rl.close();
+    }
+  };
+}
+
+async function runWizard() {
+  const reader = createLineReader();
+  const askVal = (q, def) => reader.ask(q, def);
+
+  console.log('\n============================================================');
+  console.log('⚔️   README BOSS BAR - INTERACTIVE WIZARD   ⚔️');
+  console.log('Design an epic retro souls boss health bar in seconds!');
+  console.log('============================================================\n');
+
+  console.log('Choose a configuration preset or custom setup:');
+  console.log('  1) Quick Single Boss (STARCOURGE RADAHN - 10 bars, heavy impact)');
+  console.log('  2) 42 School Milestone Run (Libft -> ft_printf -> push_swap)');
+  console.log('  3) Elden Ring Boss Run (Margit -> Radahn -> Malenia)');
+  console.log('  4) Epic 3-Phase Demigod (Ludwig -> Holy Blade -> Orphan)');
+  console.log('  5) Custom Boss Setup (Step-by-step interactive questions)\n');
+
+  const mode = await askVal('Select option (1-5)', '1');
+  let stages = [];
+
+  if (mode === '1') {
+    stages = [
+      {
+        name: 'STARCOURGE RADAHN',
+        totalBars: 10,
+        hits: 2,
+        damagePerHit: 3,
+        hitInterval: 0.5,
+        barColor: 'purple',
+        shake: 'heavy',
+        felledText: 'DEMIGOD FELLED'
+      }
+    ];
+    console.log('\n✔ Selected: Quick Single Boss (Radahn)');
+  } else if (mode === '2') {
+    stages = [
+      { name: 'CIRCLE 00 (LIBFT)', totalBars: 4, hits: 4, damagePerHit: 1, hitInterval: 0.4, barColor: 'crimson', shake: 'medium', felledText: 'LIBFT COMPLETED' },
+      { name: 'CIRCLE 01 (FT_PRINTF)', totalBars: 4, hits: 4, damagePerHit: 1, hitInterval: 0.4, barColor: 'cyan', shake: 'medium', felledText: 'PRINTF COMPLETED' },
+      { name: 'CIRCLE 02 (PUSH_SWAP)', totalBars: 6, hits: 3, damagePerHit: 2, hitInterval: 0.5, barColor: 'gold', shake: 'heavy', felledText: 'PUSH_SWAP FELLED' }
+    ];
+    console.log('\n✔ Selected: 42 School Milestone Run (3 stages)');
+  } else if (mode === '3') {
+    stages = [
+      { name: 'MARGIT, THE FELL OMEN', totalBars: 6, hits: 3, damagePerHit: 2, hitInterval: 0.5, barColor: 'crimson', shake: 'heavy', felledText: 'GREAT ENEMY FELLED' },
+      { name: 'STARCOURGE RADAHN', totalBars: 10, hits: 2, damagePerHit: 3, hitInterval: 0.5, barColor: 'purple', shake: 'heavy', felledText: 'DEMIGOD FELLED' },
+      { name: 'MALENIA, BLADE OF MIQUELLA', totalBars: 8, hits: 4, damagePerHit: 2, hitInterval: 0.35, barColor: 'gold', shake: 'heavy', felledText: 'DEMIGOD FELLED' }
+    ];
+    console.log('\n✔ Selected: Elden Ring Boss Run (3 bosses)');
+  } else if (mode === '4') {
+    stages = [
+      { name: 'LUDWIG THE ACCURSED', totalBars: 6, hits: 3, damagePerHit: 2, hitInterval: 0.45, barColor: 'green', shake: 'subtle', felledText: 'PHASE 1 COMPLETE' },
+      { name: 'LUDWIG, HOLY BLADE', totalBars: 8, hits: 4, damagePerHit: 2, hitInterval: 0.35, barColor: 'cyan', shake: 'heavy', felledText: 'PHASE 2 COMPLETE' },
+      { name: 'ORPHAN OF KOS', totalBars: 10, hits: 5, damagePerHit: 2, hitInterval: 0.25, barColor: 'crimson', shake: 'heavy', felledText: 'NIGHTMARE SLAIN' }
+    ];
+    console.log('\n✔ Selected: Epic 3-Phase Demigod');
+  } else {
+    const countAns = await askVal('How many boss stages / phases?', '1');
+    const stageCount = Math.max(1, parseInt(countAns, 10) || 1);
+
+    for (let i = 1; i <= stageCount; i++) {
+      console.log(`\n--- Stage ${i} of ${stageCount} ---`);
+      const name = await askVal(`Boss / Stage name`, `BOSS ${i}`);
+      const barsStr = await askVal(`Total health bars (1-20)`, '8');
+      const totalBars = Math.max(1, Math.min(40, parseInt(barsStr, 10) || 8));
+      const dmgStr = await askVal(`Damage per hit (bars)`, '2');
+      const damagePerHit = Math.max(1, parseInt(dmgStr, 10) || 2);
+      const intervalStr = await askVal(`Hit speed / interval (seconds)`, '0.5');
+      const hitInterval = Math.max(0.1, parseFloat(intervalStr) || 0.5);
+      const totalHitsToDefeat = Math.ceil(totalBars / damagePerHit);
+      const hitsStr = await askVal(`Hits executed (Enter for full defeat: ${totalHitsToDefeat} hits)`, `${totalHitsToDefeat}`);
+      const hits = parseInt(hitsStr, 10) || totalHitsToDefeat;
+      const theme = await askVal(`Theme (crimson, purple, cyan, gold, green, orange, or #hex)`, 'crimson');
+      const shake = await askVal(`Screen shake (none, subtle, medium, heavy)`, 'medium');
+      const felled = await askVal(`Victory banner text`, 'GREAT ENEMY FELLED');
+
+      stages.push({
+        name,
+        totalBars,
+        hits,
+        damagePerHit,
+        hitInterval,
+        barColor: theme,
+        shake,
+        felledText: felled
+      });
+    }
+  }
+
+  console.log('\n--- Output Settings ---');
+  const outFile = await askVal('Output SVG file path', 'boss_bar.svg');
+  reader.close();
+
+  const svg = generateBossBarSVG(stages);
+  const outDir = path.dirname(path.resolve(outFile));
+  if (!fs.existsSync(outDir)) {
+    fs.mkdirSync(outDir, { recursive: true });
+  }
+  fs.writeFileSync(outFile, svg, 'utf8');
+
+  let mdUrl;
+  let cliCmd;
+  if (stages.length === 1) {
+    const st = stages[0];
+    const encodedName = encodeURIComponent(st.name);
+    mdUrl = `https://readme-boss-bar.vercel.app/api?name=${encodedName}&bars=${st.totalBars}&dmg=${st.damagePerHit}&interval=${st.hitInterval}&theme=${st.barColor}&shake=${st.shake}`;
+    if (st.felledText && st.felledText !== 'GREAT ENEMY FELLED') {
+      mdUrl += `&felled=${encodeURIComponent(st.felledText)}`;
+    }
+    cliCmd = `npx readme-boss-bar -b "${st.name}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${st.felledText}" -o ${outFile}`;
+  } else {
+    const queryParts = stages.map((st, idx) => {
+      return `b${idx + 1}=${encodeURIComponent(st.name)}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${encodeURIComponent(st.felledText)}`;
+    }).join('&');
+    mdUrl = `https://readme-boss-bar.vercel.app/api?${queryParts}`;
+    const bArgs = stages.map(st => `-b "${st.name}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${st.felledText}"`).join(' ');
+    cliCmd = `npx readme-boss-bar ${bArgs} -o ${outFile}`;
+  }
+
+  console.log('\n============================================================');
+  console.log(`✔ Successfully generated: ${outFile}`);
+  console.log('============================================================\n');
+  console.log('📋 Markdown embed for your GitHub README:');
+  console.log(`![Boss Bar](${mdUrl})\n`);
+  console.log('💻 Re-run CLI Command:');
+  console.log(`${cliCmd}\n`);
+  console.log('🎮 Or customize visually in your browser:');
+  console.log('https://readme-boss-bar.vercel.app\n');
+  process.exit(0);
+}
+
 if (args.includes('-h') || args.includes('--help')) {
   printHelp();
   process.exit(0);
+}
+
+if (args.includes('--wizard') || args.includes('wizard') || args.includes('-W')) {
+  runWizard();
+  return;
 }
 
 function parseBossSpec(val) {

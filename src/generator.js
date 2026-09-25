@@ -667,9 +667,16 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
 `.trim();
 }
 
-module.exports = {
-  generateBossBarSVG,
-  escapeXml,
-  THEMES
-};
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    generateBossBarSVG,
+    escapeXml,
+    THEMES
+  };
+}
+if (typeof window !== 'undefined') {
+  window.generateBossBarSVG = generateBossBarSVG;
+  window.THEMES = THEMES;
+  window.escapeXml = escapeXml;
+}
 
