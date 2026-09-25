@@ -334,13 +334,18 @@ function renderEmblemMarkup(aesthetic, emblemColor, pfx = '', b = 0) {
     return `
       <!-- 8-Bit Arcade Skull Emblem -->
       <g class="${pfx}emblem-pixel-${b}">
-        <rect x="1" y="1" width="10" height="8" fill="${emblemColor}" />
-        <rect x="3" y="9" width="6" height="4" fill="${emblemColor}" />
-        <rect x="2.5" y="3" width="2" height="2.5" fill="#0d1117" />
-        <rect x="7.5" y="3" width="2" height="2.5" fill="#0d1117" />
-        <rect x="4" y="10" width="1" height="2" fill="#0d1117" />
-        <rect x="6" y="10" width="1" height="2" fill="#0d1117" />
-        <rect x="8" y="10" width="1" height="2" fill="#0d1117" />
+        <rect x="1" y="0" width="10" height="2" fill="${emblemColor}" />
+        <rect x="0" y="2" width="12" height="7" fill="${emblemColor}" />
+        <rect x="2" y="9" width="8" height="4" fill="${emblemColor}" />
+        <!-- Eye Sockets & Glowing Pixel Pupils -->
+        <rect x="2" y="4" width="2.5" height="3" fill="#050811" />
+        <rect x="7.5" y="4" width="2.5" height="3" fill="#050811" />
+        <rect x="2.5" y="4.5" width="1.5" height="1.5" fill="#ef4444" />
+        <rect x="8" y="4.5" width="1.5" height="1.5" fill="#ef4444" />
+        <!-- Teeth -->
+        <rect x="3" y="10" width="1.5" height="2" fill="#050811" />
+        <rect x="5.5" y="10" width="1" height="2" fill="#050811" />
+        <rect x="7.5" y="10" width="1.5" height="2" fill="#050811" />
       </g>
     `;
   }
@@ -434,20 +439,27 @@ function renderContainerBrackets(aesthetic, theme, actualWidth, barHeight, pfx =
       <!-- Ornate Filigree Brackets -->
       <g class="${pfx}brackets-souls-${b}">
         <!-- Double-lined Antique Gold Container Frame -->
-        <rect x="-4" y="-3" width="${actualWidth + 8}" height="${barHeight + 6}" fill="none" stroke="${theme.frameOuter}" stroke-width="1.2" opacity="0.85" />
-        <rect x="-2" y="-1.5" width="${actualWidth + 4}" height="${barHeight + 3}" fill="none" stroke="${theme.frameInner}" stroke-width="0.8" opacity="0.9" />
+        <rect x="-6" y="-3.5" width="${actualWidth + 12}" height="${barHeight + 7}" fill="none" stroke="${theme.frameOuter}" stroke-width="1.2" opacity="0.85" />
+        <rect x="-3" y="-1.5" width="${actualWidth + 6}" height="${barHeight + 3}" fill="none" stroke="${theme.frameInner}" stroke-width="0.8" opacity="0.9" />
         <!-- Corner Filigree Scrollwork Flourishes -->
         <path d="M -8,2 L -8,-4 L -2,-4 M -6,-2 L -2,-6" stroke="${theme.frameInner}" stroke-width="1" fill="none" />
         <path d="M -8,${barHeight-2} L -8,${barHeight+4} L -2,${barHeight+4} M -6,${barHeight+2} L -2,${barHeight+6}" stroke="${theme.frameInner}" stroke-width="1" fill="none" />
         <path d="M ${actualWidth+8},2 L ${actualWidth+8},-4 L ${actualWidth+2},-4 M ${actualWidth+6},-2 L ${actualWidth+2},-6" stroke="${theme.frameInner}" stroke-width="1" fill="none" />
         <path d="M ${actualWidth+8},${barHeight-2} L ${actualWidth+8},${barHeight+4} L ${actualWidth+2},${barHeight+4} M ${actualWidth+6},${barHeight+2} L ${actualWidth+2},${barHeight+6}" stroke="${theme.frameInner}" stroke-width="1" fill="none" />
-        <!-- Prominent Gothic Finials -->
+        <!-- Prominent Gothic Finials & Grand Filigree Wings -->
+        <path d="M -24,${barHeight/2} C -20,-7 -8,-6 -2,-3 L -1,${barHeight/2} L -2,${barHeight+3} C -8,${barHeight+6} -20,${barHeight+7} -24,${barHeight/2} Z" stroke="${theme.frameInner}" stroke-width="1.2" fill="${theme.frameOuter}" />
         <path d="M -16,${barHeight/2} L -10,-4 L -4,-1 L -1,${barHeight/2} L -4,${barHeight+1} L -10,${barHeight+4} Z" stroke="${theme.frameInner}" stroke-width="1.2" fill="${theme.frameOuter}" />
         <polygon points="-15,${barHeight/2} -10,${barHeight/2 - 3} -6,${barHeight/2} -10,${barHeight/2 + 3}" fill="#facc15" />
         <circle cx="-10" cy="${barHeight/2}" r="1.5" fill="#fef08a" />
+        <circle cx="-20" cy="${barHeight/2}" r="1.2" fill="#facc15" />
+        <path d="M ${actualWidth+24},${barHeight/2} C ${actualWidth+20},-7 ${actualWidth+8},-6 ${actualWidth+2},-3 L ${actualWidth+1},${barHeight/2} L ${actualWidth+2},${barHeight+3} C ${actualWidth+8},${barHeight+6} ${actualWidth+20},${barHeight+7} ${actualWidth+24},${barHeight/2} Z" stroke="${theme.frameInner}" stroke-width="1.2" fill="${theme.frameOuter}" />
         <path d="M ${actualWidth+16},${barHeight/2} L ${actualWidth+10},-4 L ${actualWidth+4},-1 L ${actualWidth+1},${barHeight/2} L ${actualWidth+4},${barHeight+1} L ${actualWidth+10},${barHeight+4} Z" stroke="${theme.frameInner}" stroke-width="1.2" fill="${theme.frameOuter}" />
         <polygon points="${actualWidth+15},${barHeight/2} ${actualWidth+10},${barHeight/2 - 3} ${actualWidth+6},${barHeight/2} ${actualWidth+10},${barHeight/2 + 3}" fill="#facc15" />
         <circle cx="${actualWidth+10}" cy="${barHeight/2}" r="1.5" fill="#fef08a" />
+        <circle cx="${actualWidth+20}" cy="${barHeight/2}" r="1.2" fill="#facc15" />
+        <!-- Gothic Arch Center Crest -->
+        <path d="M ${Math.round(actualWidth/2)-18},-3.5 Q ${Math.round(actualWidth/2)},-9 ${Math.round(actualWidth/2)+18},-3.5" stroke="${theme.frameInner}" stroke-width="1.2" fill="none" />
+        <polygon points="${Math.round(actualWidth/2)},-9.5 ${Math.round(actualWidth/2)+4},-4.5 ${Math.round(actualWidth/2)},-2 ${Math.round(actualWidth/2)-4},-4.5" fill="#facc15" stroke="${theme.frameOuter}" stroke-width="0.8" />
       </g>
     `;
   }
@@ -483,6 +495,15 @@ function renderContainerBrackets(aesthetic, theme, actualWidth, barHeight, pfx =
     `;
   }
   if (aesthetic.name === 'bloodborne') {
+    // Generate visceral barbed thorn teeth along rails
+    const step = 20;
+    const count = Math.min(24, Math.floor(actualWidth / step));
+    const extraTeeth = [];
+    for (let s = 1; s < count; s++) {
+      const sx = Math.round(s * (actualWidth / count));
+      extraTeeth.push(`<polygon points="${sx-3},-2 ${sx},-5 ${sx+3},-2" fill="${theme.frameOuter}" stroke="${theme.frameInner}" stroke-width="0.8" />`);
+      extraTeeth.push(`<polygon points="${sx-3},${barHeight+2} ${sx},${barHeight+5} ${sx+3},${barHeight+2}" fill="${theme.frameOuter}" stroke="${theme.frameInner}" stroke-width="0.8" />`);
+    }
     return `
       <!-- Distressed Jagged Iron Brackets -->
       <g class="${pfx}brackets-blood-${b}">
@@ -497,6 +518,7 @@ function renderContainerBrackets(aesthetic, theme, actualWidth, barHeight, pfx =
         <polygon points="${Math.round(actualWidth*0.75)},-2 ${Math.round(actualWidth*0.75)+4},-5 ${Math.round(actualWidth*0.75)+8},-2" fill="${theme.frameOuter}" stroke="${theme.frameInner}" stroke-width="0.8" />
         <polygon points="${Math.round(actualWidth*0.35)},${barHeight+2} ${Math.round(actualWidth*0.35)+4},${barHeight+5} ${Math.round(actualWidth*0.35)+8},${barHeight+2}" fill="${theme.frameOuter}" stroke="${theme.frameInner}" stroke-width="0.8" />
         <polygon points="${Math.round(actualWidth*0.65)},${barHeight+2} ${Math.round(actualWidth*0.65)+4},${barHeight+5} ${Math.round(actualWidth*0.65)+8},${barHeight+2}" fill="${theme.frameOuter}" stroke="${theme.frameInner}" stroke-width="0.8" />
+        ${extraTeeth.join('\n        ')}
       </g>
     `;
   }
@@ -504,7 +526,7 @@ function renderContainerBrackets(aesthetic, theme, actualWidth, barHeight, pfx =
     return `
       <!-- Sleek Modern Pill Rail -->
       <g class="${pfx}brackets-minimal-${b}">
-        <rect x="-4" y="-3" width="${actualWidth + 8}" height="${barHeight + 6}" rx="5" ry="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+        <rect x="-6" y="-3" width="${actualWidth + 12}" height="${barHeight + 6}" rx="5" ry="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
         <line x1="-8" y1="3" x2="-8" y2="${barHeight - 3}" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-linecap="round" />
         <circle cx="-8" cy="${barHeight/2}" r="1.5" fill="${theme.pulse}" />
         <line x1="${actualWidth + 8}" y1="3" x2="${actualWidth + 8}" y2="${barHeight - 3}" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-linecap="round" />
@@ -576,12 +598,12 @@ function renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b) 
         <!-- Animated Fill Bar -->
         <rect x="0" y="0" height="${barHeight}" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
         <!-- High-Contrast 8-Bit Arcade Bevels -->
-        <rect x="0" y="0" width="${segWidth}" height="1" fill="#ffffff" opacity="0.75" />
-        <rect x="0" y="0" width="1" height="${barHeight}" fill="#ffffff" opacity="0.75" />
-        <rect x="0" y="${barHeight-1}" width="${segWidth}" height="1" fill="#000000" opacity="0.85" />
-        <rect x="${segWidth-1}" y="0" width="1" height="${barHeight}" fill="#000000" opacity="0.85" />
+        <rect x="0" y="0" width="${segWidth}" height="2" fill="#ffffff" opacity="0.8" />
+        <rect x="0" y="0" width="2" height="${barHeight}" fill="#ffffff" opacity="0.8" />
+        <rect x="0" y="${barHeight-2}" width="${segWidth}" height="2" fill="#000000" opacity="0.9" />
+        <rect x="${segWidth-2}" y="0" width="2" height="${barHeight}" fill="#000000" opacity="0.9" />
         <!-- Specular Pixel Highlight -->
-        <rect x="2" y="2" width="2" height="2" fill="#ffffff" opacity="0.5" />
+        <rect x="2" y="2" width="2" height="2" fill="#ffffff" opacity="0.6" />
         ${particleMarkup}
       </g>
     `;
@@ -598,6 +620,9 @@ function renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b) 
         <!-- Gothic Top Highlight Sheen & Bottom Shadow -->
         <line x1="0" y1="1" x2="${segWidth}" y2="1" stroke="rgba(255,255,255,0.4)" stroke-width="1" />
         <line x1="0" y1="${barHeight-1}" x2="${segWidth}" y2="${barHeight-1}" stroke="rgba(0,0,0,0.5)" stroke-width="1" />
+        <!-- Ornate Filigree Diamond Pips -->
+        <polygon points="${Math.round(segWidth/2)},0 ${Math.round(segWidth/2)+2},2.5 ${Math.round(segWidth/2)},5 ${Math.round(segWidth/2)-2},2.5" fill="#facc15" opacity="0.75" />
+        <polygon points="${Math.round(segWidth/2)},${barHeight} ${Math.round(segWidth/2)+2},${barHeight-2.5} ${Math.round(segWidth/2)},${barHeight-5} ${Math.round(segWidth/2)-2},${barHeight-2.5}" fill="#facc15" opacity="0.75" />
         ${particleMarkup}
       </g>
     `;
@@ -615,6 +640,8 @@ function renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b) 
         <!-- Blood Vial Vein & Visceral Slash -->
         <line x1="0" y1="${barHeight-3}" x2="${segWidth}" y2="${barHeight-3}" stroke="#450a0a" stroke-width="1" opacity="0.8" />
         <line x1="1" y1="2" x2="3" y2="${barHeight-2}" stroke="rgba(239,68,68,0.35)" stroke-width="0.8" />
+        <line x1="2" y1="${barHeight-1}" x2="${Math.min(segWidth-2, 10)}" y2="1" stroke="#ef4444" stroke-width="1.2" opacity="0.6" stroke-linecap="round" />
+        <line x1="${Math.max(2, segWidth-8)}" y1="${barHeight-2}" x2="${segWidth-1}" y2="3" stroke="#991b1b" stroke-width="1" opacity="0.5" />
         ${particleMarkup}
       </g>
     `;
