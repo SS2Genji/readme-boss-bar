@@ -7,6 +7,8 @@
     "hitInterval": 0.5,
     "barColor": "purple",
     "shake": "heavy",
+    "style": "souls",
+    "animation": "pulse",
     "dmgPop": "-{N} BARS"
   },
   {
@@ -17,6 +19,8 @@
     "hitInterval": 0.35,
     "barColor": "gold",
     "shake": "heavy",
+    "style": "souls",
+    "animation": "sweep",
     "felledText": "DEMIGOD FELLED"
   }
 ]

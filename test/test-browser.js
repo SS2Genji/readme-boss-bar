@@ -122,6 +122,60 @@ async function runBrowserTests() {
           selectStageShake(0, 'heavy');
           assert(stages[0].shake === 'heavy', 'Shake heavy set');
 
+          selectStageShake(0, 'glitch');
+          assert(stages[0].shake === 'glitch', 'Shake glitch set');
+
+          // Aesthetic switching
+          selectAesthetic('cyberpunk');
+          assert(currentAesthetic === 'cyberpunk', 'Current aesthetic set to cyberpunk');
+          assert(vp.innerHTML.includes('Orbitron'), 'Cyberpunk font rendered in preview');
+          assert(vp.innerHTML.includes('skewX(-20)'), 'Cyberpunk chamfered angle rendered');
+          assert(document.getElementById('code-markdown').innerText.includes('style=cyberpunk'), 'Markdown includes style=cyberpunk');
+
+          selectAesthetic('bloodborne');
+          assert(currentAesthetic === 'bloodborne', 'Current aesthetic set to bloodborne');
+          assert(vp.innerHTML.includes('IM Fell English'), 'Bloodborne font rendered');
+          assert(document.getElementById('code-markdown').innerText.includes('style=bloodborne'), 'Markdown includes style=bloodborne');
+
+          selectAesthetic('pixel');
+          assert(currentAesthetic === 'pixel', 'Current aesthetic set to pixel');
+          assert(vp.innerHTML.includes('Press Start 2P'), 'Pixel font rendered');
+          assert(document.getElementById('code-markdown').innerText.includes('style=pixel'), 'Markdown includes style=pixel');
+
+          selectAesthetic('minimal');
+          assert(currentAesthetic === 'minimal', 'Current aesthetic set to minimal');
+          assert(vp.innerHTML.includes('rx="4"'), 'Minimal pill bars rendered');
+          assert(document.getElementById('code-markdown').innerText.includes('style=minimal'), 'Markdown includes style=minimal');
+
+          selectAesthetic('souls');
+          assert(currentAesthetic === 'souls', 'Current aesthetic set to souls');
+          assert(vp.innerHTML.includes('Cinzel'), 'Souls font rendered');
+
+          // Animation selection
+          selectAnimation('glitch');
+          assert(currentAnimation === 'glitch', 'Animation glitch selected');
+          assert(document.getElementById('code-markdown').innerText.includes('anim=glitch'), 'Markdown includes anim=glitch');
+
+          // New aesthetic presets
+          loadPreset('cyberpunk');
+          assert(vp.innerHTML.includes('TITAN MECH'), 'Cyberpunk preset loaded');
+          assert(vp.innerHTML.includes('TARGET DESTROYED'), 'Cyberpunk preset defeat banner rendered');
+
+          loadPreset('bloodborne');
+          assert(vp.innerHTML.includes('CLERIC BEAST'), 'Bloodborne preset loaded');
+          assert(vp.innerHTML.includes('PREY SLAUGHTERED'), 'Bloodborne preset defeat banner rendered');
+
+          loadPreset('pixel');
+          assert(vp.innerHTML.includes('CASTLE OVERLORD'), 'Pixel preset loaded');
+          assert(vp.innerHTML.includes('STAGE CLEAR'), 'Pixel preset defeat banner rendered');
+
+          loadPreset('minimal');
+          assert(vp.innerHTML.includes('SYSTEM INTEGRITY'), 'Minimal preset loaded');
+          assert(vp.innerHTML.includes('STATUS: DEFEATED'), 'Minimal preset defeat banner rendered');
+
+          // Reset to single preset for final title and toast checks
+          loadPreset('single');
+
           // Defeated banner update
           const nameInput = document.querySelector('#stage-card-0 input[type="text"]');
           nameInput.value = 'MOGH, LORD OF BLOOD';

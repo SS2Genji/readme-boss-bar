@@ -1,6 +1,6 @@
 {
   "name": "readme-boss-bar",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Retro Pixel Art Animated Souls Boss Health Bar for your GitHub Profile README",
   "main": "src/generator.js",
   "bin": {

@@ -98,6 +98,177 @@ const THEMES = {
 
 const AUTO_THEME_KEYS = ['crimson', 'cyan', 'purple', 'gold', 'orange', 'green'];
 
+const AESTHETICS = {
+  classic: {
+    name: 'classic',
+    label: 'Classic Retro',
+    fontFamily: "'Courier New', 'Fira Code', 'JetBrains Mono', monospace",
+    fontWeight: '800',
+    letterSpacing: '1.5px',
+    fontSize: '11.5px',
+    defaultBanner: 'GREAT ENEMY FELLED',
+    bannerFontFamily: "'Times New Roman', 'Georgia', serif",
+    bannerFontSize: '15px',
+    bannerLetterSpacing: '5px',
+    bannerWeight: '900',
+    bannerColor: '#fef08a',
+    bannerGlow: 'rgba(245, 158, 11, 0.8)',
+    tagLive: '[CURRENT FOE]',
+    tagLiveDefeated: '[BOSS]',
+    tagFelled: '[FELLED]',
+    tagLiveDefeatedColor: '#ef4444',
+    tagLiveColor: '#38bdf8',
+    defaultShake: 'medium',
+    defaultAnim: 'sweep',
+    defaultTheme: 'crimson'
+  },
+  souls: {
+    name: 'souls',
+    label: 'Souls Gothic',
+    fontFamily: "'Cinzel', 'Trajan Pro', 'Times New Roman', 'Georgia', serif",
+    fontWeight: '700',
+    letterSpacing: '2.5px',
+    fontSize: '11.5px',
+    defaultBanner: 'GREAT ENEMY FELLED',
+    bannerFontFamily: "'Cinzel', 'Trajan Pro', 'Times New Roman', 'Georgia', serif",
+    bannerFontSize: '15.5px',
+    bannerLetterSpacing: '6px',
+    bannerWeight: '900',
+    bannerColor: '#fef08a',
+    bannerGlow: 'rgba(245, 158, 11, 0.9)',
+    tagLive: '[CURRENT FOE]',
+    tagLiveDefeated: '[GREAT FOE]',
+    tagFelled: '[FELLED]',
+    tagLiveDefeatedColor: '#f59e0b',
+    tagLiveColor: '#facc15',
+    defaultShake: 'heavy',
+    defaultAnim: 'sweep',
+    defaultTheme: 'gold'
+  },
+  cyberpunk: {
+    name: 'cyberpunk',
+    label: 'Cyberpunk HUD',
+    fontFamily: "'Orbitron', 'Share Tech Mono', 'Courier New', monospace",
+    fontWeight: '800',
+    letterSpacing: '2px',
+    fontSize: '11px',
+    defaultBanner: '// TARGET DESTROYED //',
+    bannerFontFamily: "'Orbitron', 'Share Tech Mono', 'Courier New', monospace",
+    bannerFontSize: '13.5px',
+    bannerLetterSpacing: '4px',
+    bannerWeight: '900',
+    bannerColor: '#38bdf8',
+    bannerGlow: 'rgba(6, 182, 212, 0.9)',
+    tagLive: '// TARGET LOCK //',
+    tagLiveDefeated: '// HOSTILE //',
+    tagFelled: '// NEUTRALIZED //',
+    tagLiveDefeatedColor: '#06b6d4',
+    tagLiveColor: '#38bdf8',
+    defaultShake: 'glitch',
+    defaultAnim: 'glitch',
+    defaultTheme: 'cyan'
+  },
+  pixel: {
+    name: 'pixel',
+    label: '8-Bit Arcade',
+    fontFamily: "'Press Start 2P', 'Courier New', monospace",
+    fontWeight: '700',
+    letterSpacing: '1px',
+    fontSize: '10px',
+    defaultBanner: 'STAGE CLEAR',
+    bannerFontFamily: "'Press Start 2P', 'Courier New', monospace",
+    bannerFontSize: '12.5px',
+    bannerLetterSpacing: '3px',
+    bannerWeight: '900',
+    bannerColor: '#facc15',
+    bannerGlow: 'rgba(0, 0, 0, 0.9)',
+    tagLive: '[1P TARGET]',
+    tagLiveDefeated: '[1P BOSS]',
+    tagFelled: '[CLEAR]',
+    tagLiveDefeatedColor: '#ef4444',
+    tagLiveColor: '#22c55e',
+    defaultShake: 'medium',
+    defaultAnim: 'burst',
+    defaultTheme: 'crimson'
+  },
+  bloodborne: {
+    name: 'bloodborne',
+    label: 'Eldritch Horror',
+    fontFamily: "'IM Fell English', 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif",
+    fontWeight: '700',
+    letterSpacing: '2px',
+    fontSize: '11.5px',
+    defaultBanner: 'PREY SLAUGHTERED',
+    bannerFontFamily: "'IM Fell English', 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif",
+    bannerFontSize: '15px',
+    bannerLetterSpacing: '5px',
+    bannerWeight: '900',
+    bannerColor: '#f87171',
+    bannerGlow: 'rgba(220, 38, 38, 0.9)',
+    tagLive: '[ACTIVE PREY]',
+    tagLiveDefeated: '[NIGHTMARE]',
+    tagFelled: '[SLAUGHTERED]',
+    tagLiveDefeatedColor: '#ef4444',
+    tagLiveColor: '#dc2626',
+    defaultShake: 'heavy',
+    defaultAnim: 'burst',
+    defaultTheme: 'crimson'
+  },
+  minimal: {
+    name: 'minimal',
+    label: 'Minimal Dashboard',
+    fontFamily: "system-ui, -apple-system, 'Inter', 'Segoe UI', sans-serif",
+    fontWeight: '600',
+    letterSpacing: '1px',
+    fontSize: '11px',
+    defaultBanner: 'STATUS: DEFEATED',
+    bannerFontFamily: "system-ui, -apple-system, 'Inter', 'Segoe UI', sans-serif",
+    bannerFontSize: '12px',
+    bannerLetterSpacing: '2.5px',
+    bannerWeight: '700',
+    bannerColor: '#f8fafc',
+    bannerGlow: 'rgba(255, 255, 255, 0.3)',
+    tagLive: '[ACTIVE]',
+    tagLiveDefeated: '[TARGET]',
+    tagFelled: '[RESOLVED]',
+    tagLiveDefeatedColor: '#38bdf8',
+    tagLiveColor: '#22c55e',
+    defaultShake: 'subtle',
+    defaultAnim: 'sweep',
+    defaultTheme: 'green'
+  }
+};
+
+const ANIMATIONS = {
+  sweep: { name: 'sweep', label: 'Sequential Sweep' },
+  pulse: { name: 'pulse', label: 'Rhythmic Pulse' },
+  burst: { name: 'burst', label: 'Visceral Burst' },
+  glitch: { name: 'glitch', label: 'Digital Glitch' }
+};
+
+function resolveAesthetic(styleName) {
+  if (!styleName) return AESTHETICS.classic;
+  const key = String(styleName).trim().toLowerCase();
+  if (AESTHETICS[key]) return AESTHETICS[key];
+  if (key === 'gothic' || key === 'elden' || key === 'eldenring' || key === 'dark_souls' || key === 'darksouls') return AESTHETICS.souls;
+  if (key === 'scifi' || key === 'sci-fi' || key === 'cyber' || key === 'mech' || key === 'hud') return AESTHETICS.cyberpunk;
+  if (key === 'retro' || key === 'arcade' || key === '8bit' || key === '8-bit' || key === 'nes') return AESTHETICS.pixel;
+  if (key === 'clean' || key === 'modern' || key === 'sleek' || key === 'flat') return AESTHETICS.minimal;
+  if (key === 'eldritch' || key === 'horror' || key === 'gothic_horror' || key === 'visceral') return AESTHETICS.bloodborne;
+  return AESTHETICS.classic;
+}
+
+function resolveAnimation(animName, fallback = 'sweep') {
+  if (!animName) return fallback;
+  const key = String(animName).trim().toLowerCase();
+  if (ANIMATIONS[key]) return key;
+  if (key === 'smooth' || key === 'standard') return 'sweep';
+  if (key === 'flash' || key === 'wave') return 'pulse';
+  if (key === 'instant' || key === 'shatter' || key === 'snap') return 'burst';
+  if (key === 'tech' || key === 'stutter' || key === 'cyber') return 'glitch';
+  return fallback;
+}
+
 function resolveTheme(colorNameOrHex, index = 0) {
   if (!colorNameOrHex) {
     return THEMES.crimson;
@@ -128,6 +299,7 @@ function resolveShake(shake, defaultValue = 'medium') {
   if (shake === false || shake === 'false' || shake === 'none' || shake === '0') return 'none';
   if (shake === 'subtle') return 'subtle';
   if (shake === 'heavy') return 'heavy';
+  if (shake === 'glitch') return 'glitch';
   if (shake === 'medium' || shake === true || shake === 'true' || shake === '1') return 'medium';
   return defaultValue;
 }
@@ -137,12 +309,259 @@ function resolveSparks(sparks) {
   return true;
 }
 
+function renderEmblemMarkup(aesthetic, emblemColor) {
+  if (aesthetic.name === 'souls') {
+    return `
+      <!-- Elden Golden Cross Emblem -->
+      <rect x="5" y="0" width="2" height="14" fill="${emblemColor}" />
+      <rect x="0" y="5" width="12" height="2" fill="${emblemColor}" />
+      <polygon points="6,3 8,6 6,9 4,6" fill="#fef08a" />
+      <circle cx="6" cy="6" r="5" stroke="${emblemColor}" stroke-width="1" fill="none" opacity="0.8" />
+    `;
+  }
+  if (aesthetic.name === 'cyberpunk') {
+    return `
+      <!-- Tactical Crosshair Reticle Emblem -->
+      <circle cx="6" cy="7" r="5.5" stroke="${emblemColor}" stroke-width="1" fill="none" stroke-dasharray="3 1" />
+      <line x1="6" y1="0" x2="6" y2="4" stroke="${emblemColor}" stroke-width="1.2" />
+      <line x1="6" y1="10" x2="6" y2="14" stroke="${emblemColor}" stroke-width="1.2" />
+      <line x1="0" y1="7" x2="4" y2="7" stroke="${emblemColor}" stroke-width="1.2" />
+      <line x1="8" y1="7" x2="12" y2="7" stroke="${emblemColor}" stroke-width="1.2" />
+      <circle cx="6" cy="7" r="1.5" fill="#fef08a" />
+    `;
+  }
+  if (aesthetic.name === 'pixel') {
+    return `
+      <!-- 8-Bit Arcade Skull Emblem -->
+      <rect x="1" y="1" width="10" height="8" fill="${emblemColor}" />
+      <rect x="3" y="9" width="6" height="4" fill="${emblemColor}" />
+      <rect x="2.5" y="3" width="2" height="2.5" fill="#0d1117" />
+      <rect x="7.5" y="3" width="2" height="2.5" fill="#0d1117" />
+      <rect x="4" y="10" width="1" height="2" fill="#0d1117" />
+      <rect x="6" y="10" width="1" height="2" fill="#0d1117" />
+      <rect x="8" y="10" width="1" height="2" fill="#0d1117" />
+    `;
+  }
+  if (aesthetic.name === 'bloodborne') {
+    return `
+      <!-- Hunter's Mark Rune Emblem -->
+      <rect x="5.5" y="0" width="1.5" height="15" fill="${emblemColor}" />
+      <path d="M 1 2 Q 5.5 5 5.5 9" stroke="${emblemColor}" stroke-width="1.5" fill="none" />
+      <path d="M 11 2 Q 6.5 5 6.5 9" stroke="${emblemColor}" stroke-width="1.5" fill="none" />
+      <line x1="2" y1="8" x2="10" y2="8" stroke="${emblemColor}" stroke-width="1.5" />
+    `;
+  }
+  if (aesthetic.name === 'minimal') {
+    return `
+      <!-- Pulsing Dot Beacon Emblem -->
+      <circle cx="6" cy="7" r="3.5" fill="${emblemColor}" />
+      <circle cx="6" cy="7" r="6" stroke="${emblemColor}" stroke-width="1.2" fill="none" opacity="0.5" />
+    `;
+  }
+  // Classic 8-bit crest
+  return `
+    <!-- Pixel Emblem -->
+    <rect x="0" y="2" width="12" height="10" fill="${emblemColor}" />
+    <rect x="2" y="0" width="8" height="14" fill="${emblemColor}" />
+    <rect x="3" y="4" width="2" height="3" fill="#0d1117" />
+    <rect x="7" y="4" width="2" height="3" fill="#0d1117" />
+    <rect x="5" y="9" width="2" height="2" fill="#0d1117" />
+  `;
+}
+
+function renderParticleMarkup(aesthetic, theme) {
+  if (aesthetic.name === 'souls') {
+    return `
+      <!-- Golden Ember Particles -->
+      <circle cx="-5" cy="0" r="1.5" fill="#facc15" />
+      <circle cx="0" cy="2" r="2" fill="#f59e0b" />
+      <circle cx="5" cy="-2" r="1.5" fill="#fef08a" />
+      <circle cx="-2" cy="-4" r="1.2" fill="#ea580c" />
+      <circle cx="3" cy="4" r="1" fill="#facc15" />
+    `;
+  }
+  if (aesthetic.name === 'cyberpunk') {
+    return `
+      <!-- Cyber Bits / Glitch Slices -->
+      <rect x="-8" y="-4" width="7" height="1.5" fill="#06b6d4" />
+      <rect x="2" y="-1" width="9" height="1.5" fill="#facc15" />
+      <rect x="-5" y="3" width="6" height="1.5" fill="#38bdf8" />
+      <rect x="4" y="5" width="5" height="1" fill="#ffffff" />
+    `;
+  }
+  if (aesthetic.name === 'pixel') {
+    return `
+      <!-- Pixel Block Debris -->
+      <rect x="-7" y="-6" width="3" height="3" fill="${theme.sparks[0]}" />
+      <rect x="5" y="-5" width="3" height="3" fill="${theme.sparks[1]}" />
+      <rect x="-6" y="4" width="3" height="3" fill="${theme.sparks[1]}" />
+      <rect x="6" y="5" width="3" height="3" fill="${theme.sparks[0]}" />
+    `;
+  }
+  if (aesthetic.name === 'bloodborne') {
+    return `
+      <!-- Visceral Blood Droplets -->
+      <circle cx="-4" cy="0" r="1.8" fill="#ef4444" />
+      <circle cx="4" cy="2" r="1.8" fill="#b91c1c" />
+      <circle cx="-1" cy="4" r="2.2" fill="#dc2626" />
+      <path d="M 2 1 Q 3 6 3 8 Q 2 9 1 8 Q 1 6 2 1 Z" fill="#991b1b" />
+    `;
+  }
+  if (aesthetic.name === 'minimal') {
+    return `
+      <!-- Soft Ambient Ping Ring -->
+      <circle cx="0" cy="0" r="3" stroke="${theme.pulse}" stroke-width="1.5" fill="none" opacity="0.9" />
+      <circle cx="0" cy="0" r="1.5" fill="${theme.flash}" />
+    `;
+  }
+  // Classic Sparks
+  return `
+    <!-- Pixel Sparks -->
+    <rect x="-4" y="-4" width="2.5" height="2.5" fill="${theme.sparks[0]}" />
+    <rect x="4" y="-3" width="2.5" height="2.5" fill="${theme.sparks[1]}" />
+    <rect x="-3" y="4" width="2.5" height="2.5" fill="${theme.sparks[1]}" />
+    <rect x="3" y="4" width="2.5" height="2.5" fill="${theme.sparks[0]}" />
+  `;
+}
+
+function renderContainerBrackets(aesthetic, theme, actualWidth, barHeight) {
+  if (aesthetic.name === 'souls') {
+    return `
+      <!-- Ornate Filigree Brackets -->
+      <g>
+        <path d="M -8,-2 L -3,-2 L -1,${barHeight/2} L -3,${barHeight+2} L -8,${barHeight+2} M -5,${barHeight/2} L -10,${barHeight/2}" stroke="${theme.frameInner}" stroke-width="1.2" fill="none" />
+        <polygon points="-12,${barHeight/2} -10,${barHeight/2 - 2} -8,${barHeight/2} -10,${barHeight/2 + 2}" fill="${theme.frameInner}" />
+        <path d="M ${actualWidth+8},-2 L ${actualWidth+3},-2 L ${actualWidth+1},${barHeight/2} L ${actualWidth+3},${barHeight+2} L ${actualWidth+8},${barHeight+2} M ${actualWidth+5},${barHeight/2} L ${actualWidth+10},${barHeight/2}" stroke="${theme.frameInner}" stroke-width="1.2" fill="none" />
+        <polygon points="${actualWidth+12},${barHeight/2} ${actualWidth+10},${barHeight/2 - 2} ${actualWidth+8},${barHeight/2} ${actualWidth+10},${barHeight/2 + 2}" fill="${theme.frameInner}" />
+      </g>
+    `;
+  }
+  if (aesthetic.name === 'cyberpunk') {
+    return `
+      <!-- Tactical HUD Brackets -->
+      <g>
+        <path d="M -6,0 L -11,0 L -15,${barHeight/2} L -11,${barHeight} L -6,${barHeight}" stroke="${theme.emblem}" stroke-width="1.5" fill="none" opacity="0.8" />
+        <path d="M ${actualWidth+6},0 L ${actualWidth+11},0 L ${actualWidth+15},${barHeight/2} L ${actualWidth+11},${barHeight} L ${actualWidth+6},${barHeight}" stroke="${theme.emblem}" stroke-width="1.5" fill="none" opacity="0.8" />
+      </g>
+    `;
+  }
+  if (aesthetic.name === 'bloodborne') {
+    return `
+      <!-- Distressed Jagged Iron Brackets -->
+      <g>
+        <polygon points="-4,-2 -8,${barHeight/2} -4,${barHeight+2} -1,${barHeight/2}" fill="${theme.frameOuter}" stroke="${theme.frameInner}" stroke-width="1" />
+        <polygon points="${actualWidth+4},-2 ${actualWidth+8},${barHeight/2} ${actualWidth+4},${barHeight+2} ${actualWidth+1},${barHeight/2}" fill="${theme.frameOuter}" stroke="${theme.frameInner}" stroke-width="1" />
+      </g>
+    `;
+  }
+  return '';
+}
+
+function renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b) {
+  const aesthetic = tb.aesthetic;
+  const theme = tb.theme;
+  const particleMarkup = (getsHit && tb.sparks)
+    ? `<g class="${pfx}sparks-${b}-${i}" transform="translate(${Math.round(segWidth / 2)}, ${Math.round(barHeight / 2)})">${renderParticleMarkup(aesthetic, theme)}</g>`
+    : '';
+
+  if (aesthetic.name === 'minimal') {
+    return `
+      <g transform="translate(${segX}, 0)">
+        <!-- Minimal Pill Track -->
+        <rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" rx="4" ry="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+        <rect x="0" y="0" width="${segWidth}" height="${barHeight}" rx="3.5" ry="3.5" fill="#0b0f19" />
+        <!-- Animated Fill Bar -->
+        <rect x="0" y="0" height="${barHeight}" rx="3.5" ry="3.5" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
+        ${particleMarkup}
+      </g>
+    `;
+  }
+
+  if (aesthetic.name === 'cyberpunk') {
+    return `
+      <g transform="translate(${segX}, 0) skewX(-20)">
+        <!-- Cyber HUD Chamfered Segment -->
+        <rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" fill="rgba(0,0,0,0.8)" stroke="${theme.frameInner}" stroke-width="1" />
+        <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="#08101a" />
+        <!-- Animated Fill Bar -->
+        <rect x="0" y="0" height="${barHeight}" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
+        <!-- Cyber Tech Scanline -->
+        <line x1="0" y1="${barHeight/2}" x2="${segWidth}" y2="${barHeight/2}" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="2 2" />
+        ${particleMarkup}
+      </g>
+    `;
+  }
+
+  if (aesthetic.name === 'pixel') {
+    return `
+      <g transform="translate(${segX}, 0)">
+        <!-- Chunky Stepped Pixel Bevel -->
+        <rect x="-3" y="-3" width="${segWidth + 6}" height="${barHeight + 6}" fill="#000000" />
+        <rect x="-2" y="-2" width="${segWidth + 4}" height="${barHeight + 4}" fill="${theme.frameOuter}" />
+        <rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" fill="${theme.frameInner}" />
+        <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="#111111" />
+        <!-- Animated Fill Bar -->
+        <rect x="0" y="0" height="${barHeight}" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
+        <!-- Specular Pixel Highlight -->
+        <rect x="2" y="2" width="2" height="2" fill="#ffffff" opacity="0.5" />
+        ${particleMarkup}
+      </g>
+    `;
+  }
+
+  if (aesthetic.name === 'souls') {
+    return `
+      <g transform="translate(${segX}, 0)">
+        <!-- Ornate Gothic Frame -->
+        <rect x="-1.5" y="-1.5" width="${segWidth + 3}" height="${barHeight + 3}" stroke="${theme.frameInner}" stroke-width="1" fill="${theme.frameOuter}" />
+        <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="${theme.frameBg}" />
+        <!-- Animated Fill Bar -->
+        <rect x="0" y="0" height="${barHeight}" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
+        <!-- Gothic Top Highlight Sheen -->
+        <line x1="0" y1="1" x2="${segWidth}" y2="1" stroke="rgba(255,255,255,0.25)" stroke-width="1" />
+        ${particleMarkup}
+      </g>
+    `;
+  }
+
+  if (aesthetic.name === 'bloodborne') {
+    return `
+      <g transform="translate(${segX}, 0)">
+        <!-- Jagged Distressed Iron Frame -->
+        <rect x="-2" y="-2" width="${segWidth + 4}" height="${barHeight + 4}" fill="#1c070c" stroke="${theme.frameOuter}" stroke-width="1" />
+        <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="#0a0204" />
+        <!-- Animated Fill Bar -->
+        <rect x="0" y="0" height="${barHeight}" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
+        <!-- Blood Vial Vein -->
+        <line x1="0" y1="${barHeight-3}" x2="${segWidth}" y2="${barHeight-3}" stroke="#450a0a" stroke-width="1" opacity="0.8" />
+        ${particleMarkup}
+      </g>
+    `;
+  }
+
+  // Classic default
+  return `
+    <g transform="translate(${segX}, 0)">
+      <!-- Frame Background -->
+      <rect x="-2" y="-2" width="${segWidth + 4}" height="${barHeight + 4}" fill="${theme.frameOuter}" />
+      <rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" fill="${theme.frameInner}" />
+      <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="${theme.frameBg}" />
+      <!-- Animated Fill Bar -->
+      <rect x="0" y="0" height="${barHeight}" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
+      ${particleMarkup}
+    </g>
+  `;
+}
+
 function generateBossBarSVG(bossesConfig = [], options = {}) {
   const isGlobalAuto = options.auto === true || options.auto === 'true' || options.auto === '1';
   const rawId = options.id || options.prefix || '';
   const id = String(rawId).replace(/[^a-zA-Z0-9_-]/g, '');
   const pfx = id ? `${id}-` : '';
   const kfPfx = id ? `${id}_` : '';
+
+  const globalAesthetic = resolveAesthetic(options.style || options.aesthetic);
+  const globalAnimation = options.animation || options.anim;
 
   // Fallback defaults if no bosses provided
   let rawBosses;
@@ -191,6 +610,9 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
   rawBosses.forEach((boss, bIndex) => {
     const isBossAuto = isGlobalAuto || boss.auto === true || boss.auto === 'true' || boss.auto === '1';
     const totalBars = Math.max(1, parseInt(boss.totalBars, 10) || (isBossAuto ? 6 : 5));
+
+    const bossAesthetic = resolveAesthetic(boss.style || boss.aesthetic || globalAesthetic.name);
+    const bossAnimation = resolveAnimation(boss.animation || boss.anim || globalAnimation, bossAesthetic.defaultAnim);
 
     // Resolve damage per hit (bars drained per hit action)
     let damagePerHit = parseInt(
@@ -247,6 +669,8 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
     let themeChoice = boss.barColor || boss.theme || boss.color || options.barColor || options.theme || options.color;
     if (!themeChoice && isBossAuto) {
       themeChoice = AUTO_THEME_KEYS[bIndex % AUTO_THEME_KEYS.length];
+    } else if (!themeChoice && bossAesthetic.defaultTheme) {
+      themeChoice = bossAesthetic.defaultTheme;
     }
     const theme = resolveTheme(themeChoice, bIndex);
     uniqueThemes.set(theme.name, theme);
@@ -255,18 +679,22 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
     const sparks = resolveSparks(boss.sparks ?? options.sparks);
 
     // Resolve Shake
-    let defaultShake = 'medium';
+    let defaultShake = bossAesthetic.defaultShake || 'medium';
     if (isBossAuto) {
-      defaultShake = (isDefeated || damagePerHit >= 3) ? 'heavy' : 'medium';
+      defaultShake = (isDefeated || damagePerHit >= 3) ? 'heavy' : (bossAesthetic.defaultShake || 'medium');
     }
     const shake = resolveShake(boss.shake ?? options.shake, defaultShake);
 
     // Defeated banner text
-    const felledText = String(boss.felledText || options.felledText || 'GREAT ENEMY FELLED').trim();
+    const felledText = String(boss.felledText || options.felledText || bossAesthetic.defaultBanner).trim();
 
     // Damage popup template
     const dmgPopOption = boss.dmgPop !== undefined ? boss.dmgPop : options.dmgPop;
     const showDmgPop = dmgPopOption !== false && dmgPopOption !== 'false' && dmgPopOption !== 'none';
+
+    // Tags
+    const tagLive = boss.tagLive || (isDefeated ? (bossAesthetic.tagLiveDefeated || '[BOSS]') : (bossAesthetic.tagLive || '[CURRENT FOE]'));
+    const tagFelled = boss.tagFelled || bossAesthetic.tagFelled || '[FELLED]';
 
     const startTime = currentTime;
     const leadIn = isDefeated ? 0.5 : 0.8;
@@ -305,7 +733,11 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
       shake,
       felledText,
       dmgPopOption,
-      showDmgPop
+      showDmgPop,
+      aesthetic: bossAesthetic,
+      animation: bossAnimation,
+      tagLive,
+      tagFelled
     });
   });
 
@@ -356,6 +788,12 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
         ${inP}, ${outStartP} { opacity: 1; transform: translateY(0); }
         ${endP}, 100% { opacity: 0; transform: translateY(-3px); }
       }
+      .${pfx}txt-${b} {
+        font-family: ${tb.aesthetic.fontFamily};
+        font-size: ${tb.aesthetic.fontSize};
+        font-weight: ${tb.aesthetic.fontWeight};
+        letter-spacing: ${tb.aesthetic.letterSpacing};
+      }
     `);
 
     // Screen Shake Animation
@@ -374,6 +812,15 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
           shakeKeyframes.push(`
             ${pct(ht)} { transform: translate(-1px, 1px); }
             ${pct(ht + shakeDur)} { transform: translate(1px, -1px); }
+            ${pct(ht + shakeDur * 2)} { transform: translate(0, 0); }
+          `);
+        } else if (tb.shake === 'glitch') {
+          shakeKeyframes.push(`
+            ${pct(ht)} { transform: translate(-5px, 0); }
+            ${pct(ht + shakeDur * 0.4)} { transform: translate(4px, 0); }
+            ${pct(ht + shakeDur * 0.8)} { transform: translate(-3px, 1px); }
+            ${pct(ht + shakeDur * 1.2)} { transform: translate(2px, -1px); }
+            ${pct(ht + shakeDur * 1.6)} { transform: translate(-1px, 0); }
             ${pct(ht + shakeDur * 2)} { transform: translate(0, 0); }
           `);
         } else {
@@ -424,21 +871,90 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
         const hitP0 = pct(hitT - 0.04);
         const hitPFlash = pct(hitT);
 
-        const drainKeyframes = (p === 0)
-          ? `
-            0%, ${startP} { width: 0px; fill: ${tb.theme.bar}; }
-            ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
-            ${hitPFlash} { width: ${segWidth}px; fill: ${tb.hitFlash}; }
-            ${pct(tEnd)}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
-            100% { width: 0px; }
-          `
-          : `
-            0%, ${startP} { width: 0px; fill: ${tb.theme.bar}; }
-            ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
-            ${hitPFlash}, ${pct(tStart)} { width: ${segWidth}px; fill: ${tb.hitFlash}; }
-            ${pct(tEnd)}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
-            100% { width: 0px; }
-          `;
+        let drainKeyframes = '';
+        if (tb.animation === 'burst') {
+          // Visceral Burst: flashes and then snaps to 0 explosively
+          drainKeyframes = (p === 0)
+            ? `
+              0%, ${startP} { width: 0px; fill: ${tb.theme.bar}; }
+              ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
+              ${hitPFlash}, ${pct(tEnd - 0.02)} { width: ${segWidth}px; fill: ${tb.hitFlash}; }
+              ${pct(tEnd)}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
+              100% { width: 0px; }
+            `
+            : `
+              0%, ${startP} { width: 0px; fill: ${tb.theme.bar}; }
+              ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
+              ${hitPFlash}, ${pct(tStart)} { width: ${segWidth}px; fill: ${tb.hitFlash}; }
+              ${pct(tEnd - 0.02)} { width: ${segWidth}px; fill: ${tb.hitFlash}; }
+              ${pct(tEnd)}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
+              100% { width: 0px; }
+            `;
+        } else if (tb.animation === 'glitch') {
+          // Digital Glitch: stepped staircase drain
+          const dur = tEnd - tStart;
+          const p1 = pct(tStart + dur * 0.3);
+          const p2 = pct(tStart + dur * 0.6);
+          const w1 = Math.max(1, Math.round(segWidth * 0.65));
+          const w2 = Math.max(1, Math.round(segWidth * 0.3));
+          drainKeyframes = (p === 0)
+            ? `
+              0%, ${startP} { width: 0px; fill: ${tb.theme.bar}; }
+              ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
+              ${hitPFlash} { width: ${segWidth}px; fill: ${tb.hitFlash}; }
+              ${p1} { width: ${w1}px; fill: ${tb.hitFlash}; }
+              ${p2} { width: ${w2}px; fill: ${tb.theme.pulse}; }
+              ${pct(tEnd)}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
+              100% { width: 0px; }
+            `
+            : `
+              0%, ${startP} { width: 0px; fill: ${tb.theme.bar}; }
+              ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
+              ${hitPFlash}, ${pct(tStart)} { width: ${segWidth}px; fill: ${tb.hitFlash}; }
+              ${p1} { width: ${w1}px; fill: ${tb.hitFlash}; }
+              ${p2} { width: ${w2}px; fill: ${tb.theme.pulse}; }
+              ${pct(tEnd)}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
+              100% { width: 0px; }
+            `;
+        } else if (tb.animation === 'pulse') {
+          // Rhythmic Pulse: flash followed by a pulse wave
+          const dur = tEnd - tStart;
+          const pMid = pct(tStart + dur * 0.5);
+          drainKeyframes = (p === 0)
+            ? `
+              0%, ${startP} { width: 0px; fill: ${tb.theme.bar}; }
+              ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
+              ${hitPFlash} { width: ${segWidth}px; fill: ${tb.hitFlash}; }
+              ${pMid} { width: ${Math.round(segWidth * 0.7)}px; fill: ${tb.theme.pulse}; }
+              ${pct(tEnd)}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
+              100% { width: 0px; }
+            `
+            : `
+              0%, ${startP} { width: 0px; fill: ${tb.theme.bar}; }
+              ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
+              ${hitPFlash}, ${pct(tStart)} { width: ${segWidth}px; fill: ${tb.hitFlash}; }
+              ${pMid} { width: ${Math.round(segWidth * 0.7)}px; fill: ${tb.theme.pulse}; }
+              ${pct(tEnd)}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
+              100% { width: 0px; }
+            `;
+        } else {
+          // Standard Sweep (default)
+          drainKeyframes = (p === 0)
+            ? `
+              0%, ${startP} { width: 0px; fill: ${tb.theme.bar}; }
+              ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
+              ${hitPFlash} { width: ${segWidth}px; fill: ${tb.hitFlash}; }
+              ${pct(tEnd)}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
+              100% { width: 0px; }
+            `
+            : `
+              0%, ${startP} { width: 0px; fill: ${tb.theme.bar}; }
+              ${pct(tb.startTime + 0.3)}, ${hitP0} { width: ${segWidth}px; fill: ${tb.theme.bar}; }
+              ${hitPFlash}, ${pct(tStart)} { width: ${segWidth}px; fill: ${tb.hitFlash}; }
+              ${pct(tEnd)}, ${endP} { width: 0px; fill: ${tb.theme.bar}; }
+              100% { width: 0px; }
+            `;
+        }
 
         cssRules.push(`
           .${pfx}bar-${b}-${i} {
@@ -450,16 +966,65 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
         `);
 
         if (tb.sparks) {
+          let sparkKeyframes = '';
+          if (tb.aesthetic.name === 'souls') {
+            // Golden embers drifting upward
+            sparkKeyframes = `
+              0%, ${hitP0} { opacity: 0; transform: translateY(0) scale(0.6); }
+              ${hitPFlash} { opacity: 1; transform: translateY(-3px) scale(1.1); }
+              ${pct(hitT + drainDuration * 0.9)} { opacity: 0; transform: translateY(-12px) scale(0.4); }
+              100% { opacity: 0; }
+            `;
+          } else if (tb.aesthetic.name === 'cyberpunk') {
+            // Digital cyber bits jittering horizontally
+            sparkKeyframes = `
+              0%, ${hitP0} { opacity: 0; transform: translateX(0); }
+              ${hitPFlash} { opacity: 1; transform: translateX(-4px) scaleX(1.3); }
+              ${pct(hitT + drainDuration * 0.5)} { opacity: 0.8; transform: translateX(4px) scaleX(0.8); }
+              ${pct(hitT + drainDuration * 0.9)} { opacity: 0; transform: translateX(-2px); }
+              100% { opacity: 0; }
+            `;
+          } else if (tb.aesthetic.name === 'pixel') {
+            // Chunky pixel debris bursting outward
+            sparkKeyframes = `
+              0%, ${hitP0} { opacity: 0; transform: scale(0.5); }
+              ${hitPFlash} { opacity: 1; transform: scale(1.2); }
+              ${pct(hitT + drainDuration * 0.9)} { opacity: 0; transform: scale(1.8) rotate(45deg); }
+              100% { opacity: 0; }
+            `;
+          } else if (tb.aesthetic.name === 'bloodborne') {
+            // Visceral blood droplets dripping downward
+            sparkKeyframes = `
+              0%, ${hitP0} { opacity: 0; transform: translateY(0); }
+              ${hitPFlash} { opacity: 1; transform: translateY(2px) scaleY(1.2); }
+              ${pct(hitT + drainDuration * 0.9)} { opacity: 0; transform: translateY(14px) scaleY(1.5) scaleX(0.7); }
+              100% { opacity: 0; }
+            `;
+          } else if (tb.aesthetic.name === 'minimal') {
+            // Soft ambient ring ping expanding
+            sparkKeyframes = `
+              0%, ${hitP0} { opacity: 0; transform: scale(0.5); }
+              ${hitPFlash} { opacity: 1; transform: scale(1); }
+              ${pct(hitT + drainDuration * 0.9)} { opacity: 0; transform: scale(2.8); stroke-width: 0.5; }
+              100% { opacity: 0; }
+            `;
+          } else {
+            // Classic 4-corner sparks
+            sparkKeyframes = `
+              0%, ${hitP0} { opacity: 0; transform: scale(0.6); }
+              ${hitPFlash} { opacity: 1; transform: scale(1.2); }
+              ${pct(hitT + drainDuration * 0.9)} { opacity: 0; transform: scale(1.5); }
+              100% { opacity: 0; }
+            `;
+          }
+
           cssRules.push(`
             .${pfx}sparks-${b}-${i} {
               opacity: 0;
               animation: ${kfPfx}sparkAnim_${b}_${i} ${totalTime.toFixed(1)}s infinite;
             }
             @keyframes ${kfPfx}sparkAnim_${b}_${i} {
-              0%, ${hitP0} { opacity: 0; transform: scale(0.6); }
-              ${hitPFlash} { opacity: 1; transform: scale(1.2); }
-              ${pct(hitT + drainDuration * 0.9)} { opacity: 0; transform: scale(1.5); }
-              100% { opacity: 0; }
+              ${sparkKeyframes.trim()}
             }
           `);
         }
@@ -506,6 +1071,61 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
       const finalHitT = tb.hitTimes[tb.hitTimes.length - 1] || tb.startTime;
       const deathP = pct(finalHitT + 0.15);
 
+      let bannerKeyframes = '';
+      if (tb.aesthetic.name === 'souls') {
+        // Souls: Slow ethereal ascent and golden bloom
+        bannerKeyframes = `
+          0%, ${deathP} { opacity: 0; transform: translateY(4px) scale(0.96); }
+          ${pct(finalHitT + 0.35)} { opacity: 0.85; transform: translateY(-1px) scale(1.02); }
+          ${pct(finalHitT + 0.75)}, ${outStartP} { opacity: 1; transform: translateY(0) scale(1); }
+          ${endP}, 100% { opacity: 0; transform: translateY(-4px); }
+        `;
+      } else if (tb.aesthetic.name === 'cyberpunk') {
+        // Cyberpunk: Digital typewriter / glitch flicker decode
+        bannerKeyframes = `
+          0%, ${deathP} { opacity: 0; transform: translate(0, 0); }
+          ${pct(finalHitT + 0.18)} { opacity: 1; transform: translate(-3px, 0); }
+          ${pct(finalHitT + 0.22)} { opacity: 0.2; transform: translate(3px, 0); }
+          ${pct(finalHitT + 0.26)} { opacity: 1; transform: translate(0, 0); }
+          ${pct(finalHitT + 0.30)} { opacity: 0.6; transform: translate(-1px, 0); }
+          ${pct(finalHitT + 0.35)}, ${outStartP} { opacity: 1; transform: translate(0, 0); }
+          ${endP}, 100% { opacity: 0; }
+        `;
+      } else if (tb.aesthetic.name === 'pixel') {
+        // Pixel: 8-bit arcade flashing blink
+        bannerKeyframes = `
+          0%, ${deathP} { opacity: 0; }
+          ${pct(finalHitT + 0.18)} { opacity: 1; }
+          ${pct(finalHitT + 0.28)} { opacity: 0; }
+          ${pct(finalHitT + 0.38)} { opacity: 1; }
+          ${pct(finalHitT + 0.48)} { opacity: 0; }
+          ${pct(finalHitT + 0.58)}, ${outStartP} { opacity: 1; }
+          ${endP}, 100% { opacity: 0; }
+        `;
+      } else if (tb.aesthetic.name === 'bloodborne') {
+        // Bloodborne: Visceral heavy drop and blood surge
+        bannerKeyframes = `
+          0%, ${deathP} { opacity: 0; transform: scale(1.18); }
+          ${pct(finalHitT + 0.2)} { opacity: 1; transform: scale(0.98); }
+          ${pct(finalHitT + 0.35)}, ${outStartP} { opacity: 1; transform: scale(1); }
+          ${endP}, 100% { opacity: 0; transform: translateY(4px); }
+        `;
+      } else if (tb.aesthetic.name === 'minimal') {
+        // Minimal: Sleek smooth slide down
+        bannerKeyframes = `
+          0%, ${deathP} { opacity: 0; transform: translateY(-4px); }
+          ${pct(finalHitT + 0.25)}, ${outStartP} { opacity: 1; transform: translateY(0); }
+          ${endP}, 100% { opacity: 0; transform: translateY(3px); }
+        `;
+      } else {
+        // Classic: Smooth fade
+        bannerKeyframes = `
+          0%, ${deathP} { opacity: 0; }
+          ${pct(finalHitT + 0.25)}, ${outStartP} { opacity: 1; }
+          ${endP}, 100% { opacity: 0; }
+        `;
+      }
+
       cssRules.push(`
         .${pfx}tag-live-${b} {
           animation: ${kfPfx}tagLiveAnim${b} ${totalTime.toFixed(1)}s infinite;
@@ -528,17 +1148,19 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
         .${pfx}felled-text-${b} {
           opacity: 0;
           animation: ${kfPfx}felledBannerAnim${b} ${totalTime.toFixed(1)}s infinite;
-          font-family: 'Times New Roman', 'Georgia', serif;
-          font-size: 15px;
-          font-weight: 900;
-          letter-spacing: 5px;
-          fill: #fef08a;
-          filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
+          font-family: ${tb.aesthetic.bannerFontFamily};
+          font-size: ${tb.aesthetic.bannerFontSize};
+          font-weight: ${tb.aesthetic.bannerWeight};
+          letter-spacing: ${tb.aesthetic.bannerLetterSpacing};
+          fill: ${tb.aesthetic.bannerColor};
+          filter: drop-shadow(0 0 6px ${tb.aesthetic.bannerGlow});
+        }
+        .${pfx}felled-banner-bg-${b} {
+          opacity: 0;
+          animation: ${kfPfx}felledBannerAnim${b} ${totalTime.toFixed(1)}s infinite;
         }
         @keyframes ${kfPfx}felledBannerAnim${b} {
-          0%, ${deathP} { opacity: 0; }
-          ${pct(finalHitT + 0.25)}, ${outStartP} { opacity: 1; }
-          ${endP}, 100% { opacity: 0; }
+          ${bannerKeyframes.trim()}
         }
       `);
     }
@@ -560,30 +1182,11 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
       const drainIndex = (totalBars - 1) - i;
       const getsHit = drainIndex < tb.totalDamage;
 
-      segmentsMarkup.push(`
-        <g transform="translate(${segX}, 0)">
-          <!-- Frame Background -->
-          <rect x="-2" y="-2" width="${segWidth + 4}" height="${barHeight + 4}" fill="${tb.theme.frameOuter}" />
-          <rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" fill="${tb.theme.frameInner}" />
-          <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="${tb.theme.frameBg}" />
-          <!-- Animated Fill Bar -->
-          <rect x="0" y="0" height="${barHeight}" fill="${tb.theme.bar}" class="${pfx}bar-${b}-${i}" />
-          ${getsHit && tb.sparks ? `
-          <!-- Golden/Themed Pixel Sparks -->
-          <g class="${pfx}sparks-${b}-${i}" transform="translate(${Math.round(segWidth / 2)}, ${Math.round(barHeight / 2)})">
-            <rect x="-4" y="-4" width="2.5" height="2.5" fill="${tb.theme.sparks[0]}" />
-            <rect x="4" y="-3" width="2.5" height="2.5" fill="${tb.theme.sparks[1]}" />
-            <rect x="-3" y="4" width="2.5" height="2.5" fill="${tb.theme.sparks[1]}" />
-            <rect x="3" y="4" width="2.5" height="2.5" fill="${tb.theme.sparks[0]}" />
-          </g>` : ''}
-        </g>
-      `);
+      segmentsMarkup.push(renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b));
     }
 
     // Top Header info
-    const emblemColor = tb.theme.emblem;
-    const tagLive = tb.isDefeated ? '[BOSS]' : '[CURRENT FOE]';
-    const tagLiveColor = tb.isDefeated ? '#ef4444' : '#38bdf8';
+    const tagLiveColor = tb.isDefeated ? (tb.aesthetic.tagLiveDefeatedColor || '#ef4444') : (tb.aesthetic.tagLiveColor || '#38bdf8');
 
     // Damage popups markup
     let popupsMarkup = [];
@@ -614,37 +1217,40 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
       }
     }
 
+    const containerBrackets = renderContainerBrackets(tb.aesthetic, tb.theme, actualWidth, barHeight);
+    const emblemMarkup = renderEmblemMarkup(tb.aesthetic, tb.theme.emblem);
+    const shapeRenderingMode = (tb.aesthetic.name === 'pixel' || tb.aesthetic.name === 'classic') ? 'crispEdges' : 'geometricPrecision';
+
     svgBodies.push(`
       <g class="${pfx}boss-layer-${b}">
         <g class="${pfx}shake-${b}">
           <!-- Header (Name & Emblem) -->
           <g transform="translate(${containerX}, 22)">
-            <!-- Pixel Emblem -->
-            <rect x="0" y="2" width="12" height="10" fill="${emblemColor}" />
-            <rect x="2" y="0" width="8" height="14" fill="${emblemColor}" />
-            <rect x="3" y="4" width="2" height="3" fill="#0d1117" />
-            <rect x="7" y="4" width="2" height="3" fill="#0d1117" />
-            <rect x="5" y="9" width="2" height="2" fill="#0d1117" />
+            ${emblemMarkup}
 
             <!-- Boss Name -->
-            <text x="22" y="11" fill="#f8fafc" class="pixel-txt">${escapeXml(tb.name)}</text>
+            <text x="22" y="11" fill="#f8fafc" class="pixel-txt ${pfx}txt-${b}">${escapeXml(tb.name)}</text>
             
             ${tb.isDefeated ? `
             <!-- Live & Felled Tags -->
-            <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagLiveColor}" class="pixel-txt ${pfx}tag-live-${b}">${tagLive}</text>
-            <text x="${actualWidth}" text-anchor="end" y="11" fill="#f59e0b" class="pixel-txt ${pfx}tag-felled-${b}">[FELLED]</text>
+            <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagLiveColor}" class="pixel-txt ${pfx}txt-${b} ${pfx}tag-live-${b}">${escapeXml(tb.tagLive)}</text>
+            <text x="${actualWidth}" text-anchor="end" y="11" fill="#f59e0b" class="pixel-txt ${pfx}txt-${b} ${pfx}tag-felled-${b}">${escapeXml(tb.tagFelled)}</text>
             ` : `
-            <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagLiveColor}" class="pixel-txt">${tagLive}</text>
+            <text x="${actualWidth}" text-anchor="end" y="11" fill="${tagLiveColor}" class="pixel-txt ${pfx}txt-${b}">${escapeXml(tb.tagLive)}</text>
             `}
           </g>
 
           <!-- Segments -->
-          <g transform="translate(${containerX}, ${containerY})">
+          <g transform="translate(${containerX}, ${containerY})" shape-rendering="${shapeRenderingMode}">
+            ${containerBrackets}
             ${segmentsMarkup.join('')}
           </g>
 
           ${tb.isDefeated ? `
           <!-- Felled Banner Overlay -->
+          ${tb.aesthetic.name === 'minimal' ? `
+          <rect x="${Math.round(svgWidth / 2) - 110}" y="33" width="220" height="22" rx="11" fill="rgba(11, 15, 25, 0.92)" stroke="rgba(255,255,255,0.18)" stroke-width="1" class="${pfx}felled-banner-bg-${b}" />
+          ` : ''}
           <text x="${Math.round(svgWidth / 2)}" text-anchor="middle" y="48" class="${pfx}felled-text-${b}">${escapeXml(tb.felledText)}</text>
           ` : ''}
 
@@ -656,7 +1262,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
   });
 
   return `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgWidth} ${svgHeight}" width="100%" height="${svgHeight}" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgWidth} ${svgHeight}" width="100%" height="${svgHeight}">
   <defs>
     <style><![CDATA[
       ${cssRules.join('\n')}
@@ -671,12 +1277,23 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     generateBossBarSVG,
     escapeXml,
-    THEMES
+    THEMES,
+    AESTHETICS,
+    ANIMATIONS,
+    resolveAesthetic,
+    resolveAnimation,
+    resolveTheme,
+    resolveShake
   };
 }
 if (typeof window !== 'undefined') {
   window.generateBossBarSVG = generateBossBarSVG;
   window.THEMES = THEMES;
+  window.AESTHETICS = AESTHETICS;
+  window.ANIMATIONS = ANIMATIONS;
+  window.resolveAesthetic = resolveAesthetic;
+  window.resolveAnimation = resolveAnimation;
+  window.resolveTheme = resolveTheme;
+  window.resolveShake = resolveShake;
   window.escapeXml = escapeXml;
 }
-

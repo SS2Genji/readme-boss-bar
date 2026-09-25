@@ -207,7 +207,169 @@ runApiTest(
   "Single boss with explicit hits count (?name=RADAHN&bars=10&dmg=3&hits=2)"
 );
 
-console.log("\nALL 13 API TESTS PASSED SUCCESSFULLY!");
+// 14. Souls aesthetic query (?style=souls)
+runApiTest(
+  {
+    boss: "RADAHN:10:2:0.5:3",
+    style: "souls"
+  },
+  (svg) => {
+    assert(svg.includes("Cinzel"));
+    assert(svg.includes("Elden Golden Cross"));
+    assert(svg.includes("Golden Ember Particles"));
+    assert(svg.includes("[CURRENT FOE]"));
+  },
+  "Souls aesthetic (?style=souls)"
+);
+
+// 15. Cyberpunk aesthetic query (?style=cyberpunk)
+runApiTest(
+  {
+    boss: "CYBER MECH:8:2:0.4:4",
+    style: "cyberpunk"
+  },
+  (svg) => {
+    assert(svg.includes("Orbitron"));
+    assert(svg.includes("skewX(-20)"));
+    assert(svg.includes("Tactical Crosshair"));
+    assert(svg.includes("Cyber Bits"));
+    assert(svg.includes("// HOSTILE //"));
+  },
+  "Cyberpunk aesthetic (?style=cyberpunk)"
+);
+
+// 16. Pixel aesthetic query (?style=pixel)
+runApiTest(
+  {
+    boss: "DRACULA:8:2:0.4:4",
+    style: "pixel"
+  },
+  (svg) => {
+    assert(svg.includes("Press Start 2P"));
+    assert(svg.includes("8-Bit Arcade Skull"));
+    assert(svg.includes("Pixel Block Debris"));
+    assert(svg.includes("[1P BOSS]"));
+  },
+  "Pixel aesthetic (?style=pixel)"
+);
+
+// 17. Bloodborne aesthetic query (?style=bloodborne)
+runApiTest(
+  {
+    boss: "CLERIC BEAST:8:2:0.4:4",
+    style: "bloodborne"
+  },
+  (svg) => {
+    assert(svg.includes("IM Fell English"));
+    assert(svg.includes("Hunter's Mark Rune"));
+    assert(svg.includes("Visceral Blood Droplets"));
+    assert(svg.includes("[NIGHTMARE]"));
+  },
+  "Bloodborne aesthetic (?style=bloodborne)"
+);
+
+// 18. Minimal aesthetic query (?style=minimal)
+runApiTest(
+  {
+    boss: "SYSTEM CPU:6:2:0.5:3",
+    style: "minimal"
+  },
+  (svg) => {
+    assert(svg.includes('rx="4"'));
+    assert(svg.includes("Pulsing Dot Beacon"));
+    assert(svg.includes("Soft Ambient Ping Ring"));
+    assert(svg.includes("[TARGET]"));
+  },
+  "Minimal aesthetic (?style=minimal)"
+);
+
+// 19. Aesthetic aliases (gothic, scifi, retro, clean, eldritch)
+const aliasChecks = [
+  { alias: 'gothic', expectedClass: 'Cinzel', desc: 'gothic -> souls' },
+  { alias: 'scifi', expectedClass: 'Orbitron', desc: 'scifi -> cyberpunk' },
+  { alias: 'retro', expectedClass: 'Press Start 2P', desc: 'retro -> pixel' },
+  { alias: 'clean', expectedClass: 'system-ui', desc: 'clean -> minimal' },
+  { alias: 'eldritch', expectedClass: 'IM Fell English', desc: 'eldritch -> bloodborne' }
+];
+aliasChecks.forEach(ac => {
+  runApiTest(
+    { boss: "TEST:4:2", aesthetic: ac.alias },
+    (svg) => {
+      assert(svg.includes(ac.expectedClass), `Alias ${ac.alias} must resolve correctly`);
+    },
+    `Aesthetic alias (${ac.desc})`
+  );
+});
+
+// 20. Animation query parameters (?anim=glitch, ?animation=burst)
+runApiTest(
+  {
+    boss: "TEST:6:2:0.5:3",
+    anim: "glitch"
+  },
+  (svg) => {
+    assert(svg.includes("drain_0_"));
+  },
+  "Animation parameter (?anim=glitch)"
+);
+
+runApiTest(
+  {
+    boss: "TEST:6:2:0.5:3",
+    animation: "burst"
+  },
+  (svg) => {
+    assert(svg.includes("drain_0_"));
+  },
+  "Animation parameter (?animation=burst)"
+);
+
+// 21. Glitch screen shake parameter (?shake=glitch)
+runApiTest(
+  {
+    boss: "TEST:6:2:0.5:3",
+    shake: "glitch"
+  },
+  (svg) => {
+    assert(svg.includes("translate(-5px, 0)"));
+  },
+  "Screen shake parameter (?shake=glitch)"
+);
+
+// 22. 10-part shorthand query
+runApiTest(
+  {
+    boss: "TITAN MECH:10:4:0.4:3:cyan:glitch:// TARGET DESTROYED //:cyberpunk:glitch"
+  },
+  (svg) => {
+    assert(svg.includes("TITAN MECH"));
+    assert(svg.includes("Orbitron"));
+    assert(svg.includes("// TARGET DESTROYED //"));
+    assert(svg.includes("translate(-5px, 0)"));
+  },
+  "10-part shorthand (TITAN MECH:10:4:0.4:3:cyan:glitch:// TARGET DESTROYED //:cyberpunk:glitch)"
+);
+
+// 23. Single boss query with style and anim
+runApiTest(
+  {
+    name: "LUDWIG",
+    bars: "8",
+    dmg: "2",
+    style: "bloodborne",
+    anim: "burst"
+  },
+  (svg) => {
+    assert(svg.includes("LUDWIG"));
+    assert(svg.includes("IM Fell English"));
+    assert(svg.includes("Hunter's Mark Rune"));
+    assert(svg.includes("PREY SLAUGHTERED"));
+  },
+  "Single boss query with style & anim (?name=LUDWIG&bars=8&style=bloodborne&anim=burst)"
+);
+
+console.log("\nALL 23 API TESTS PASSED SUCCESSFULLY!");
+
 
 
 

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Souls Boss Bar Studio - Retro RPG Health Bars for GitHub README</title>
-  <meta name="description" content="Design dynamic 16-bit retro Souls boss health bars for your GitHub Profile README with real-time preview, multi-stage milestones, and 1-click Markdown export.">
+  <title>Souls Boss Bar Studio - Dynamic Boss Health Bars for GitHub README</title>
+  <meta name="description" content="Design dynamic retro Souls, Cyberpunk, 8-Bit Pixel, Bloodborne, and Minimalist boss health bars for your GitHub Profile README with real-time preview, multi-stage milestones, and 1-click Markdown export.">
   <style>
     :root {
       --bg: #070a13;
@@ -103,16 +103,16 @@
     }
     .preset-pills {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 10px;
     }
     .btn-preset {
       background: #141d33;
       border: 1px solid #25334d;
       color: var(--text-main);
-      padding: 10px 14px;
+      padding: 10px 12px;
       border-radius: 8px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -131,6 +131,54 @@
       border-color: var(--gold);
       color: var(--gold-bright);
       box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+    }
+
+    /* Aesthetic Selector Bar */
+    .aesthetic-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .aesthetic-pills {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+    }
+    .btn-aesthetic {
+      background: #141d33;
+      border: 1px solid #25334d;
+      color: var(--text-main);
+      padding: 10px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .btn-aesthetic:hover {
+      background: #1c2947;
+      border-color: var(--cyan);
+      transform: translateY(-1px);
+    }
+    .btn-aesthetic.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--cyan);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+    }
+    .btn-aesthetic .subtext {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 500;
     }
 
     /* Live Preview Card */
@@ -249,17 +297,16 @@
     }
     .btn-export-secondary {
       background: #1e293b;
-      color: #fff;
       border: 1px solid #334155;
+      color: #f8fafc;
     }
     .btn-export-secondary:hover {
       background: #334155;
       border-color: var(--cyan);
-      box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
       transform: translateY(-1px);
     }
 
-    /* Code Display Details */
+    /* Code Viewer */
     .code-viewer {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -281,21 +328,18 @@
       font-size: 12px;
       color: var(--text-muted);
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
     .code-box {
-      background: #070a12;
-      border: 1px solid #1a2436;
-      border-radius: 6px;
-      padding: 10px 14px;
+      background: #05070e;
+      border: 1px solid #1a2333;
+      border-radius: 8px;
+      padding: 12px 14px;
       font-family: monospace;
-      font-size: 12px;
-      color: var(--cyan);
+      font-size: 12.5px;
+      color: #38bdf8;
       overflow-x: auto;
       white-space: pre-wrap;
       word-break: break-all;
-      position: relative;
     }
 
     /* Stages Manager */
@@ -308,17 +352,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
     }
     .btn-add-stage {
-      background: rgba(34, 197, 94, 0.15);
-      border: 1px solid rgba(34, 197, 94, 0.4);
-      color: var(--green);
+      background: #0f2338;
+      border: 1px solid #0284c7;
+      color: var(--cyan);
       padding: 8px 14px;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 12.5px;
-      font-weight: 800;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -326,72 +368,60 @@
       transition: all 0.2s;
     }
     .btn-add-stage:hover {
-      background: rgba(34, 197, 94, 0.25);
-      border-color: var(--green);
-      transform: translateY(-1px);
+      background: #0284c7;
+      color: #000;
     }
-
-    /* Stage Card */
     .stage-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
       gap: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
       position: relative;
-      transition: border-color 0.2s;
-    }
-    .stage-card:focus-within {
-      border-color: #3b82f6;
     }
     .stage-card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #1a2538;
+      border-bottom: 1px solid #1a2333;
       padding-bottom: 12px;
-      flex-wrap: wrap;
-      gap: 10px;
     }
     .stage-card-title {
       font-size: 14px;
       font-weight: 800;
-      letter-spacing: 0.8px;
-      color: #fff;
       display: flex;
       align-items: center;
       gap: 10px;
     }
     .btn-remove-stage {
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: var(--crimson);
-      padding: 5px 10px;
+      background: transparent;
+      border: 1px solid #ef4444;
+      color: #ef4444;
+      padding: 4px 10px;
       border-radius: 6px;
       font-size: 11.5px;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .btn-remove-stage:hover {
-      background: rgba(239, 68, 68, 0.25);
-      border-color: var(--crimson);
+    .btn-remove-stage:hover:not(:disabled) {
+      background: #ef4444;
+      color: #fff;
     }
     .btn-remove-stage:disabled {
       opacity: 0.3;
       cursor: not-allowed;
-      border-color: #334155;
-      color: #64748b;
+      border-color: #555;
+      color: #555;
     }
 
     /* Controls Grid */
     .controls-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
+      gap: 14px;
     }
     .control-group {
       display: flex;
@@ -399,34 +429,29 @@
       gap: 6px;
     }
     .control-label {
-      font-size: 11.5px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
+      font-size: 12px;
       color: var(--text-muted);
       font-weight: 700;
       display: flex;
       justify-content: space-between;
-      align-items: center;
     }
-    .control-label .val-tag {
-      color: var(--gold-bright);
+    .val-tag {
+      color: var(--cyan);
       font-family: monospace;
-      font-size: 12px;
     }
     .control-input, .control-select {
-      background: var(--card-inner);
-      border: 1px solid #1f2c42;
+      background: #090d18;
+      border: 1px solid #1e293b;
       border-radius: 6px;
-      color: #fff;
-      font-family: inherit;
-      font-size: 13px;
       padding: 8px 12px;
+      color: #fff;
+      font-size: 13px;
+      font-family: inherit;
       outline: none;
-      transition: all 0.2s;
+      transition: border-color 0.2s;
     }
     .control-input:focus, .control-select:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 8px rgba(56, 189, 248, 0.2);
+      border-color: var(--gold);
     }
     .range-row {
       display: flex;
@@ -436,61 +461,56 @@
     .range-row input[type="range"] {
       flex: 1;
       accent-color: var(--gold);
-      height: 6px;
       cursor: pointer;
     }
 
-    /* Swatches */
+    /* Theme Swatches */
     .theme-swatches {
       display: flex;
       gap: 8px;
-      flex-wrap: wrap;
       align-items: center;
+      flex-wrap: wrap;
     }
     .swatch {
       width: 24px;
       height: 24px;
-      border-radius: 50%;
+      border-radius: 6px;
       cursor: pointer;
       border: 2px solid transparent;
       transition: transform 0.15s, border-color 0.15s;
     }
-    .swatch:hover {
-      transform: scale(1.15);
-    }
+    .swatch:hover { transform: scale(1.15); }
     .swatch.selected {
       border-color: #fff;
-      box-shadow: 0 0 8px #fff;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
       transform: scale(1.1);
     }
 
-    /* Segmented Shake Buttons */
+    /* Shake Buttons */
     .shake-buttons {
-      display: flex;
-      gap: 4px;
-      background: var(--card-inner);
-      border: 1px solid #1f2c42;
-      border-radius: 6px;
-      padding: 3px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+      gap: 6px;
     }
     .btn-shake {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      padding: 5px 8px;
+      background: #141d33;
+      border: 1px solid #25334d;
+      color: var(--text-main);
+      padding: 6px 4px;
+      border-radius: 6px;
       font-size: 11px;
       font-weight: 700;
-      border-radius: 4px;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.2s;
     }
+    .btn-shake:hover { background: #1c2947; }
     .btn-shake.active {
-      background: #25334d;
-      color: #fff;
+      background: rgba(245, 158, 11, 0.2);
+      border-color: var(--gold);
+      color: var(--gold-bright);
     }
 
-    /* Global Canvas Settings */
+    /* Global Settings */
     .global-settings {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -541,13 +561,13 @@
     <!-- Header -->
     <header class="header">
       <div class="header-badge-row">
-        <span class="badge badge-gold">16-BIT SOULS RPG</span>
+        <span class="badge badge-gold">MULTI-AESTHETIC</span>
         <span class="badge badge-cyan">ZERO DEPENDENCIES</span>
         <span class="badge badge-purple">60 FPS SVG</span>
         <span class="badge badge-crimson">CAMO SANITIZER SAFE</span>
       </div>
       <h1>SOULS BOSS BAR STUDIO</h1>
-      <p>Design authentic retro animated boss health bars for your GitHub Profile README. Configure granular multi-bar hits, hit intervals, camera shakes, and multi-stage boss encounters.</p>
+      <p>Design authentic retro animated boss health bars for your GitHub Profile README. Choose from distinct visual aesthetics (Souls, Cyberpunk, 8-Bit Pixel, Bloodborne, Minimalist), custom impact drain animations, and multi-stage boss encounters.</p>
     </header>
 
     <!-- 1-Click Ready Presets -->
@@ -559,6 +579,18 @@
         <button class="btn-preset active" id="btn-p-single" onclick="loadPreset('single')">
           <span>⚡</span> Quick Single Boss
         </button>
+        <button class="btn-preset" id="btn-p-cyberpunk" onclick="loadPreset('cyberpunk')">
+          <span>🤖</span> Cyberpunk Mech
+        </button>
+        <button class="btn-preset" id="btn-p-bloodborne" onclick="loadPreset('bloodborne')">
+          <span>🩸</span> Bloodborne Beast
+        </button>
+        <button class="btn-preset" id="btn-p-pixel" onclick="loadPreset('pixel')">
+          <span>👾</span> 8-Bit Arcade
+        </button>
+        <button class="btn-preset" id="btn-p-minimal" onclick="loadPreset('minimal')">
+          <span>✨</span> Modern Minimal
+        </button>
         <button class="btn-preset" id="btn-p-school42" onclick="loadPreset('school42')">
           <span>🎓</span> 42 School Milestone
         </button>
@@ -569,7 +601,40 @@
           <span>🐉</span> 3-Phase Demigod
         </button>
         <button class="btn-preset" id="btn-p-auto" onclick="loadPreset('auto')">
-          <span>🤖</span> Zero-Config Auto
+          <span>⚙️</span> Zero-Config Auto
+        </button>
+      </div>
+    </section>
+
+    <!-- Aesthetic Style Selector -->
+    <section class="aesthetic-section">
+      <div class="section-title">
+        <span>🎨</span> Visual Aesthetic Style
+      </div>
+      <div class="aesthetic-pills">
+        <button class="btn-aesthetic" id="btn-a-classic" data-style="classic" onclick="selectAesthetic('classic')">
+          <span>Classic</span>
+          <span class="subtext">16-Bit RPG</span>
+        </button>
+        <button class="btn-aesthetic active" id="btn-a-souls" data-style="souls" onclick="selectAesthetic('souls')">
+          <span>Souls</span>
+          <span class="subtext">Gothic Filigree</span>
+        </button>
+        <button class="btn-aesthetic" id="btn-a-cyberpunk" data-style="cyberpunk" onclick="selectAesthetic('cyberpunk')">
+          <span>Cyberpunk</span>
+          <span class="subtext">Sci-Fi 45° HUD</span>
+        </button>
+        <button class="btn-aesthetic" id="btn-a-pixel" data-style="pixel" onclick="selectAesthetic('pixel')">
+          <span>Pixel</span>
+          <span class="subtext">8-Bit NES Arcade</span>
+        </button>
+        <button class="btn-aesthetic" id="btn-a-bloodborne" data-style="bloodborne" onclick="selectAesthetic('bloodborne')">
+          <span>Bloodborne</span>
+          <span class="subtext">Eldritch Horror</span>
+        </button>
+        <button class="btn-aesthetic" id="btn-a-minimal" data-style="minimal" onclick="selectAesthetic('minimal')">
+          <span>Minimal</span>
+          <span class="subtext">Sleek Dashboard</span>
         </button>
       </div>
     </section>
@@ -590,6 +655,7 @@
       <div class="viewport" id="studio-viewport"></div>
 
       <div class="preview-stats" id="preview-stats">
+        <div>Aesthetic: <span id="stat-aesthetic">souls</span></div>
         <div>Stages: <span id="stat-stages">1</span></div>
         <div>Total Bars: <span id="stat-bars">10</span></div>
         <div>Total Hits: <span id="stat-hits">2</span></div>
@@ -649,7 +715,17 @@
       </div>
       <div class="controls-grid">
         <div class="control-group">
-          <label class="control-label">Pixel Sparks</label>
+          <label class="control-label">Drain Animation</label>
+          <select id="glob-anim" class="control-select" onchange="selectAnimation(this.value)">
+            <option value="sweep" selected>Sequential Sweep (Smooth)</option>
+            <option value="pulse">Rhythmic Pulse (Flash)</option>
+            <option value="burst">Visceral Burst (Instant Shatter)</option>
+            <option value="glitch">Digital Glitch (Stutter)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Sparks & Particles</label>
           <select id="glob-sparks" class="control-select" onchange="updateStudio()">
             <option value="true" selected>Enabled (High Energy)</option>
             <option value="false">Disabled (Minimalist)</option>
@@ -698,6 +774,8 @@
 
     const PRESETS = {
       single: {
+        aesthetic: 'souls',
+        animation: 'pulse',
         stages: [
           {
             name: "STARCOURGE RADAHN",
@@ -707,11 +785,87 @@
             hits: 4,
             barColor: "purple",
             shake: "heavy",
-            felledText: "DEMIGOD FELLED"
+            felledText: "DEMIGOD FELLED",
+            style: "souls",
+            animation: "pulse"
+          }
+        ]
+      },
+      cyberpunk: {
+        aesthetic: 'cyberpunk',
+        animation: 'glitch',
+        stages: [
+          {
+            name: "TITAN MECH // 01",
+            totalBars: 10,
+            damagePerHit: 3,
+            hitInterval: 0.4,
+            hits: 4,
+            barColor: "cyan",
+            shake: "glitch",
+            felledText: "// TARGET DESTROYED //",
+            style: "cyberpunk",
+            animation: "glitch"
+          }
+        ]
+      },
+      bloodborne: {
+        aesthetic: 'bloodborne',
+        animation: 'burst',
+        stages: [
+          {
+            name: "CLERIC BEAST",
+            totalBars: 8,
+            damagePerHit: 2,
+            hitInterval: 0.35,
+            hits: 4,
+            barColor: "crimson",
+            shake: "heavy",
+            felledText: "PREY SLAUGHTERED",
+            style: "bloodborne",
+            animation: "burst"
+          }
+        ]
+      },
+      pixel: {
+        aesthetic: 'pixel',
+        animation: 'burst',
+        stages: [
+          {
+            name: "CASTLE OVERLORD",
+            totalBars: 8,
+            damagePerHit: 2,
+            hitInterval: 0.4,
+            hits: 4,
+            barColor: "gold",
+            shake: "medium",
+            felledText: "STAGE CLEAR",
+            style: "pixel",
+            animation: "burst"
+          }
+        ]
+      },
+      minimal: {
+        aesthetic: 'minimal',
+        animation: 'sweep',
+        stages: [
+          {
+            name: "SYSTEM INTEGRITY",
+            totalBars: 6,
+            damagePerHit: 2,
+            hitInterval: 0.5,
+            hits: 3,
+            barColor: "green",
+            shake: "subtle",
+            felledText: "STATUS: DEFEATED",
+            style: "minimal",
+            animation: "sweep"
           }
         ]
       },
       school42: {
+        aesthetic: 'classic',
+        animation: 'sweep',
         stages: [
           {
             name: "CIRCLE 00 (LIBFT)",
@@ -721,7 +875,9 @@
             hits: 4,
             barColor: "crimson",
             shake: "medium",
-            felledText: "LIBFT COMPLETED"
+            felledText: "LIBFT COMPLETED",
+            style: "classic",
+            animation: "sweep"
           },
           {
             name: "CIRCLE 01 (FT_PRINTF)",
@@ -731,7 +887,9 @@
             hits: 4,
             barColor: "cyan",
             shake: "medium",
-            felledText: "PRINTF COMPLETED"
+            felledText: "PRINTF COMPLETED",
+            style: "classic",
+            animation: "sweep"
           },
           {
             name: "CIRCLE 02 (PUSH_SWAP)",
@@ -741,11 +899,15 @@
             hits: 3,
             barColor: "gold",
             shake: "heavy",
-            felledText: "PUSH_SWAP FELLED"
+            felledText: "PUSH_SWAP FELLED",
+            style: "classic",
+            animation: "sweep"
           }
         ]
       },
       eldenRing: {
+        aesthetic: 'souls',
+        animation: 'sweep',
         stages: [
           {
             name: "MARGIT, THE FELL OMEN",
@@ -755,7 +917,9 @@
             hits: 3,
             barColor: "crimson",
             shake: "heavy",
-            felledText: "GREAT ENEMY FELLED"
+            felledText: "GREAT ENEMY FELLED",
+            style: "souls",
+            animation: "sweep"
           },
           {
             name: "STARCOURGE RADAHN",
@@ -765,7 +929,9 @@
             hits: 4,
             barColor: "purple",
             shake: "heavy",
-            felledText: "DEMIGOD FELLED"
+            felledText: "DEMIGOD FELLED",
+            style: "souls",
+            animation: "pulse"
           },
           {
             name: "MALENIA, BLADE OF MIQUELLA",
@@ -775,11 +941,15 @@
             hits: 4,
             barColor: "gold",
             shake: "heavy",
-            felledText: "DEMIGOD FELLED"
+            felledText: "DEMIGOD FELLED",
+            style: "souls",
+            animation: "sweep"
           }
         ]
       },
       demigod: {
+        aesthetic: 'souls',
+        animation: 'burst',
         stages: [
           {
             name: "LUDWIG THE ACCURSED",
@@ -789,7 +959,9 @@
             hits: 3,
             barColor: "green",
             shake: "subtle",
-            felledText: "PHASE 1 COMPLETE"
+            felledText: "PHASE 1 COMPLETE",
+            style: "bloodborne",
+            animation: "burst"
           },
           {
             name: "LUDWIG, HOLY BLADE",
@@ -799,7 +971,9 @@
             hits: 4,
             barColor: "cyan",
             shake: "heavy",
-            felledText: "PHASE 2 COMPLETE"
+            felledText: "PHASE 2 COMPLETE",
+            style: "souls",
+            animation: "sweep"
           },
           {
             name: "ORPHAN OF KOS",
@@ -809,18 +983,24 @@
             hits: 5,
             barColor: "crimson",
             shake: "heavy",
-            felledText: "NIGHTMARE SLAIN"
+            felledText: "NIGHTMARE SLAIN",
+            style: "bloodborne",
+            animation: "burst"
           }
         ]
       },
       auto: {
         isAuto: true,
+        aesthetic: 'classic',
+        animation: 'sweep',
         stages: []
       }
     };
 
     let activePreset = 'single';
     let isAutoMode = false;
+    let currentAesthetic = 'souls';
+    let currentAnimation = 'sweep';
     let stages = JSON.parse(JSON.stringify(PRESETS.single.stages));
     let currentSvg = '';
     let currentMd = '';
@@ -896,11 +1076,44 @@
       showToast("🔄 Animation restarted");
     }
 
+    function selectAesthetic(styleName) {
+      currentAesthetic = styleName;
+      document.querySelectorAll('.btn-aesthetic').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.style === styleName);
+      });
+      stages.forEach(st => {
+        st.style = styleName;
+      });
+      renderStages();
+      updateStudio();
+    }
+
+    function selectAnimation(animName) {
+      currentAnimation = animName;
+      document.getElementById('glob-anim').value = animName;
+      stages.forEach(st => {
+        st.animation = animName;
+      });
+      updateStudio();
+    }
+
     function loadPreset(presetKey) {
       activePreset = presetKey;
       document.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
       const activeBtn = document.getElementById('btn-p-' + (presetKey === 'eldenRing' ? 'elden' : presetKey));
       if (activeBtn) activeBtn.classList.add('active');
+
+      const presetData = PRESETS[presetKey];
+      if (presetData && presetData.aesthetic) {
+        currentAesthetic = presetData.aesthetic;
+        document.querySelectorAll('.btn-aesthetic').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.style === currentAesthetic);
+        });
+      }
+      if (presetData && presetData.animation) {
+        currentAnimation = presetData.animation;
+        document.getElementById('glob-anim').value = currentAnimation;
+      }
 
       if (presetKey === 'auto') {
         isAutoMode = true;
@@ -936,7 +1149,9 @@
         hits: 3,
         barColor: chosenTheme,
         shake: 'medium',
-        felledText: 'GREAT ENEMY FELLED'
+        felledText: 'GREAT ENEMY FELLED',
+        style: currentAesthetic,
+        animation: currentAnimation
       });
       renderStages();
       updateStudio();
@@ -986,6 +1201,18 @@
               <label class="control-label">Boss / Milestone Name</label>
               <input type="text" class="control-input" value="${escapeHtml(st.name)}" 
                 oninput="const val = this.value || 'BOSS'; document.getElementById('stage-title-${idx}').innerText = val; updateStageProp(${idx}, 'name', val)" />
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Aesthetic Style</label>
+              <select class="control-select" onchange="updateStageProp(${idx}, 'style', this.value)">
+                <option value="classic" ${st.style === 'classic' ? 'selected' : ''}>Classic (16-Bit RPG)</option>
+                <option value="souls" ${st.style === 'souls' ? 'selected' : ''}>Souls (Gothic Filigree)</option>
+                <option value="cyberpunk" ${st.style === 'cyberpunk' ? 'selected' : ''}>Cyberpunk (Sci-Fi 45° HUD)</option>
+                <option value="pixel" ${st.style === 'pixel' ? 'selected' : ''}>Pixel (8-Bit NES Arcade)</option>
+                <option value="bloodborne" ${st.style === 'bloodborne' ? 'selected' : ''}>Bloodborne (Eldritch Horror)</option>
+                <option value="minimal" ${st.style === 'minimal' ? 'selected' : ''}>Minimal (Modern Dashboard)</option>
+              </select>
             </div>
 
             <div class="control-group">
@@ -1050,7 +1277,7 @@
             <div class="control-group">
               <label class="control-label">Screen Shake</label>
               <div class="shake-buttons">
-                ${['none', 'subtle', 'medium', 'heavy'].map(s => `
+                ${['none', 'subtle', 'medium', 'heavy', 'glitch'].map(s => `
                   <button class="btn-shake ${st.shake === s ? 'active' : ''}" 
                     onclick="selectStageShake(${idx}, '${s}')">${capitalize(s)}</button>
                 `).join('')}
@@ -1142,6 +1369,8 @@
         barWidth: 480,
         sparks: sparks,
         dmgPop: dmgPop,
+        style: currentAesthetic,
+        animation: currentAnimation,
         id: 'studio'
       };
 
@@ -1156,8 +1385,12 @@
         options.auto = true;
         svg = generateBossBarSVG([], options);
         mdUrl = `${baseUrl}/api?auto=true`;
-        cliCmd = 'npx readme-boss-bar --auto -o boss_bar.svg';
+        if (currentAesthetic !== 'classic') mdUrl += `&style=${currentAesthetic}`;
+        cliCmd = 'npx readme-boss-bar --auto';
+        if (currentAesthetic !== 'classic') cliCmd += ` --style ${currentAesthetic}`;
+        cliCmd += ' -o boss_bar.svg';
 
+        document.getElementById('stat-aesthetic').innerText = currentAesthetic;
         document.getElementById('stat-stages').innerText = '2 (Auto)';
         document.getElementById('stat-bars').innerText = '14';
         document.getElementById('stat-hits').innerText = '5';
@@ -1166,7 +1399,9 @@
         const configuredStages = stages.map(s => ({
           ...s,
           sparks: sparks,
-          dmgPop: dmgPop
+          dmgPop: dmgPop,
+          style: s.style || currentAesthetic,
+          animation: s.animation || currentAnimation
         }));
 
         svg = generateBossBarSVG(configuredStages, options);
@@ -1178,6 +1413,7 @@
           const hits = s.hits || Math.ceil(s.totalBars / s.damagePerHit);
           totalHitsCount += hits;
         });
+        document.getElementById('stat-aesthetic').innerText = currentAesthetic;
         document.getElementById('stat-stages').innerText = stages.length;
         document.getElementById('stat-bars').innerText = totalBarsCount;
         document.getElementById('stat-hits').innerText = totalHitsCount;
@@ -1189,6 +1425,12 @@
           const encName = encodeURIComponent(st.name);
           const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
           mdUrl = `${baseUrl}/api?name=${encName}&bars=${st.totalBars}&dmg=${st.damagePerHit}&interval=${st.hitInterval}&theme=${safeTheme}&shake=${st.shake}`;
+          if (st.style || currentAesthetic !== 'classic') {
+            mdUrl += `&style=${encodeURIComponent(st.style || currentAesthetic)}`;
+          }
+          if (currentAnimation !== 'sweep') {
+            mdUrl += `&anim=${encodeURIComponent(currentAnimation)}`;
+          }
           const totalHitsToDefeat = Math.ceil(st.totalBars / st.damagePerHit);
           if (st.hits !== undefined && st.hits !== totalHitsToDefeat) {
             mdUrl += `&hits=${st.hits}`;
@@ -1201,23 +1443,25 @@
 
           const safeNameCli = st.name.replace(/"/g, '\\"');
           const safeFelledCli = (st.felledText || 'GREAT ENEMY FELLED').replace(/"/g, '\\"');
-          cliCmd = `npx readme-boss-bar -b "${safeNameCli}:${st.totalBars}:${st.hits !== undefined ? st.hits : totalHitsToDefeat}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}"`;
+          cliCmd = `npx readme-boss-bar -b "${safeNameCli}:${st.totalBars}:${st.hits !== undefined ? st.hits : totalHitsToDefeat}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}:${st.style || currentAesthetic}:${currentAnimation}"`;
           if (!sparks) cliCmd += ` --no-sparks`;
           cliCmd += ` -o boss_bar.svg`;
         } else {
           const queryParts = stages.map((st, i) => {
             const hits = st.hits !== undefined ? st.hits : Math.ceil(st.totalBars / st.damagePerHit);
             const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
-            return `b${i + 1}=${encodeURIComponent(st.name)}:${st.totalBars}:${hits}:${st.hitInterval}:${st.damagePerHit}:${safeTheme}:${st.shake}:${encodeURIComponent(st.felledText || 'GREAT ENEMY FELLED')}`;
+            return `b${i + 1}=${encodeURIComponent(st.name)}:${st.totalBars}:${hits}:${st.hitInterval}:${st.damagePerHit}:${safeTheme}:${st.shake}:${encodeURIComponent(st.felledText || 'GREAT ENEMY FELLED')}:${st.style || currentAesthetic}:${st.animation || currentAnimation}`;
           }).join('&');
           mdUrl = `${baseUrl}/api?${queryParts}`;
+          if (currentAesthetic !== 'classic') mdUrl += `&style=${currentAesthetic}`;
+          if (currentAnimation !== 'sweep') mdUrl += `&anim=${currentAnimation}`;
           if (!sparks) mdUrl += `&sparks=false`;
 
           const bArgs = stages.map(st => {
             const hits = st.hits !== undefined ? st.hits : Math.ceil(st.totalBars / st.damagePerHit);
             const safeNameCli = st.name.replace(/"/g, '\\"');
             const safeFelledCli = (st.felledText || 'GREAT ENEMY FELLED').replace(/"/g, '\\"');
-            return `-b "${safeNameCli}:${st.totalBars}:${hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}"`;
+            return `-b "${safeNameCli}:${st.totalBars}:${hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}:${st.style || currentAesthetic}:${st.animation || currentAnimation}"`;
           }).join(' ');
           cliCmd = `npx readme-boss-bar ${bArgs}`;
           if (!sparks) cliCmd += ` --no-sparks`;

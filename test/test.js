@@ -306,7 +306,175 @@ if (!zeroSvg.includes('UNDAMAGED FOE') || !zeroSvg.includes('#a855f7') || zeroSv
 execSync('rsvg-convert /tmp/cli_wizard_zero_hits.svg -o /tmp/cli_wizard_zero_hits.png');
 console.log("✔ Test 22 passed: Interactive CLI Wizard executed preset, multi-stage, and 0-hit flows cleanly!");
 
-console.log("\nALL 22 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
+// Test 23: All 6 Visual Aesthetics (classic, souls, cyberpunk, pixel, bloodborne, minimal)
+const aestheticsList = ['classic', 'souls', 'cyberpunk', 'pixel', 'bloodborne', 'minimal'];
+aestheticsList.forEach((style, idx) => {
+  const svg = generateBossBarSVG([
+    { name: `${style.toUpperCase()} BOSS`, totalBars: 8, hits: 4, damagePerHit: 2 }
+  ], { style });
+  
+  if (style === 'souls') {
+    if (!svg.includes('Cinzel') || !svg.includes('Elden Golden Cross') || !svg.includes('Golden Ember Particles')) {
+      throw new Error(`Test 23 failed: Souls aesthetic missing expected components`);
+    }
+  } else if (style === 'cyberpunk') {
+    if (!svg.includes('Orbitron') || !svg.includes('skewX(-20)') || !svg.includes('Tactical Crosshair') || !svg.includes('Cyber Bits')) {
+      throw new Error(`Test 23 failed: Cyberpunk aesthetic missing expected components`);
+    }
+  } else if (style === 'pixel') {
+    if (!svg.includes('Press Start 2P') || !svg.includes('8-Bit Arcade Skull') || !svg.includes('Pixel Block Debris')) {
+      throw new Error(`Test 23 failed: Pixel aesthetic missing expected components`);
+    }
+  } else if (style === 'bloodborne') {
+    if (!svg.includes('IM Fell English') || !svg.includes("Hunter's Mark Rune") || !svg.includes('Visceral Blood Droplets')) {
+      throw new Error(`Test 23 failed: Bloodborne aesthetic missing expected components`);
+    }
+  } else if (style === 'minimal') {
+    if (!svg.includes('rx="4"') || !svg.includes('Pulsing Dot Beacon') || !svg.includes('Soft Ambient Ping Ring')) {
+      throw new Error(`Test 23 failed: Minimal aesthetic missing expected components`);
+    }
+  }
+
+  const outPath = `/tmp/test_aesthetic_${idx}_${style}.svg`;
+  fs.writeFileSync(outPath, svg);
+  execSync(`rsvg-convert ${outPath} -o /tmp/test_aesthetic_${idx}_${style}.png`);
+});
+console.log("✔ Test 23 passed: All 6 visual aesthetics render distinct geometries, typography, particles & emblems cleanly!");
+
+// Test 24: All 4 Impact Drain Animations (sweep, pulse, burst, glitch)
+const animList = ['sweep', 'pulse', 'burst', 'glitch'];
+animList.forEach((anim, idx) => {
+  const svg = generateBossBarSVG([
+    { name: `ANIM ${anim.toUpperCase()}`, totalBars: 6, hits: 2, damagePerHit: 3 }
+  ], { animation: anim });
+
+  if (anim === 'burst') {
+    if (!svg.includes('tEnd - 0.02') && !svg.includes('fill: #fef08a')) {
+      throw new Error("Test 24 failed: Burst animation missing expected keyframe structure");
+    }
+  } else if (anim === 'glitch') {
+    if (!svg.includes('drain_0_') || !svg.includes('% { width:')) {
+      throw new Error("Test 24 failed: Glitch animation missing expected keyframe structure");
+    }
+  }
+
+  const outPath = `/tmp/test_anim_${idx}_${anim}.svg`;
+  fs.writeFileSync(outPath, svg);
+  execSync(`rsvg-convert ${outPath} -o /tmp/test_anim_${idx}_${anim}.png`);
+});
+console.log("✔ Test 24 passed: All 4 impact drain animations compile cleanly!");
+
+// Test 25: Screen Shake 'glitch' mode
+const svg25 = generateBossBarSVG([
+  { name: "GLITCH TARGET", totalBars: 6, hits: 2, shake: "glitch" }
+]);
+if (!svg25.includes("translate(-5px, 0)") || !svg25.includes("translate(4px, 0)")) {
+  throw new Error("Test 25 failed: Glitch shake missing expected horizontal jitter keyframes");
+}
+fs.writeFileSync('/tmp/test_boss_25.svg', svg25);
+execSync('rsvg-convert /tmp/test_boss_25.svg -o /tmp/test_boss_25.png');
+console.log("✔ Test 25 passed: Digital glitch screen shake mode compiles cleanly!");
+
+// Test 26: Defeat Banners and Tags across all Aesthetics
+const bannerTests = [
+  { style: 'classic', expectedBanner: 'GREAT ENEMY FELLED', expectedTag: '[BOSS]', expectedFelledTag: '[FELLED]' },
+  { style: 'souls', expectedBanner: 'GREAT ENEMY FELLED', expectedTag: '[GREAT FOE]', expectedFelledTag: '[FELLED]' },
+  { style: 'cyberpunk', expectedBanner: '// TARGET DESTROYED //', expectedTag: '// HOSTILE //', expectedFelledTag: '// NEUTRALIZED //' },
+  { style: 'pixel', expectedBanner: 'STAGE CLEAR', expectedTag: '[1P BOSS]', expectedFelledTag: '[CLEAR]' },
+  { style: 'bloodborne', expectedBanner: 'PREY SLAUGHTERED', expectedTag: '[NIGHTMARE]', expectedFelledTag: '[SLAUGHTERED]' },
+  { style: 'minimal', expectedBanner: 'STATUS: DEFEATED', expectedTag: '[TARGET]', expectedFelledTag: '[RESOLVED]' }
+];
+bannerTests.forEach((bTest, idx) => {
+  const svg = generateBossBarSVG([
+    { name: `VICTORY ${bTest.style.toUpperCase()}`, totalBars: 4, hits: 2, damagePerHit: 2 }
+  ], { style: bTest.style });
+
+  if (!svg.includes(bTest.expectedBanner)) {
+    throw new Error(`Test 26 failed: ${bTest.style} missing expected defeat banner: ${bTest.expectedBanner}`);
+  }
+  if (!svg.includes(bTest.expectedTag) || !svg.includes(bTest.expectedFelledTag)) {
+    throw new Error(`Test 26 failed: ${bTest.style} missing expected tags`);
+  }
+  const outPath = `/tmp/test_banner_${idx}_${bTest.style}.svg`;
+  fs.writeFileSync(outPath, svg);
+  execSync(`rsvg-convert ${outPath} -o /tmp/test_banner_${idx}_${bTest.style}.png`);
+});
+console.log("✔ Test 26 passed: Defeat banners and contextual tags verified across all 6 aesthetics!");
+
+// Test 27: Shorthand 9-part and 10-part format
+const svg27 = generateBossBarSVG([
+  {
+    name: "MALENIA",
+    totalBars: 8,
+    hits: 4,
+    hitInterval: 0.35,
+    damagePerHit: 2,
+    barColor: "gold",
+    shake: "heavy",
+    felledText: "DEMIGOD FELLED",
+    style: "souls",
+    animation: "sweep"
+  }
+]);
+if (!svg27.includes("Cinzel") || !svg27.includes("DEMIGOD FELLED") || !svg27.includes("Golden Ember Particles")) {
+  throw new Error("Test 27 failed: Extended boss properties not properly applied");
+}
+fs.writeFileSync('/tmp/test_boss_27.svg', svg27);
+execSync('rsvg-convert /tmp/test_boss_27.svg -o /tmp/test_boss_27.png');
+console.log("✔ Test 27 passed: Extended boss configuration with style & animation compiles cleanly!");
+
+// Test 28: CLI Flags (--style, --anim, --shake glitch)
+execSync('node bin/cli.js --style cyberpunk --anim glitch --shake glitch -b "CYBER MECH:8:2:0.4:4" -o /tmp/test_cli_flags_28.svg');
+if (!fs.existsSync('/tmp/test_cli_flags_28.svg')) {
+  throw new Error("Test 28 failed: CLI did not produce output SVG with --style and --anim flags!");
+}
+const cliFlagSvg = fs.readFileSync('/tmp/test_cli_flags_28.svg', 'utf8');
+if (!cliFlagSvg.includes('CYBER MECH') || !cliFlagSvg.includes('Orbitron') || !cliFlagSvg.includes('skewX(-20)')) {
+  throw new Error("Test 28 failed: CLI generated SVG missing cyberpunk features");
+}
+execSync('rsvg-convert /tmp/test_cli_flags_28.svg -o /tmp/test_cli_flags_28.png');
+console.log("✔ Test 28 passed: CLI flags (--style, --anim, --shake glitch) work cleanly!");
+
+// Test 29: CLI Wizard execution of all new aesthetic presets (Cyberpunk, Bloodborne, Pixel, Minimal)
+const wizardPresets = [
+  { opt: '6', file: '/tmp/wiz_cyber.svg', expectedText: '// TARGET DESTROYED //' },
+  { opt: '7', file: '/tmp/wiz_blood.svg', expectedText: 'PREY SLAUGHTERED' },
+  { opt: '8', file: '/tmp/wiz_pixel.svg', expectedText: 'STAGE CLEAR' },
+  { opt: '9', file: '/tmp/wiz_minimal.svg', expectedText: 'STATUS: DEFEATED' }
+];
+wizardPresets.forEach((wp) => {
+  execSync('node bin/cli.js wizard', {
+    input: `${wp.opt}\n${wp.file}\n`,
+    stdio: ['pipe', 'pipe', 'pipe']
+  });
+  if (!fs.existsSync(wp.file)) {
+    throw new Error(`Test 29 failed: Wizard did not generate file for option ${wp.opt}`);
+  }
+  const svg = fs.readFileSync(wp.file, 'utf8');
+  if (!svg.includes(wp.expectedText)) {
+    throw new Error(`Test 29 failed: Wizard file for option ${wp.opt} missing ${wp.expectedText}`);
+  }
+  execSync(`rsvg-convert ${wp.file} -o ${wp.file}.png`);
+});
+console.log("✔ Test 29 passed: CLI Wizard executes all dedicated aesthetic presets cleanly!");
+
+// Test 30: Full matrix stress test (6 Aesthetics x 4 Animations = 24 SVGs converted with rsvg-convert)
+let matrixCount = 0;
+aestheticsList.forEach(style => {
+  animList.forEach(anim => {
+    const matrixSvg = generateBossBarSVG([
+      { name: `MATRIX ${style.toUpperCase()}`, totalBars: 6, hits: 3, damagePerHit: 2 }
+    ], { style, animation: anim });
+    const p = `/tmp/test_matrix_${style}_${anim}.svg`;
+    fs.writeFileSync(p, matrixSvg);
+    execSync(`rsvg-convert ${p} -o /tmp/test_matrix_${style}_${anim}.png`);
+    matrixCount++;
+  });
+});
+console.log(`✔ Test 30 passed: Full matrix of ${matrixCount} style x animation combinations verified with 0 errors!`);
+
+console.log("\nALL 30 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
+
 
 
 

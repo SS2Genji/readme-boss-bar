@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { generateBossBarSVG } = require('../src/generator');
+const { generateBossBarSVG, resolveAesthetic, resolveAnimation } = require('../src/generator');
 
 const args = process.argv.slice(2);
 
@@ -18,22 +18,24 @@ Wizard Mode:
 
 Boss Options:
   -b, --boss <spec>             Boss definition in shorthand format (repeatable):
-                                "NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT:THEME:SHAKE:FELLED_TEXT"
-                                (e.g. "RADAHN:10:2:0.5:3" or "MILESTONE 1:3:3")
+                                "NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT:THEME:SHAKE:FELLED_TEXT:STYLE:ANIMATION"
+                                (e.g. "RADAHN:10:2:0.5:3:purple:heavy:DEMIGOD FELLED:souls:pulse")
   -c, --config <file.json>      Path to JSON configuration file
   --auto                        Enable automatic cinematic mode (auto speeds, combos, themes)
   --no-auto                     Disable automatic mode
 
-Animation & Style Options:
+Aesthetic & Animation Options:
+  --style, --aesthetic <style>  Visual aesthetic: classic, souls, cyberpunk, pixel, bloodborne, minimal (default: classic)
+  --anim, --animation <anim>    Drain animation: sweep, pulse, burst, glitch (default: aesthetic recommended)
+  --shake <level>               Screen shake: none, subtle, medium, heavy, glitch (default: medium)
+  --theme, --color <name|hex>   Color theme: crimson, purple, cyan, gold, green, orange, or #hex
   --dmg, --damage <bars>        Damage per hit in segments (e.g. 3)
   --interval, --speed <sec>     Seconds between hits (e.g. 0.5)
   --hits <count>                Total hit actions to execute
-  --shake <level>               Screen shake: none, subtle, medium, heavy (default: medium)
-  --theme, --color <name|hex>   Color theme: crimson, purple, cyan, gold, green, orange, or #hex
-  --sparks [bool]               Toggle pixel sparks (default: true)
+  --sparks [bool]               Toggle pixel sparks / particles (default: true)
   --no-sparks                   Disable pixel sparks
   --flash, --hit-flash <color>  Flash highlight color upon hit (default: #fef08a)
-  --felled-text, --felled <txt> Defeated banner text (default: "GREAT ENEMY FELLED")
+  --felled-text, --felled <txt> Defeated banner text (default: based on aesthetic)
   --dmg-pop [template]          Damage pop-up template (e.g. "-{N} BARS", "-{N} HP", or false)
   --no-dmg-pop                  Disable damage pop-ups
 
@@ -48,8 +50,9 @@ Canvas Options:
 Examples:
   readme-boss-bar wizard
   readme-boss-bar --auto -o boss_bar.svg
-  readme-boss-bar -b "RADAHN:10" --dmg 3 --interval 0.5 --theme purple --shake heavy -o radahn.svg
-  readme-boss-bar -b "MALENIA:12:4:0.35:3:gold:heavy:DEMIGOD FELLED" -o malenia.svg
+  readme-boss-bar --style cyberpunk --anim glitch -b "CYBER MECH:10:3:0.4:3" -o mech.svg
+  readme-boss-bar --style souls -b "RADAHN:10" --dmg 3 --interval 0.5 --theme purple --shake heavy -o radahn.svg
+  readme-boss-bar -b "MALENIA:12:4:0.35:3:gold:heavy:DEMIGOD FELLED:souls:sweep" -o malenia.svg
   readme-boss-bar -b "MILESTONE 1:3:3" -b "MILESTONE 2:5:1" -o assets/boss_bar.svg
   readme-boss-bar --config config.example.json -o boss_bar.svg
   `);
@@ -119,13 +122,17 @@ async function runWizard() {
   console.log('============================================================\n');
 
   console.log('Choose a configuration preset or custom setup:');
-  console.log('  1) Quick Single Boss (STARCOURGE RADAHN - 10 bars, heavy impact)');
+  console.log('  1) Quick Single Boss (STARCOURGE RADAHN - Souls Gothic)');
   console.log('  2) 42 School Milestone Run (Libft -> ft_printf -> push_swap)');
   console.log('  3) Elden Ring Boss Run (Margit -> Radahn -> Malenia)');
   console.log('  4) Epic 3-Phase Demigod (Ludwig -> Holy Blade -> Orphan)');
-  console.log('  5) Custom Boss Setup (Step-by-step interactive questions)\n');
+  console.log('  5) Custom Boss Setup (Step-by-step interactive questions)');
+  console.log('  6) Cyberpunk Sci-Fi Mech (// TARGET DESTROYED //)');
+  console.log('  7) Bloodborne Nightmare (PREY SLAUGHTERED)');
+  console.log('  8) 8-Bit Arcade Boss (STAGE CLEAR)');
+  console.log('  9) Modern Sleek Dashboard (STATUS: DEFEATED)\n');
 
-  const mode = await askVal('Select option (1-5)', '1');
+  const mode = await askVal('Select option (1-9)', '1');
   let stages = [];
 
   if (mode === '1') {
@@ -138,31 +145,53 @@ async function runWizard() {
         hitInterval: 0.5,
         barColor: 'purple',
         shake: 'heavy',
-        felledText: 'DEMIGOD FELLED'
+        felledText: 'DEMIGOD FELLED',
+        style: 'souls',
+        animation: 'pulse'
       }
     ];
-    console.log('\n✔ Selected: Quick Single Boss (Radahn)');
+    console.log('\n✔ Selected: Quick Single Boss (Radahn - Souls Gothic)');
   } else if (mode === '2') {
     stages = [
-      { name: 'CIRCLE 00 (LIBFT)', totalBars: 4, hits: 4, damagePerHit: 1, hitInterval: 0.4, barColor: 'crimson', shake: 'medium', felledText: 'LIBFT COMPLETED' },
-      { name: 'CIRCLE 01 (FT_PRINTF)', totalBars: 4, hits: 4, damagePerHit: 1, hitInterval: 0.4, barColor: 'cyan', shake: 'medium', felledText: 'PRINTF COMPLETED' },
-      { name: 'CIRCLE 02 (PUSH_SWAP)', totalBars: 6, hits: 3, damagePerHit: 2, hitInterval: 0.5, barColor: 'gold', shake: 'heavy', felledText: 'PUSH_SWAP FELLED' }
+      { name: 'CIRCLE 00 (LIBFT)', totalBars: 4, hits: 4, damagePerHit: 1, hitInterval: 0.4, barColor: 'crimson', shake: 'medium', felledText: 'LIBFT COMPLETED', style: 'classic', animation: 'sweep' },
+      { name: 'CIRCLE 01 (FT_PRINTF)', totalBars: 4, hits: 4, damagePerHit: 1, hitInterval: 0.4, barColor: 'cyan', shake: 'medium', felledText: 'PRINTF COMPLETED', style: 'classic', animation: 'sweep' },
+      { name: 'CIRCLE 02 (PUSH_SWAP)', totalBars: 6, hits: 3, damagePerHit: 2, hitInterval: 0.5, barColor: 'gold', shake: 'heavy', felledText: 'PUSH_SWAP FELLED', style: 'classic', animation: 'sweep' }
     ];
     console.log('\n✔ Selected: 42 School Milestone Run (3 stages)');
   } else if (mode === '3') {
     stages = [
-      { name: 'MARGIT, THE FELL OMEN', totalBars: 6, hits: 3, damagePerHit: 2, hitInterval: 0.5, barColor: 'crimson', shake: 'heavy', felledText: 'GREAT ENEMY FELLED' },
-      { name: 'STARCOURGE RADAHN', totalBars: 10, hits: 4, damagePerHit: 3, hitInterval: 0.5, barColor: 'purple', shake: 'heavy', felledText: 'DEMIGOD FELLED' },
-      { name: 'MALENIA, BLADE OF MIQUELLA', totalBars: 8, hits: 4, damagePerHit: 2, hitInterval: 0.35, barColor: 'gold', shake: 'heavy', felledText: 'DEMIGOD FELLED' }
+      { name: 'MARGIT, THE FELL OMEN', totalBars: 6, hits: 3, damagePerHit: 2, hitInterval: 0.5, barColor: 'crimson', shake: 'heavy', felledText: 'GREAT ENEMY FELLED', style: 'souls', animation: 'sweep' },
+      { name: 'STARCOURGE RADAHN', totalBars: 10, hits: 4, damagePerHit: 3, hitInterval: 0.5, barColor: 'purple', shake: 'heavy', felledText: 'DEMIGOD FELLED', style: 'souls', animation: 'pulse' },
+      { name: 'MALENIA, BLADE OF MIQUELLA', totalBars: 8, hits: 4, damagePerHit: 2, hitInterval: 0.35, barColor: 'gold', shake: 'heavy', felledText: 'DEMIGOD FELLED', style: 'souls', animation: 'sweep' }
     ];
     console.log('\n✔ Selected: Elden Ring Boss Run (3 bosses)');
   } else if (mode === '4') {
     stages = [
-      { name: 'LUDWIG THE ACCURSED', totalBars: 6, hits: 3, damagePerHit: 2, hitInterval: 0.45, barColor: 'green', shake: 'subtle', felledText: 'PHASE 1 COMPLETE' },
-      { name: 'LUDWIG, HOLY BLADE', totalBars: 8, hits: 4, damagePerHit: 2, hitInterval: 0.35, barColor: 'cyan', shake: 'heavy', felledText: 'PHASE 2 COMPLETE' },
-      { name: 'ORPHAN OF KOS', totalBars: 10, hits: 5, damagePerHit: 2, hitInterval: 0.25, barColor: 'crimson', shake: 'heavy', felledText: 'NIGHTMARE SLAIN' }
+      { name: 'LUDWIG THE ACCURSED', totalBars: 6, hits: 3, damagePerHit: 2, hitInterval: 0.45, barColor: 'green', shake: 'subtle', felledText: 'PHASE 1 COMPLETE', style: 'bloodborne', animation: 'burst' },
+      { name: 'LUDWIG, HOLY BLADE', totalBars: 8, hits: 4, damagePerHit: 2, hitInterval: 0.35, barColor: 'cyan', shake: 'heavy', felledText: 'PHASE 2 COMPLETE', style: 'souls', animation: 'sweep' },
+      { name: 'ORPHAN OF KOS', totalBars: 10, hits: 5, damagePerHit: 2, hitInterval: 0.25, barColor: 'crimson', shake: 'heavy', felledText: 'NIGHTMARE SLAIN', style: 'bloodborne', animation: 'burst' }
     ];
     console.log('\n✔ Selected: Epic 3-Phase Demigod');
+  } else if (mode === '6') {
+    stages = [
+      { name: 'TITAN MECH // 01', totalBars: 10, hits: 4, damagePerHit: 3, hitInterval: 0.4, barColor: 'cyan', shake: 'glitch', felledText: '// TARGET DESTROYED //', style: 'cyberpunk', animation: 'glitch' }
+    ];
+    console.log('\n✔ Selected: Cyberpunk Sci-Fi Mech');
+  } else if (mode === '7') {
+    stages = [
+      { name: 'CLERIC BEAST', totalBars: 8, hits: 4, damagePerHit: 2, hitInterval: 0.35, barColor: 'crimson', shake: 'heavy', felledText: 'PREY SLAUGHTERED', style: 'bloodborne', animation: 'burst' }
+    ];
+    console.log('\n✔ Selected: Bloodborne Nightmare');
+  } else if (mode === '8') {
+    stages = [
+      { name: 'CASTLE OVERLORD', totalBars: 8, hits: 4, damagePerHit: 2, hitInterval: 0.4, barColor: 'gold', shake: 'medium', felledText: 'STAGE CLEAR', style: 'pixel', animation: 'burst' }
+    ];
+    console.log('\n✔ Selected: 8-Bit Arcade Boss');
+  } else if (mode === '9') {
+    stages = [
+      { name: 'SYSTEM INTEGRITY', totalBars: 6, hits: 3, damagePerHit: 2, hitInterval: 0.5, barColor: 'green', shake: 'subtle', felledText: 'STATUS: DEFEATED', style: 'minimal', animation: 'sweep' }
+    ];
+    console.log('\n✔ Selected: Modern Sleek Dashboard');
   } else {
     const countAns = await askVal('How many boss stages / phases?', '1');
     const stageCount = Math.max(1, parseInt(countAns, 10) || 1);
@@ -170,6 +199,10 @@ async function runWizard() {
     for (let i = 1; i <= stageCount; i++) {
       console.log(`\n--- Stage ${i} of ${stageCount} ---`);
       const name = await askVal(`Boss / Stage name`, `BOSS ${i}`);
+      const styleAns = await askVal(`Aesthetic style (classic, souls, cyberpunk, pixel, bloodborne, minimal)`, 'classic');
+      const style = resolveAesthetic(styleAns).name;
+      const animAns = await askVal(`Drain animation (sweep, pulse, burst, glitch)`, 'sweep');
+      const animation = resolveAnimation(animAns);
       const barsStr = await askVal(`Total health bars (1-20)`, '8');
       const totalBars = Math.max(1, Math.min(40, parseInt(barsStr, 10) || 8));
       const dmgStr = await askVal(`Damage per hit (bars)`, '2');
@@ -181,7 +214,7 @@ async function runWizard() {
       const parsedHits = parseInt(hitsStr, 10);
       const hits = isNaN(parsedHits) ? totalHitsToDefeat : Math.max(0, parsedHits);
       const theme = await askVal(`Theme (crimson, purple, cyan, gold, green, orange, or #hex)`, 'crimson');
-      const shake = await askVal(`Screen shake (none, subtle, medium, heavy)`, 'medium');
+      const shake = await askVal(`Screen shake (none, subtle, medium, heavy, glitch)`, 'medium');
       const felled = await askVal(`Victory banner text`, 'GREAT ENEMY FELLED');
 
       stages.push({
@@ -192,7 +225,9 @@ async function runWizard() {
         hitInterval,
         barColor: theme,
         shake,
-        felledText: felled
+        felledText: felled,
+        style,
+        animation
       });
     }
   }
@@ -215,6 +250,12 @@ async function runWizard() {
     const encodedName = encodeURIComponent(st.name);
     const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
     mdUrl = `https://readme-boss-barr.vercel.app/api?name=${encodedName}&bars=${st.totalBars}&dmg=${st.damagePerHit}&interval=${st.hitInterval}&theme=${safeTheme}&shake=${st.shake}`;
+    if (st.style && st.style !== 'classic') {
+      mdUrl += `&style=${encodeURIComponent(st.style)}`;
+    }
+    if (st.animation && st.animation !== 'sweep') {
+      mdUrl += `&anim=${encodeURIComponent(st.animation)}`;
+    }
     const totalHitsToDefeat = Math.ceil(st.totalBars / st.damagePerHit);
     if (st.hits !== undefined && st.hits !== totalHitsToDefeat) {
       mdUrl += `&hits=${st.hits}`;
@@ -224,17 +265,17 @@ async function runWizard() {
     }
     const safeNameCli = st.name.replace(/"/g, '\\"');
     const safeFelledCli = (st.felledText || 'GREAT ENEMY FELLED').replace(/"/g, '\\"');
-    cliCmd = `npx readme-boss-bar -b "${safeNameCli}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}" -o ${outFile}`;
+    cliCmd = `npx readme-boss-bar -b "${safeNameCli}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}:${st.style || 'classic'}:${st.animation || 'sweep'}" -o ${outFile}`;
   } else {
     const queryParts = stages.map((st, idx) => {
       const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
-      return `b${idx + 1}=${encodeURIComponent(st.name)}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${safeTheme}:${st.shake}:${encodeURIComponent(st.felledText || 'GREAT ENEMY FELLED')}`;
+      return `b${idx + 1}=${encodeURIComponent(st.name)}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${safeTheme}:${st.shake}:${encodeURIComponent(st.felledText || 'GREAT ENEMY FELLED')}:${st.style || 'classic'}:${st.animation || 'sweep'}`;
     }).join('&');
     mdUrl = `https://readme-boss-barr.vercel.app/api?${queryParts}`;
     const bArgs = stages.map(st => {
       const safeNameCli = st.name.replace(/"/g, '\\"');
       const safeFelledCli = (st.felledText || 'GREAT ENEMY FELLED').replace(/"/g, '\\"');
-      return `-b "${safeNameCli}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}"`;
+      return `-b "${safeNameCli}:${st.totalBars}:${st.hits}:${st.hitInterval}:${st.damagePerHit}:${st.barColor}:${st.shake}:${safeFelledCli}:${st.style || 'classic'}:${st.animation || 'sweep'}"`;
     }).join(' ');
     cliCmd = `npx readme-boss-bar ${bArgs} -o ${outFile}`;
   }
@@ -288,6 +329,12 @@ function parseBossSpec(val) {
   if (parts.length >= 8 && parts[7] !== '') {
     boss.felledText = parts[7].trim();
   }
+  if (parts.length >= 9 && parts[8] !== '') {
+    boss.style = resolveAesthetic(parts[8].trim()).name;
+  }
+  if (parts.length >= 10 && parts[9] !== '') {
+    boss.animation = resolveAnimation(parts[9].trim());
+  }
   return boss;
 }
 
@@ -338,6 +385,8 @@ for (let i = 0; i < normalizedArgs.length; i++) {
             bosses = parsed.bosses;
           }
           if (parsed.shake !== undefined) options.shake = parsed.shake;
+          if (parsed.style || parsed.aesthetic) options.style = parsed.style || parsed.aesthetic;
+          if (parsed.anim || parsed.animation) options.animation = parsed.anim || parsed.animation;
           if (parsed.theme || parsed.barColor || parsed.color) {
             options.barColor = parsed.theme || parsed.barColor || parsed.color;
           }
@@ -372,6 +421,10 @@ for (let i = 0; i < normalizedArgs.length; i++) {
     options.height = parseInt(normalizedArgs[++i], 10) || options.height;
   } else if (arg === '--bar-width') {
     options.barWidth = parseInt(normalizedArgs[++i], 10) || options.barWidth;
+  } else if (arg === '--style' || arg === '--aesthetic') {
+    options.style = normalizedArgs[++i];
+  } else if (arg === '--anim' || arg === '--animation') {
+    options.animation = normalizedArgs[++i];
   } else if (arg === '--shake') {
     options.shake = normalizedArgs[++i];
   } else if (arg === '--theme' || arg === '--color' || arg === '--bar-color') {
@@ -432,4 +485,3 @@ if (!fs.existsSync(outDir)) {
 
 fs.writeFileSync(outputFile, svg, 'utf8');
 console.log(`✔ Successfully generated Boss Bar SVG at: ${outputFile}`);
-
