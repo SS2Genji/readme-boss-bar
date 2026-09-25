@@ -92,6 +92,7 @@ NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT:THEME:SHAKE:FELLED_TEXT
 | `dmgPop` | String | Damage popup template (`-{N} BARS`, `-{N} HP`, or `false`) | `?dmgPop=-{N}+HP` |
 | `width` | Integer | Total SVG width in pixels | `?width=700` |
 | `height` | Integer | Total SVG height in pixels | `?height=95` |
+| `id`, `prefix` | String | Scoped CSS class and keyframes namespace prefix | `?id=hero_boss` |
 
 ---
 

@@ -38,6 +38,7 @@ Canvas Options:
   -w, --width <pixels>          Total SVG width (default: 700)
   --height <pixels>             Total SVG height (default: 95)
   --bar-width <pixels>          Health bar width (default: 480)
+  --id, --prefix <scope>        CSS class and @keyframes namespace prefix
   -h, --help                    Show this help message
 
 Examples:

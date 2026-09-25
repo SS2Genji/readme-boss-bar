@@ -244,7 +244,26 @@ fs.writeFileSync('/tmp/test_boss_20.svg', svg20);
 execSync('rsvg-convert /tmp/test_boss_20.svg -o /tmp/test_boss_20.png');
 console.log("✔ Test 20 passed: Scoped ID prefixing isolation compiles cleanly!");
 
-console.log("\nALL 20 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
+// Test 21: Full simulation of multi-bar drainage sequence (Radahn 10 bars, 2 hits of 3 bars)
+const svg21 = generateBossBarSVG([
+  { name: "RADAHN", totalBars: 10, hits: 2, damagePerHit: 3, hitInterval: 0.5 }
+]);
+// In Hit 0: bars 9, 8, 7 drain sequentially right-to-left.
+// Bar 9: drains first from hitT to hitT + dt
+// Bar 8: holds full width until hitT + dt, then drains from hitT + dt to hitT + 2*dt
+// Bar 7: holds full width until hitT + 2*dt, then drains from hitT + 2*dt to hitT + 3*dt
+const kf9 = svg21.slice(svg21.indexOf("@keyframes drain_0_9"), svg21.indexOf("}", svg21.indexOf("100%", svg21.indexOf("@keyframes drain_0_9"))) + 1);
+const kf8 = svg21.slice(svg21.indexOf("@keyframes drain_0_8"), svg21.indexOf("}", svg21.indexOf("100%", svg21.indexOf("@keyframes drain_0_8"))) + 1);
+const kf7 = svg21.slice(svg21.indexOf("@keyframes drain_0_7"), svg21.indexOf("}", svg21.indexOf("100%", svg21.indexOf("@keyframes drain_0_7"))) + 1);
+
+if (!kf9.includes("10.00% { width: 44px;") || !kf8.includes("10.00%, 11.08% { width: 44px;") || !kf7.includes("10.00%, 12.17% { width: 44px;")) {
+  throw new Error("Test 21 failed: Adjacent multi-bar segments did not hold width in sequence!");
+}
+fs.writeFileSync('/tmp/test_boss_21.svg', svg21);
+execSync('rsvg-convert /tmp/test_boss_21.svg -o /tmp/test_boss_21.png');
+console.log("✔ Test 21 passed: Multi-hit multi-bar strictly monotonic sequential sweep verified cleanly!");
+
+console.log("\nALL 21 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
 
 
 
