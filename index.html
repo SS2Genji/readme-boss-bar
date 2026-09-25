@@ -1148,11 +1148,14 @@
       let svg = '';
       let mdUrl = '';
       let cliCmd = '';
+      const baseUrl = (window.location.protocol.startsWith('http') && window.location.host && !window.location.host.includes('localhost') && !window.location.host.includes('127.0.0.1'))
+        ? window.location.origin
+        : 'https://readme-boss-bar.vercel.app';
 
       if (isAutoMode) {
         options.auto = true;
         svg = generateBossBarSVG([], options);
-        mdUrl = 'https://readme-boss-bar.vercel.app/api?auto=true';
+        mdUrl = `${baseUrl}/api?auto=true`;
         cliCmd = 'npx readme-boss-bar --auto -o boss_bar.svg';
 
         document.getElementById('stat-stages').innerText = '2 (Auto)';
@@ -1185,7 +1188,7 @@
           const st = stages[0];
           const encName = encodeURIComponent(st.name);
           const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
-          mdUrl = `https://readme-boss-bar.vercel.app/api?name=${encName}&bars=${st.totalBars}&dmg=${st.damagePerHit}&interval=${st.hitInterval}&theme=${safeTheme}&shake=${st.shake}`;
+          mdUrl = `${baseUrl}/api?name=${encName}&bars=${st.totalBars}&dmg=${st.damagePerHit}&interval=${st.hitInterval}&theme=${safeTheme}&shake=${st.shake}`;
           const totalHitsToDefeat = Math.ceil(st.totalBars / st.damagePerHit);
           if (st.hits !== undefined && st.hits !== totalHitsToDefeat) {
             mdUrl += `&hits=${st.hits}`;
@@ -1207,7 +1210,7 @@
             const safeTheme = st.barColor.startsWith('#') ? st.barColor.replace(/^#/, '') : encodeURIComponent(st.barColor);
             return `b${i + 1}=${encodeURIComponent(st.name)}:${st.totalBars}:${hits}:${st.hitInterval}:${st.damagePerHit}:${safeTheme}:${st.shake}:${encodeURIComponent(st.felledText || 'GREAT ENEMY FELLED')}`;
           }).join('&');
-          mdUrl = `https://readme-boss-bar.vercel.app/api?${queryParts}`;
+          mdUrl = `${baseUrl}/api?${queryParts}`;
           if (!sparks) mdUrl += `&sparks=false`;
 
           const bArgs = stages.map(st => {
