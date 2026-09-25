@@ -1,0 +1,24 @@
+{
+  "name": "readme-boss-bar",
+  "version": "1.0.0",
+  "description": "Retro Pixel Art Animated Souls Boss Health Bar for your GitHub Profile README",
+  "main": "src/generator.js",
+  "bin": {
+    "readme-boss-bar": "bin/cli.js"
+  },
+  "scripts": {
+    "test": "node test/test.js",
+    "start": "node test/dev-server.js"
+  },
+  "keywords": [
+    "github-readme",
+    "boss-bar",
+    "elden-ring",
+    "souls-like",
+    "pixel-art",
+    "svg-animation",
+    "42-school"
+  ],
+  "author": "Ahmet Emir Şimşek (SS2Genji)",
+  "license": "MIT"
+}
