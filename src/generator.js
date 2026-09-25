@@ -309,7 +309,7 @@ function resolveSparks(sparks) {
   return true;
 }
 
-function renderEmblemMarkup(aesthetic, emblemColor) {
+function renderEmblemMarkup(aesthetic, emblemColor, pfx = '', b = 0) {
   if (aesthetic.name === 'souls') {
     return `
       <!-- Elden Golden Cross Emblem -->
@@ -333,13 +333,15 @@ function renderEmblemMarkup(aesthetic, emblemColor) {
   if (aesthetic.name === 'pixel') {
     return `
       <!-- 8-Bit Arcade Skull Emblem -->
-      <rect x="1" y="1" width="10" height="8" fill="${emblemColor}" />
-      <rect x="3" y="9" width="6" height="4" fill="${emblemColor}" />
-      <rect x="2.5" y="3" width="2" height="2.5" fill="#0d1117" />
-      <rect x="7.5" y="3" width="2" height="2.5" fill="#0d1117" />
-      <rect x="4" y="10" width="1" height="2" fill="#0d1117" />
-      <rect x="6" y="10" width="1" height="2" fill="#0d1117" />
-      <rect x="8" y="10" width="1" height="2" fill="#0d1117" />
+      <g class="${pfx}emblem-pixel-${b}">
+        <rect x="1" y="1" width="10" height="8" fill="${emblemColor}" />
+        <rect x="3" y="9" width="6" height="4" fill="${emblemColor}" />
+        <rect x="2.5" y="3" width="2" height="2.5" fill="#0d1117" />
+        <rect x="7.5" y="3" width="2" height="2.5" fill="#0d1117" />
+        <rect x="4" y="10" width="1" height="2" fill="#0d1117" />
+        <rect x="6" y="10" width="1" height="2" fill="#0d1117" />
+        <rect x="8" y="10" width="1" height="2" fill="#0d1117" />
+      </g>
     `;
   }
   if (aesthetic.name === 'bloodborne') {
@@ -354,8 +356,10 @@ function renderEmblemMarkup(aesthetic, emblemColor) {
   if (aesthetic.name === 'minimal') {
     return `
       <!-- Pulsing Dot Beacon Emblem -->
-      <circle cx="6" cy="7" r="3.5" fill="${emblemColor}" />
-      <circle cx="6" cy="7" r="6" stroke="${emblemColor}" stroke-width="1.2" fill="none" opacity="0.5" />
+      <g transform="translate(6, 7)">
+        <circle cx="0" cy="0" r="3.5" fill="${emblemColor}" />
+        <circle cx="0" cy="0" r="6" stroke="${emblemColor}" stroke-width="1.2" fill="none" opacity="0.6" class="${pfx}beacon-ping-${b}" />
+      </g>
     `;
   }
   // Classic 8-bit crest
@@ -460,13 +464,14 @@ function renderContainerBrackets(aesthetic, theme, actualWidth, barHeight) {
 function renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b) {
   const aesthetic = tb.aesthetic;
   const theme = tb.theme;
+  const gap = tb.layout?.gap ?? 8;
   const particleMarkup = (getsHit && tb.sparks)
     ? `<g class="${pfx}sparks-${b}-${i}" transform="translate(${Math.round(segWidth / 2)}, ${Math.round(barHeight / 2)})">${renderParticleMarkup(aesthetic, theme)}</g>`
     : '';
 
   if (aesthetic.name === 'minimal') {
     return `
-      <g transform="translate(${segX}, 0)">
+      <g transform="translate(${segX}, 0)" class="${pfx}track-minimal-${b}">
         <!-- Minimal Pill Track -->
         <rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" rx="4" ry="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
         <rect x="0" y="0" width="${segWidth}" height="${barHeight}" rx="3.5" ry="3.5" fill="#0b0f19" />
@@ -483,6 +488,8 @@ function renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b) 
         <!-- Cyber HUD Chamfered Segment -->
         <rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" fill="rgba(0,0,0,0.8)" stroke="${theme.frameInner}" stroke-width="1" />
         <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="#08101a" />
+        <!-- 45° Chamfered Polygon Accent -->
+        <polygon points="0,3 3,0 ${segWidth-3},0 ${segWidth},3 ${segWidth},${barHeight-3} ${segWidth-3},${barHeight} 3,${barHeight} 0,${barHeight-3}" fill="none" stroke="${theme.frameInner}" stroke-width="0.8" opacity="0.6" />
         <!-- Animated Fill Bar -->
         <rect x="0" y="0" height="${barHeight}" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
         <!-- Cyber Tech Scanline -->
@@ -493,12 +500,22 @@ function renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b) 
   }
 
   if (aesthetic.name === 'pixel') {
+    const bPad = Math.max(1, Math.min(3, Math.floor(gap / 2)));
+    const bevelLines = [];
+    if (bPad >= 3) {
+      bevelLines.push(`<rect x="-3" y="-3" width="${segWidth + 6}" height="${barHeight + 6}" fill="#000000" />`);
+      bevelLines.push(`<rect x="-2" y="-2" width="${segWidth + 4}" height="${barHeight + 4}" fill="${theme.frameOuter}" />`);
+      bevelLines.push(`<rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" fill="${theme.frameInner}" />`);
+    } else if (bPad === 2) {
+      bevelLines.push(`<rect x="-2" y="-2" width="${segWidth + 4}" height="${barHeight + 4}" fill="#000000" />`);
+      bevelLines.push(`<rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" fill="${theme.frameInner}" />`);
+    } else {
+      bevelLines.push(`<rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" fill="${theme.frameInner}" />`);
+    }
     return `
       <g transform="translate(${segX}, 0)">
         <!-- Chunky Stepped Pixel Bevel -->
-        <rect x="-3" y="-3" width="${segWidth + 6}" height="${barHeight + 6}" fill="#000000" />
-        <rect x="-2" y="-2" width="${segWidth + 4}" height="${barHeight + 4}" fill="${theme.frameOuter}" />
-        <rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" fill="${theme.frameInner}" />
+        ${bevelLines.join('\n        ')}
         <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="#111111" />
         <!-- Animated Fill Bar -->
         <rect x="0" y="0" height="${barHeight}" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
@@ -525,10 +542,11 @@ function renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b) 
   }
 
   if (aesthetic.name === 'bloodborne') {
+    const cPad = Math.max(1, Math.min(2, Math.floor(gap / 2)));
     return `
       <g transform="translate(${segX}, 0)">
         <!-- Jagged Distressed Iron Frame -->
-        <rect x="-2" y="-2" width="${segWidth + 4}" height="${barHeight + 4}" fill="#1c070c" stroke="${theme.frameOuter}" stroke-width="1" />
+        <rect x="-${cPad}" y="-${cPad}" width="${segWidth + cPad * 2}" height="${barHeight + cPad * 2}" fill="#1c070c" stroke="${theme.frameOuter}" stroke-width="1" />
         <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="#0a0204" />
         <!-- Animated Fill Bar -->
         <rect x="0" y="0" height="${barHeight}" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
@@ -540,10 +558,11 @@ function renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b) 
   }
 
   // Classic default
+  const cPad = Math.max(1, Math.min(2, Math.floor(gap / 2)));
   return `
     <g transform="translate(${segX}, 0)">
       <!-- Frame Background -->
-      <rect x="-2" y="-2" width="${segWidth + 4}" height="${barHeight + 4}" fill="${theme.frameOuter}" />
+      ${cPad >= 2 ? `<rect x="-2" y="-2" width="${segWidth + 4}" height="${barHeight + 4}" fill="${theme.frameOuter}" />` : ''}
       <rect x="-1" y="-1" width="${segWidth + 2}" height="${barHeight + 2}" fill="${theme.frameInner}" />
       <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="${theme.frameBg}" />
       <!-- Animated Fill Bar -->
@@ -795,6 +814,33 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
         letter-spacing: ${tb.aesthetic.letterSpacing};
       }
     `);
+
+    if (tb.aesthetic.name === 'pixel') {
+      cssRules.push(`
+        .${pfx}emblem-pixel-${b} {
+          animation: ${kfPfx}arcadeBlink${b} 1.4s steps(1, end) infinite;
+        }
+        @keyframes ${kfPfx}arcadeBlink${b} {
+          0%, 65% { opacity: 1; }
+          66%, 82% { opacity: 0.25; }
+          83%, 100% { opacity: 1; }
+        }
+      `);
+    } else if (tb.aesthetic.name === 'minimal') {
+      cssRules.push(`
+        .${pfx}beacon-ping-${b} {
+          animation: ${kfPfx}beaconPulse${b} 2.2s ease-out infinite;
+        }
+        @keyframes ${kfPfx}beaconPulse${b} {
+          0% { transform: scale(0.85); opacity: 0.85; }
+          50% { transform: scale(1.4); opacity: 0.15; }
+          100% { transform: scale(0.85); opacity: 0.85; }
+        }
+        .${pfx}track-minimal-${b} {
+          filter: drop-shadow(0 0 3px ${tb.theme.pulse});
+        }
+      `);
+    }
 
     // Screen Shake Animation
     let shakeKeyframes = [`0%, ${pct(tb.startTime)} { transform: translate(0, 0); }`];
@@ -1218,7 +1264,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
     }
 
     const containerBrackets = renderContainerBrackets(tb.aesthetic, tb.theme, actualWidth, barHeight);
-    const emblemMarkup = renderEmblemMarkup(tb.aesthetic, tb.theme.emblem);
+    const emblemMarkup = renderEmblemMarkup(tb.aesthetic, tb.theme.emblem, pfx, b);
     const shapeRenderingMode = (tb.aesthetic.name === 'pixel' || tb.aesthetic.name === 'classic') ? 'crispEdges' : 'geometricPrecision';
 
     svgBodies.push(`

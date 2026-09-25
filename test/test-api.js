@@ -231,6 +231,7 @@ runApiTest(
   (svg) => {
     assert(svg.includes("Orbitron"));
     assert(svg.includes("skewX(-20)"));
+    assert(svg.includes("polygon points="));
     assert(svg.includes("Tactical Crosshair"));
     assert(svg.includes("Cyber Bits"));
     assert(svg.includes("// HOSTILE //"));
@@ -247,6 +248,8 @@ runApiTest(
   (svg) => {
     assert(svg.includes("Press Start 2P"));
     assert(svg.includes("8-Bit Arcade Skull"));
+    assert(svg.includes("arcadeBlink0"));
+    assert(svg.includes("emblem-pixel-0"));
     assert(svg.includes("Pixel Block Debris"));
     assert(svg.includes("[1P BOSS]"));
   },
@@ -277,6 +280,8 @@ runApiTest(
   (svg) => {
     assert(svg.includes('rx="4"'));
     assert(svg.includes("Pulsing Dot Beacon"));
+    assert(svg.includes("beaconPulse0"));
+    assert(svg.includes("beacon-ping-0"));
     assert(svg.includes("Soft Ambient Ping Ring"));
     assert(svg.includes("[TARGET]"));
   },
@@ -301,14 +306,14 @@ aliasChecks.forEach(ac => {
   );
 });
 
-// 20. Animation query parameters (?anim=glitch, ?animation=burst)
+// 20. Animation query parameters (?anim=glitch, ?animation=burst, ?anim=pulse)
 runApiTest(
   {
     boss: "TEST:6:2:0.5:3",
     anim: "glitch"
   },
   (svg) => {
-    assert(svg.includes("drain_0_"));
+    assert(svg.includes("drain_0_") && svg.includes("fill: #ef4444"), "Glitch animation must generate staircase step keyframes with pulse fill");
   },
   "Animation parameter (?anim=glitch)"
 );
@@ -319,9 +324,20 @@ runApiTest(
     animation: "burst"
   },
   (svg) => {
-    assert(svg.includes("drain_0_"));
+    assert(svg.includes("drain_0_") && svg.includes("fill: #fef08a"), "Burst animation must generate instantaneous drop keyframe with flash hold");
   },
   "Animation parameter (?animation=burst)"
+);
+
+runApiTest(
+  {
+    boss: "TEST:6:2:0.5:3",
+    anim: "pulse"
+  },
+  (svg) => {
+    assert(svg.includes("drain_0_") && svg.includes("fill: #ef4444"), "Pulse animation must generate contracted pulse wave keyframe");
+  },
+  "Animation parameter (?anim=pulse)"
 );
 
 // 21. Glitch screen shake parameter (?shake=glitch)
@@ -368,7 +384,7 @@ runApiTest(
   "Single boss query with style & anim (?name=LUDWIG&bars=8&style=bloodborne&anim=burst)"
 );
 
-console.log("\nALL 23 API TESTS PASSED SUCCESSFULLY!");
+console.log("\nALL 24 API TESTS PASSED SUCCESSFULLY!");
 
 
 

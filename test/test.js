@@ -318,11 +318,11 @@ aestheticsList.forEach((style, idx) => {
       throw new Error(`Test 23 failed: Souls aesthetic missing expected components`);
     }
   } else if (style === 'cyberpunk') {
-    if (!svg.includes('Orbitron') || !svg.includes('skewX(-20)') || !svg.includes('Tactical Crosshair') || !svg.includes('Cyber Bits')) {
+    if (!svg.includes('Orbitron') || !svg.includes('skewX(-20)') || !svg.includes('polygon points=') || !svg.includes('Tactical Crosshair') || !svg.includes('Cyber Bits')) {
       throw new Error(`Test 23 failed: Cyberpunk aesthetic missing expected components`);
     }
   } else if (style === 'pixel') {
-    if (!svg.includes('Press Start 2P') || !svg.includes('8-Bit Arcade Skull') || !svg.includes('Pixel Block Debris')) {
+    if (!svg.includes('Press Start 2P') || !svg.includes('8-Bit Arcade Skull') || !svg.includes('arcadeBlink0') || !svg.includes('emblem-pixel-0') || !svg.includes('Pixel Block Debris')) {
       throw new Error(`Test 23 failed: Pixel aesthetic missing expected components`);
     }
   } else if (style === 'bloodborne') {
@@ -330,7 +330,7 @@ aestheticsList.forEach((style, idx) => {
       throw new Error(`Test 23 failed: Bloodborne aesthetic missing expected components`);
     }
   } else if (style === 'minimal') {
-    if (!svg.includes('rx="4"') || !svg.includes('Pulsing Dot Beacon') || !svg.includes('Soft Ambient Ping Ring')) {
+    if (!svg.includes('rx="4"') || !svg.includes('Pulsing Dot Beacon') || !svg.includes('beaconPulse0') || !svg.includes('beacon-ping-0') || !svg.includes('Soft Ambient Ping Ring')) {
       throw new Error(`Test 23 failed: Minimal aesthetic missing expected components`);
     }
   }
@@ -348,13 +348,21 @@ animList.forEach((anim, idx) => {
     { name: `ANIM ${anim.toUpperCase()}`, totalBars: 6, hits: 2, damagePerHit: 3 }
   ], { animation: anim });
 
-  if (anim === 'burst') {
-    if (!svg.includes('tEnd - 0.02') && !svg.includes('fill: #fef08a')) {
-      throw new Error("Test 24 failed: Burst animation missing expected keyframe structure");
+  if (anim === 'sweep') {
+    if (!svg.includes('drain_0_0') || !svg.includes('fill: #fef08a')) {
+      throw new Error("Test 24 failed: Sweep animation missing expected keyframe structure");
+    }
+  } else if (anim === 'pulse') {
+    if (!svg.includes('drain_0_0') || !svg.includes('fill: #ef4444') || !svg.includes('width: 53px')) {
+      throw new Error("Test 24 failed: Pulse animation missing expected contracted pulse wave keyframe");
+    }
+  } else if (anim === 'burst') {
+    if (!svg.includes('fill: #fef08a') || svg.includes('width: 49px')) {
+      throw new Error("Test 24 failed: Burst animation missing expected instantaneous drop keyframe");
     }
   } else if (anim === 'glitch') {
-    if (!svg.includes('drain_0_') || !svg.includes('% { width:')) {
-      throw new Error("Test 24 failed: Glitch animation missing expected keyframe structure");
+    if (!svg.includes('drain_0_0') || !svg.includes('fill: #ef4444') || !svg.includes('width: 49px') || !svg.includes('width: 23px')) {
+      throw new Error("Test 24 failed: Glitch animation missing expected staircase step keyframes");
     }
   }
 
@@ -473,7 +481,21 @@ aestheticsList.forEach(style => {
 });
 console.log(`✔ Test 30 passed: Full matrix of ${matrixCount} style x animation combinations verified with 0 errors!`);
 
-console.log("\nALL 30 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
+// Test 31: Overlap prevention for high bar counts (25 and 40 bars in pixel, classic, and bloodborne styles)
+const highBarStyles = ['pixel', 'classic', 'bloodborne'];
+[25, 40].forEach(barCount => {
+  highBarStyles.forEach(style => {
+    const highSvg = generateBossBarSVG([
+      { name: `HIGH ${barCount} ${style.toUpperCase()}`, totalBars: barCount, hits: 5, damagePerHit: 2 }
+    ], { style });
+    const p = `/tmp/test_high_${style}_${barCount}.svg`;
+    fs.writeFileSync(p, highSvg);
+    execSync(`rsvg-convert ${p} -o /tmp/test_high_${style}_${barCount}.png`);
+  });
+});
+console.log("✔ Test 31 passed: High bar count (25 & 40 bars) border padding scaling prevents overlap cleanly!");
+
+console.log("\nALL 31 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
 
 
 

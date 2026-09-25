@@ -1081,8 +1081,15 @@
       document.querySelectorAll('.btn-aesthetic').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.style === styleName);
       });
+      const defAnim = (window.AESTHETICS && window.AESTHETICS[styleName])
+        ? window.AESTHETICS[styleName].defaultAnim
+        : 'sweep';
+      currentAnimation = defAnim;
+      const animSelect = document.getElementById('glob-anim');
+      if (animSelect) animSelect.value = defAnim;
       stages.forEach(st => {
         st.style = styleName;
+        st.animation = defAnim;
       });
       renderStages();
       updateStudio();
@@ -1212,6 +1219,16 @@
                 <option value="pixel" ${st.style === 'pixel' ? 'selected' : ''}>Pixel (8-Bit NES Arcade)</option>
                 <option value="bloodborne" ${st.style === 'bloodborne' ? 'selected' : ''}>Bloodborne (Eldritch Horror)</option>
                 <option value="minimal" ${st.style === 'minimal' ? 'selected' : ''}>Minimal (Modern Dashboard)</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Drain Animation</label>
+              <select class="control-select" onchange="updateStageProp(${idx}, 'animation', this.value)">
+                <option value="sweep" ${st.animation === 'sweep' ? 'selected' : ''}>Sequential Sweep (Smooth)</option>
+                <option value="pulse" ${st.animation === 'pulse' ? 'selected' : ''}>Rhythmic Pulse (Flash)</option>
+                <option value="burst" ${st.animation === 'burst' ? 'selected' : ''}>Visceral Burst (Instant Shatter)</option>
+                <option value="glitch" ${st.animation === 'glitch' ? 'selected' : ''}>Digital Glitch (Stutter)</option>
               </select>
             </div>
 
