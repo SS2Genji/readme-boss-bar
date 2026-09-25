@@ -3,50 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Souls Boss Bar Studio - Dynamic Boss Health Bars for GitHub README</title>
-  <meta name="description" content="Design dynamic retro Souls, Cyberpunk, 8-Bit Pixel, Bloodborne, and Minimalist boss health bars for your GitHub Profile README with real-time preview, multi-stage milestones, and 1-click Markdown export.">
+  <title>Boss Bar Studio - Dynamic Pixel Art Health Bars for GitHub README</title>
+  <meta name="description" content="Design authentic retro pixel art and dark fantasy boss health bars for your GitHub README with real-time preview, multi-phase encounters, and 1-click export.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=JetBrains+Mono:wght@400;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #070a13;
-      --card-bg: #0e1526;
-      --card-inner: #090d18;
-      --border: #1e293b;
-      --border-bright: #334155;
-      --gold: #f59e0b;
-      --gold-bright: #fef08a;
-      --crimson: #ef4444;
-      --cyan: #38bdf8;
-      --purple: #a855f7;
-      --green: #22c55e;
-      --orange: #f97316;
-      --text-main: #f8fafc;
+      --bg: #080a0f;
+      --surface-1: #0d1117;
+      --surface-2: #121722;
+      --surface-3: #182030;
+      --surface-input: #07090e;
+      --border: #1b2333;
+      --border-accent: #2c384e;
+      --border-focus: #f59e0b;
+      --gold: #d97706;
+      --gold-bright: #f59e0b;
+      --gold-light: #fef08a;
+      --crimson: #dc2626;
+      --crimson-bright: #ef4444;
+      --cyan: #0891b2;
+      --cyan-bright: #06b6d4;
+      --emerald: #10b981;
+      --purple: #9333ea;
+      --text-main: #f1f5f9;
       --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --font-pixel: 'Press Start 2P', monospace;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      --font-serif: 'Cinzel', 'Times New Roman', serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg);
+      background-image: 
+        radial-gradient(circle at 50% 0%, #151d2d 0%, #080a0f 65%),
+        linear-gradient(180deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 24px;
       color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
-      padding: 30px 16px 60px;
+      font-family: var(--font-mono);
+      padding: 32px 16px 80px;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
     .container {
       width: 100%;
-      max-width: 900px;
+      max-width: 920px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 20px;
     }
-    /* Header */
+
+    /* Masthead / Header */
     .header {
       text-align: center;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
+      padding: 8px 0 12px;
     }
     .header-badge-row {
       display: flex;
@@ -55,146 +74,77 @@
       justify-content: center;
     }
     .badge {
-      padding: 3px 9px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-family: monospace;
-      font-weight: 700;
+      padding: 4px 10px;
+      font-size: 9px;
+      font-family: var(--font-pixel);
+      text-transform: uppercase;
       letter-spacing: 0.5px;
+      border-radius: 2px;
+      box-shadow: 0 2px 0 #000;
     }
-    .badge-gold { background: rgba(245, 158, 11, 0.15); color: var(--gold); border: 1px solid rgba(245, 158, 11, 0.4); }
-    .badge-cyan { background: rgba(56, 189, 248, 0.15); color: var(--cyan); border: 1px solid rgba(56, 189, 248, 0.4); }
-    .badge-purple { background: rgba(168, 85, 247, 0.15); color: var(--purple); border: 1px solid rgba(168, 85, 247, 0.4); }
-    .badge-crimson { background: rgba(239, 68, 68, 0.15); color: var(--crimson); border: 1px solid rgba(239, 68, 68, 0.4); }
+    .badge-gold { background: #261905; color: var(--gold-light); border: 1px solid var(--gold); }
+    .badge-cyan { background: #05202a; color: var(--cyan-bright); border: 1px solid var(--cyan); }
+    .badge-purple { background: #1f082e; color: #d8b4fe; border: 1px solid var(--purple); }
+    .badge-crimson { background: #260808; color: #fca5a5; border: 1px solid var(--crimson); }
 
     .header h1 {
-      font-size: 28px;
-      letter-spacing: 2px;
-      color: var(--gold-bright);
-      text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+      font-family: var(--font-serif);
+      font-size: 32px;
+      letter-spacing: 3px;
+      color: var(--gold-light);
+      text-shadow: 0 0 24px rgba(245, 158, 11, 0.45), 0 2px 0 #000;
       font-weight: 900;
+      margin-top: 4px;
     }
     .header p {
       color: var(--text-muted);
-      font-size: 14.5px;
-      max-width: 720px;
-      line-height: 1.5;
+      font-size: 13px;
+      max-width: 740px;
+      line-height: 1.6;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    /* Preset Selection Bar */
-    .preset-section {
-      background: var(--card-bg);
+    /* Section Containers */
+    .section-card {
+      background: var(--surface-1);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 6px;
       padding: 16px 20px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      position: relative;
     }
     .section-title {
-      font-size: 13px;
+      font-family: var(--font-mono);
+      font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: var(--gold);
+      color: var(--gold-bright);
       font-weight: 800;
       display: flex;
       align-items: center;
       gap: 8px;
     }
-    .preset-pills {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 10px;
-    }
-    .btn-preset {
-      background: #141d33;
-      border: 1px solid #25334d;
-      color: var(--text-main);
-      padding: 10px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-    .btn-preset:hover {
-      background: #1c2947;
-      border-color: var(--gold);
-      transform: translateY(-1px);
-    }
-    .btn-preset.active {
-      background: rgba(245, 158, 11, 0.15);
-      border-color: var(--gold);
-      color: var(--gold-bright);
-      box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+    .section-title span.icon {
+      font-size: 14px;
     }
 
-    /* Aesthetic Selector Bar */
-    .aesthetic-section {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .aesthetic-pills {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 10px;
-    }
-    .btn-aesthetic {
-      background: #141d33;
-      border: 1px solid #25334d;
-      color: var(--text-main);
-      padding: 10px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-    .btn-aesthetic:hover {
-      background: #1c2947;
-      border-color: var(--cyan);
-      transform: translateY(-1px);
-    }
-    .btn-aesthetic.active {
-      background: rgba(56, 189, 248, 0.15);
-      border-color: var(--cyan);
-      color: #fff;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
-    }
-    .btn-aesthetic .subtext {
-      font-size: 10px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    /* Live Preview Card */
+    /* Live Preview Viewport (Focal Hero) */
     .preview-card {
-      background: #090e1b;
-      border: 2px solid #273549;
-      border-radius: 14px;
-      padding: 20px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+      background: var(--surface-1);
+      border: 1px solid var(--border-accent);
+      border-radius: 8px;
+      padding: 18px 20px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       position: sticky;
-      top: 16px;
+      top: 14px;
       z-index: 100;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
     }
     .preview-header {
       display: flex;
@@ -202,15 +152,31 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
     }
     .preview-title {
-      font-size: 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
       color: #fff;
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+    .preview-title .dot-live {
+      width: 8px;
+      height: 8px;
+      background: var(--crimson-bright);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--crimson-bright);
+      animation: pulseLive 1.6s infinite ease-in-out;
+    }
+    @keyframes pulseLive {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
     }
     .preview-actions {
       display: flex;
@@ -218,135 +184,204 @@
       align-items: center;
     }
     .btn-small {
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: #f1f5f9;
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border-accent);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-family: var(--font-mono);
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 0 #000;
     }
     .btn-small:hover {
-      background: #334155;
-      border-color: var(--cyan);
+      background: var(--surface-3);
+      border-color: var(--gold-bright);
+      color: var(--gold-light);
     }
+    .btn-small:active {
+      transform: translateY(2px);
+      box-shadow: 0 0 0 #000;
+    }
+
     .viewport {
-      background: #04060b;
-      border: 1px solid #1a2333;
-      border-radius: 10px;
+      background: #030508;
+      border: 1px solid #141c2b;
+      border-radius: 6px;
       padding: 16px 12px;
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.9);
+      box-shadow: inset 0 4px 24px rgba(0, 0, 0, 0.95);
       min-height: 110px;
       overflow: hidden;
+      position: relative;
     }
     .viewport svg {
       width: 100%;
       max-width: 700px;
       height: auto;
       display: block;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
     }
+
     .preview-stats {
       display: flex;
       gap: 16px;
-      font-size: 11.5px;
-      font-family: monospace;
+      font-size: 11px;
+      font-family: var(--font-mono);
       color: var(--text-muted);
       flex-wrap: wrap;
+      justify-content: space-between;
+      border-top: 1px solid #121824;
+      padding-top: 10px;
     }
     .preview-stats span {
-      color: var(--cyan);
+      color: var(--gold-bright);
       font-weight: 700;
     }
 
-    /* 1-Click Export Bar */
+    /* 1-Click Tactile Export Bar */
     .export-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 12px;
     }
     .btn-export {
       padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 13.5px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 12px;
       font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: all 0.2s ease;
-      border: none;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.15s ease;
+      box-shadow: 0 3px 0 #000;
     }
     .btn-export-primary {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
+      background: var(--gold);
+      border: 1px solid var(--gold-bright);
       color: #000;
     }
     .btn-export-primary:hover {
-      background: linear-gradient(135deg, #fef08a, #f59e0b);
-      box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+      background: var(--gold-bright);
+      box-shadow: 0 4px 0 #000, 0 0 16px rgba(245, 158, 11, 0.35);
       transform: translateY(-1px);
+    }
+    .btn-export-primary:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #000;
     }
     .btn-export-secondary {
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: #f8fafc;
+      background: var(--surface-2);
+      border: 1px solid var(--border-accent);
+      color: var(--text-main);
     }
     .btn-export-secondary:hover {
-      background: #334155;
-      border-color: var(--cyan);
+      background: var(--surface-3);
+      border-color: var(--cyan-bright);
+      color: #fff;
       transform: translateY(-1px);
     }
+    .btn-export-secondary:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #000;
+    }
 
-    /* Code Viewer */
-    .code-viewer {
-      background: var(--card-bg);
+    /* Aesthetic Selector Bar */
+    .aesthetic-pills {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      gap: 10px;
+    }
+    .btn-aesthetic {
+      background: var(--surface-2);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .code-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .code-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      color: var(--text-main);
+      padding: 10px 8px;
+      border-radius: 4px;
       font-size: 12px;
-      color: var(--text-muted);
+      font-family: var(--font-mono);
       font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      justify-content: center;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 0 #000;
     }
-    .code-box {
-      background: #05070e;
-      border: 1px solid #1a2333;
-      border-radius: 8px;
-      padding: 12px 14px;
-      font-family: monospace;
-      font-size: 12.5px;
-      color: #38bdf8;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-all;
+    .btn-aesthetic:hover {
+      background: var(--surface-3);
+      border-color: var(--gold-bright);
+      transform: translateY(-1px);
+    }
+    .btn-aesthetic.active {
+      background: #1e170a;
+      border-color: var(--gold-bright);
+      color: var(--gold-light);
+      box-shadow: 0 2px 0 #000, 0 0 12px rgba(245, 158, 11, 0.25);
+    }
+    .btn-aesthetic .subtext {
+      font-size: 9.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .btn-aesthetic.active .subtext {
+      color: var(--gold);
+    }
+
+    /* Presets Bar */
+    .preset-pills {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 8px;
+    }
+    .btn-preset {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 0 #000;
+    }
+    .btn-preset:hover {
+      background: var(--surface-3);
+      border-color: var(--border-accent);
+      transform: translateY(-1px);
+    }
+    .btn-preset.active {
+      background: #171f2e;
+      border-color: var(--cyan-bright);
+      color: #fff;
+      box-shadow: 0 2px 0 #000, 0 0 10px rgba(6, 182, 212, 0.25);
     }
 
     /* Stages Manager */
     .stages-manager {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
     .stages-header {
       display: flex;
@@ -354,67 +389,77 @@
       align-items: center;
     }
     .btn-add-stage {
-      background: #0f2338;
-      border: 1px solid #0284c7;
-      color: var(--cyan);
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 12.5px;
+      background: var(--surface-2);
+      border: 1px solid var(--cyan);
+      color: var(--cyan-bright);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s;
+      transition: all 0.15s;
+      box-shadow: 0 2px 0 #000;
     }
     .btn-add-stage:hover {
-      background: #0284c7;
+      background: var(--cyan);
       color: #000;
     }
+    .btn-add-stage:active {
+      transform: translateY(2px);
+      box-shadow: 0 0 0 #000;
+    }
+
     .stage-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px 20px;
+      background: var(--surface-2);
+      border: 1px solid var(--border-accent);
+      border-radius: 6px;
+      padding: 16px 18px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      position: relative;
+      gap: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
     .stage-card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #1a2333;
-      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
     }
     .stage-card-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       display: flex;
       align-items: center;
       gap: 10px;
+      font-family: var(--font-mono);
+      color: var(--gold-light);
     }
     .btn-remove-stage {
       background: transparent;
-      border: 1px solid #ef4444;
-      color: #ef4444;
+      border: 1px solid var(--crimson);
+      color: var(--crimson-bright);
       padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 11.5px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
     }
     .btn-remove-stage:hover:not(:disabled) {
-      background: #ef4444;
+      background: var(--crimson);
       color: #fff;
     }
     .btn-remove-stage:disabled {
       opacity: 0.3;
       cursor: not-allowed;
-      border-color: #555;
-      color: #555;
+      border-color: #444;
+      color: #444;
     }
 
     /* Controls Grid */
@@ -429,29 +474,31 @@
       gap: 6px;
     }
     .control-label {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
+      font-family: var(--font-mono);
       font-weight: 700;
       display: flex;
       justify-content: space-between;
     }
     .val-tag {
-      color: var(--cyan);
-      font-family: monospace;
+      color: var(--cyan-bright);
+      font-family: var(--font-mono);
+      font-weight: 700;
     }
     .control-input, .control-select {
-      background: #090d18;
-      border: 1px solid #1e293b;
-      border-radius: 6px;
-      padding: 8px 12px;
+      background: var(--surface-input);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 8px 10px;
       color: #fff;
-      font-size: 13px;
-      font-family: inherit;
+      font-size: 12px;
+      font-family: var(--font-mono);
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.15s;
     }
     .control-input:focus, .control-select:focus {
-      border-color: var(--gold);
+      border-color: var(--border-focus);
     }
     .range-row {
       display: flex;
@@ -460,65 +507,94 @@
     }
     .range-row input[type="range"] {
       flex: 1;
-      accent-color: var(--gold);
+      accent-color: var(--gold-bright);
       cursor: pointer;
     }
 
     /* Theme Swatches */
     .theme-swatches {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
       flex-wrap: wrap;
     }
     .swatch {
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
+      width: 22px;
+      height: 22px;
+      border-radius: 3px;
       cursor: pointer;
       border: 2px solid transparent;
+      box-shadow: 0 2px 0 #000;
       transition: transform 0.15s, border-color 0.15s;
     }
     .swatch:hover { transform: scale(1.15); }
     .swatch.selected {
       border-color: #fff;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
       transform: scale(1.1);
     }
 
     /* Shake Buttons */
     .shake-buttons {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-      gap: 6px;
+      grid-template-columns: repeat(auto-fit, minmax(46px, 1fr));
+      gap: 4px;
     }
     .btn-shake {
-      background: #141d33;
-      border: 1px solid #25334d;
+      background: var(--surface-input);
+      border: 1px solid var(--border);
       color: var(--text-main);
-      padding: 6px 4px;
-      border-radius: 6px;
-      font-size: 11px;
+      padding: 6px 2px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-family: var(--font-mono);
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
+      text-align: center;
     }
-    .btn-shake:hover { background: #1c2947; }
+    .btn-shake:hover { background: var(--surface-3); }
     .btn-shake.active {
-      background: rgba(245, 158, 11, 0.2);
-      border-color: var(--gold);
-      color: var(--gold-bright);
+      background: #231604;
+      border-color: var(--gold-bright);
+      color: var(--gold-light);
     }
 
-    /* Global Settings */
-    .global-settings {
-      background: var(--card-bg);
+    /* Code Viewer */
+    .code-viewer {
+      background: var(--surface-1);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 6px;
       padding: 16px 20px;
       display: flex;
       flex-direction: column;
       gap: 14px;
+    }
+    .code-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+    .code-box {
+      background: var(--surface-input);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--cyan-bright);
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
     }
 
     /* Toast Notification */
@@ -526,16 +602,18 @@
       position: fixed;
       bottom: 24px;
       right: 24px;
-      background: #10b981;
-      color: #000;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 13.5px;
+      background: #0f2017;
+      border: 1px solid var(--emerald);
+      color: var(--emerald);
+      padding: 10px 18px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 12px;
       font-weight: 800;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.8), 0 0 16px rgba(16, 185, 129, 0.2);
       opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(16px);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
       z-index: 9999;
       display: flex;
@@ -561,19 +639,89 @@
     <!-- Header -->
     <header class="header">
       <div class="header-badge-row">
-        <span class="badge badge-gold">MULTI-AESTHETIC</span>
-        <span class="badge badge-cyan">ZERO DEPENDENCIES</span>
-        <span class="badge badge-purple">60 FPS SVG</span>
+        <span class="badge badge-gold">PIXEL ART</span>
+        <span class="badge badge-cyan">MULTI-AESTHETIC</span>
+        <span class="badge badge-purple">ZERO DEPENDENCIES</span>
         <span class="badge badge-crimson">CAMO SANITIZER SAFE</span>
       </div>
-      <h1>SOULS BOSS BAR STUDIO</h1>
-      <p>Design authentic retro animated boss health bars for your GitHub Profile README. Choose from distinct visual aesthetics (Souls, Cyberpunk, 8-Bit Pixel, Bloodborne, Minimalist), custom impact drain animations, and multi-stage boss encounters.</p>
+      <h1>README BOSS BAR STUDIO</h1>
+      <p>Craft bespoke retro pixel-art & dark fantasy boss health bars for your GitHub README. Fully animated, multi-stage milestone progression, and zero external dependencies.</p>
     </header>
 
-    <!-- 1-Click Ready Presets -->
-    <section class="preset-section">
+    <!-- Live Real-Time Preview (Hero Viewport) -->
+    <section class="preview-card">
+      <div class="preview-header">
+        <div class="preview-title">
+          <span class="dot-live"></span> Live Boss Bar Preview
+        </div>
+        <div class="preview-actions">
+          <button class="btn-small" onclick="replayAnimation()">
+            <span>🔄</span> Restart Battle
+          </button>
+        </div>
+      </div>
+
+      <div class="viewport" id="studio-viewport"></div>
+
+      <div class="preview-stats" id="preview-stats">
+        <div>Aesthetic: <span id="stat-aesthetic">souls</span></div>
+        <div>Stages: <span id="stat-stages">1</span></div>
+        <div>Total Bars: <span id="stat-bars">10</span></div>
+        <div>Total Hits: <span id="stat-hits">2</span></div>
+        <div>Combat Duration: <span id="stat-duration">8.4s</span></div>
+      </div>
+    </section>
+
+    <!-- 1-Click Tactile Export Bar -->
+    <section class="export-bar">
+      <button class="btn-export btn-export-primary" onclick="copyMarkdown()">
+        <span>📋</span> Copy Markdown for README
+      </button>
+      <button class="btn-export btn-export-secondary" onclick="downloadSVG()">
+        <span>⬇️</span> Download SVG File
+      </button>
+      <button class="btn-export btn-export-secondary" onclick="copyCLI()">
+        <span>💻</span> Copy CLI Command
+      </button>
+    </section>
+
+    <!-- Aesthetic Style Selector -->
+    <section class="section-card aesthetic-section">
       <div class="section-title">
-        <span>⚔️</span> 1-Click Ready Presets
+        <span class="icon">🎨</span> Visual Aesthetic Style
+      </div>
+      <div class="aesthetic-pills">
+        <button class="btn-aesthetic" id="btn-a-classic" data-style="classic" onclick="selectAesthetic('classic')">
+          <span>Classic</span>
+          <span class="subtext">16-Bit RPG</span>
+        </button>
+        <button class="btn-aesthetic active" id="btn-a-souls" data-style="souls" onclick="selectAesthetic('souls')">
+          <span>Souls</span>
+          <span class="subtext">Gothic Filigree</span>
+        </button>
+        <button class="btn-aesthetic" id="btn-a-cyberpunk" data-style="cyberpunk" onclick="selectAesthetic('cyberpunk')">
+          <span>Cyberpunk</span>
+          <span class="subtext">Sci-Fi 45° HUD</span>
+        </button>
+        <button class="btn-aesthetic" id="btn-a-pixel" data-style="pixel" onclick="selectAesthetic('pixel')">
+          <span>Pixel</span>
+          <span class="subtext">8-Bit NES Arcade</span>
+        </button>
+        <button class="btn-aesthetic" id="btn-a-bloodborne" data-style="bloodborne" onclick="selectAesthetic('bloodborne')">
+          <span>Bloodborne</span>
+          <span class="subtext">Eldritch Horror</span>
+        </button>
+        <button class="btn-aesthetic" id="btn-a-minimal" data-style="minimal" onclick="selectAesthetic('minimal')">
+          <span>Minimal</span>
+          <span class="subtext">Modern Dashboard</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 1-Click Encounter Presets -->
+    <section class="section-card preset-section">
+      <div class="section-title">
+        <span class="icon">⚔️</span> 1-Click Encounter Presets
       </div>
       <div class="preset-pills">
         <button class="btn-preset active" id="btn-p-single" onclick="loadPreset('single')">
@@ -606,112 +754,24 @@
       </div>
     </section>
 
-    <!-- Aesthetic Style Selector -->
-    <section class="aesthetic-section">
-      <div class="section-title">
-        <span>🎨</span> Visual Aesthetic Style
-      </div>
-      <div class="aesthetic-pills">
-        <button class="btn-aesthetic" id="btn-a-classic" data-style="classic" onclick="selectAesthetic('classic')">
-          <span>Classic</span>
-          <span class="subtext">16-Bit RPG</span>
-        </button>
-        <button class="btn-aesthetic active" id="btn-a-souls" data-style="souls" onclick="selectAesthetic('souls')">
-          <span>Souls</span>
-          <span class="subtext">Gothic Filigree</span>
-        </button>
-        <button class="btn-aesthetic" id="btn-a-cyberpunk" data-style="cyberpunk" onclick="selectAesthetic('cyberpunk')">
-          <span>Cyberpunk</span>
-          <span class="subtext">Sci-Fi 45° HUD</span>
-        </button>
-        <button class="btn-aesthetic" id="btn-a-pixel" data-style="pixel" onclick="selectAesthetic('pixel')">
-          <span>Pixel</span>
-          <span class="subtext">8-Bit NES Arcade</span>
-        </button>
-        <button class="btn-aesthetic" id="btn-a-bloodborne" data-style="bloodborne" onclick="selectAesthetic('bloodborne')">
-          <span>Bloodborne</span>
-          <span class="subtext">Eldritch Horror</span>
-        </button>
-        <button class="btn-aesthetic" id="btn-a-minimal" data-style="minimal" onclick="selectAesthetic('minimal')">
-          <span>Minimal</span>
-          <span class="subtext">Sleek Dashboard</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- Live Real-Time Preview Card -->
-    <section class="preview-card">
-      <div class="preview-header">
-        <div class="preview-title">
-          <span>🔴</span> Live Real-Time Boss Bar
-        </div>
-        <div class="preview-actions">
-          <button class="btn-small" onclick="replayAnimation()">
-            <span>🔄</span> Restart Battle
-          </button>
-        </div>
-      </div>
-
-      <div class="viewport" id="studio-viewport"></div>
-
-      <div class="preview-stats" id="preview-stats">
-        <div>Aesthetic: <span id="stat-aesthetic">souls</span></div>
-        <div>Stages: <span id="stat-stages">1</span></div>
-        <div>Total Bars: <span id="stat-bars">10</span></div>
-        <div>Total Hits: <span id="stat-hits">2</span></div>
-        <div>Estimated Duration: <span id="stat-duration">8.4s</span></div>
-      </div>
-    </section>
-
-    <!-- 1-Click Export Bar -->
-    <section class="export-bar">
-      <button class="btn-export btn-export-primary" onclick="copyMarkdown()">
-        <span>📋</span> Copy Markdown for README
-      </button>
-      <button class="btn-export btn-export-secondary" onclick="downloadSVG()">
-        <span>⬇️</span> Download SVG File
-      </button>
-      <button class="btn-export btn-export-secondary" onclick="copyCLI()">
-        <span>💻</span> Copy CLI Command
-      </button>
-    </section>
-
-    <!-- Generated Code Blocks -->
-    <section class="code-viewer">
-      <div class="code-row">
-        <div class="code-header">
-          <span>Markdown Embed (GitHub README)</span>
-          <button class="btn-small" onclick="copyMarkdown()">Copy</button>
-        </div>
-        <div class="code-box" id="code-markdown"></div>
-      </div>
-      <div class="code-row">
-        <div class="code-header">
-          <span>CLI Generation Command</span>
-          <button class="btn-small" onclick="copyCLI()">Copy</button>
-        </div>
-        <div class="code-box" id="code-cli"></div>
-      </div>
-    </section>
-
-    <!-- Interactive Stages Manager -->
+    <!-- Boss Stages / Encounter Phases Manager -->
     <section class="stages-manager">
       <div class="stages-header">
         <div class="section-title">
-          <span>🛡️</span> Boss Stages / Encounter Phases
+          <span class="icon">🛡️</span> Encounter Phases & Boss Stages
         </div>
         <button class="btn-add-stage" id="btn-add-stage" onclick="addStage()">
-          <span>+</span> Add Stage
+          <span>+</span> Add Phase
         </button>
       </div>
 
       <div id="stages-container" class="stages-manager"></div>
     </section>
 
-    <!-- Canvas & Global Settings -->
-    <section class="global-settings">
+    <!-- Global Canvas & Visual FX -->
+    <section class="section-card global-settings">
       <div class="section-title">
-        <span>⚙️</span> Global Canvas & Visual FX
+        <span class="icon">⚙️</span> Global Combat & Canvas Settings
       </div>
       <div class="controls-grid">
         <div class="control-group">
@@ -745,6 +805,24 @@
         </div>
       </div>
     </section>
+
+    <!-- Embed & Export Inspector -->
+    <section class="code-viewer">
+      <div class="code-row">
+        <div class="code-header">
+          <span>Markdown Embed (GitHub README)</span>
+          <button class="btn-small" onclick="copyMarkdown()">Copy</button>
+        </div>
+        <div class="code-box" id="code-markdown"></div>
+      </div>
+      <div class="code-row">
+        <div class="code-header">
+          <span>CLI Generation Command</span>
+          <button class="btn-small" onclick="copyCLI()">Copy</button>
+        </div>
+        <div class="code-box" id="code-cli"></div>
+      </div>
+    </section>
   </div>
 
   <!-- Toast Notification -->
@@ -752,14 +830,8 @@
     <span>✔</span> <span id="toast-text">Copied to clipboard!</span>
   </div>
 
-  <!-- Include Generator (Both local and fallback) -->
+  <!-- Include Generator -->
   <script src="src/generator.js"></script>
-  <script>
-    // In case src/generator.js is not loaded via file:// protocol
-    if (typeof generateBossBarSVG === 'undefined') {
-      console.warn("Loading generator from script fallback...");
-    }
-  </script>
 
   <!-- Studio Application Logic -->
   <script>

@@ -495,8 +495,45 @@ const highBarStyles = ['pixel', 'classic', 'bloodborne'];
 });
 console.log("✔ Test 31 passed: High bar count (25 & 40 bars) border padding scaling prevents overlap cleanly!");
 
-console.log("\nALL 31 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
+// Test 32: Enhanced Visual FX & Signature Aesthetic Identity Verification
+const test32Aesthetics = [
+  {
+    style: 'souls',
+    assertions: ['brackets-souls-0', 'Golden Flourish Separator Lines', 'polygon points="-15', 'Gothic Top Highlight Sheen']
+  },
+  {
+    style: 'pixel',
+    assertions: ['8-Bit Stepped Pixel Brackets', 'High-Contrast 8-Bit Arcade Bevels', 'Chunky 8-Bit Arcade Box', 'bracket-pixel-0']
+  },
+  {
+    style: 'bloodborne',
+    assertions: ['brackets-blood-0', 'Barbed Thorn Spikes', 'Visceral Abyssal Splatter Backdrop', 'Blood Vial Vein']
+  },
+  {
+    style: 'minimal',
+    assertions: ['brackets-minimal-0', 'Sleek Modern Pill Rail', 'Clean Floating Status Pill', 'Sleek Sheen Rail']
+  },
+  {
+    style: 'cyberpunk',
+    assertions: ['brackets-cyber-0', 'Cyber HUD Targeting Overlay', '45° Chamfered Polygon Accent']
+  }
+];
 
+test32Aesthetics.forEach((t) => {
+  const svg = generateBossBarSVG([
+    { name: `AESTHETIC ${t.style.toUpperCase()}`, totalBars: 6, hits: 3, damagePerHit: 2 }
+  ], { style: t.style });
 
+  t.assertions.forEach((phrase) => {
+    if (!svg.includes(phrase)) {
+      throw new Error(`Test 32 failed: ${t.style} missing expected enhanced visual signature: "${phrase}"`);
+    }
+  });
 
+  const p = `/tmp/test_enhanced_${t.style}.svg`;
+  fs.writeFileSync(p, svg);
+  execSync(`rsvg-convert ${p} -o /tmp/test_enhanced_${t.style}.png`);
+});
+console.log("✔ Test 32 passed: Enhanced visual signatures, ornate filigree, stepped pixel brackets, thorn spikes & defeat backdrops verified!");
 
+console.log("\nALL 32 TESTS PASSED WITH 0 XML / RSVG ERRORS!");

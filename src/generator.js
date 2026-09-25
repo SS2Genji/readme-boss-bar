@@ -428,33 +428,87 @@ function renderParticleMarkup(aesthetic, theme) {
   `;
 }
 
-function renderContainerBrackets(aesthetic, theme, actualWidth, barHeight) {
+function renderContainerBrackets(aesthetic, theme, actualWidth, barHeight, pfx = '', b = 0) {
   if (aesthetic.name === 'souls') {
     return `
       <!-- Ornate Filigree Brackets -->
-      <g>
-        <path d="M -8,-2 L -3,-2 L -1,${barHeight/2} L -3,${barHeight+2} L -8,${barHeight+2} M -5,${barHeight/2} L -10,${barHeight/2}" stroke="${theme.frameInner}" stroke-width="1.2" fill="none" />
-        <polygon points="-12,${barHeight/2} -10,${barHeight/2 - 2} -8,${barHeight/2} -10,${barHeight/2 + 2}" fill="${theme.frameInner}" />
-        <path d="M ${actualWidth+8},-2 L ${actualWidth+3},-2 L ${actualWidth+1},${barHeight/2} L ${actualWidth+3},${barHeight+2} L ${actualWidth+8},${barHeight+2} M ${actualWidth+5},${barHeight/2} L ${actualWidth+10},${barHeight/2}" stroke="${theme.frameInner}" stroke-width="1.2" fill="none" />
-        <polygon points="${actualWidth+12},${barHeight/2} ${actualWidth+10},${barHeight/2 - 2} ${actualWidth+8},${barHeight/2} ${actualWidth+10},${barHeight/2 + 2}" fill="${theme.frameInner}" />
+      <g class="${pfx}brackets-souls-${b}">
+        <!-- Double-lined Antique Gold Container Frame -->
+        <rect x="-4" y="-3" width="${actualWidth + 8}" height="${barHeight + 6}" fill="none" stroke="${theme.frameOuter}" stroke-width="1.2" opacity="0.85" />
+        <rect x="-2" y="-1.5" width="${actualWidth + 4}" height="${barHeight + 3}" fill="none" stroke="${theme.frameInner}" stroke-width="0.8" opacity="0.9" />
+        <!-- Corner Filigree Scrollwork Flourishes -->
+        <path d="M -8,2 L -8,-4 L -2,-4 M -6,-2 L -2,-6" stroke="${theme.frameInner}" stroke-width="1" fill="none" />
+        <path d="M -8,${barHeight-2} L -8,${barHeight+4} L -2,${barHeight+4} M -6,${barHeight+2} L -2,${barHeight+6}" stroke="${theme.frameInner}" stroke-width="1" fill="none" />
+        <path d="M ${actualWidth+8},2 L ${actualWidth+8},-4 L ${actualWidth+2},-4 M ${actualWidth+6},-2 L ${actualWidth+2},-6" stroke="${theme.frameInner}" stroke-width="1" fill="none" />
+        <path d="M ${actualWidth+8},${barHeight-2} L ${actualWidth+8},${barHeight+4} L ${actualWidth+2},${barHeight+4} M ${actualWidth+6},${barHeight+2} L ${actualWidth+2},${barHeight+6}" stroke="${theme.frameInner}" stroke-width="1" fill="none" />
+        <!-- Prominent Gothic Finials -->
+        <path d="M -16,${barHeight/2} L -10,-4 L -4,-1 L -1,${barHeight/2} L -4,${barHeight+1} L -10,${barHeight+4} Z" stroke="${theme.frameInner}" stroke-width="1.2" fill="${theme.frameOuter}" />
+        <polygon points="-15,${barHeight/2} -10,${barHeight/2 - 3} -6,${barHeight/2} -10,${barHeight/2 + 3}" fill="#facc15" />
+        <circle cx="-10" cy="${barHeight/2}" r="1.5" fill="#fef08a" />
+        <path d="M ${actualWidth+16},${barHeight/2} L ${actualWidth+10},-4 L ${actualWidth+4},-1 L ${actualWidth+1},${barHeight/2} L ${actualWidth+4},${barHeight+1} L ${actualWidth+10},${barHeight+4} Z" stroke="${theme.frameInner}" stroke-width="1.2" fill="${theme.frameOuter}" />
+        <polygon points="${actualWidth+15},${barHeight/2} ${actualWidth+10},${barHeight/2 - 3} ${actualWidth+6},${barHeight/2} ${actualWidth+10},${barHeight/2 + 3}" fill="#facc15" />
+        <circle cx="${actualWidth+10}" cy="${barHeight/2}" r="1.5" fill="#fef08a" />
       </g>
     `;
   }
   if (aesthetic.name === 'cyberpunk') {
     return `
       <!-- Tactical HUD Brackets -->
-      <g>
-        <path d="M -6,0 L -11,0 L -15,${barHeight/2} L -11,${barHeight} L -6,${barHeight}" stroke="${theme.emblem}" stroke-width="1.5" fill="none" opacity="0.8" />
-        <path d="M ${actualWidth+6},0 L ${actualWidth+11},0 L ${actualWidth+15},${barHeight/2} L ${actualWidth+11},${barHeight} L ${actualWidth+6},${barHeight}" stroke="${theme.emblem}" stroke-width="1.5" fill="none" opacity="0.8" />
+      <g class="${pfx}brackets-cyber-${b}">
+        <path d="M -6,0 L -12,0 L -16,${barHeight/2} L -12,${barHeight} L -6,${barHeight}" stroke="${theme.emblem}" stroke-width="1.5" fill="none" opacity="0.85" />
+        <line x1="-16" y1="${barHeight/2}" x2="-8" y2="${barHeight/2}" stroke="${theme.emblem}" stroke-width="1" opacity="0.6" />
+        <path d="M ${actualWidth+6},0 L ${actualWidth+12},0 L ${actualWidth+16},${barHeight/2} L ${actualWidth+12},${barHeight} L ${actualWidth+6},${barHeight}" stroke="${theme.emblem}" stroke-width="1.5" fill="none" opacity="0.85" />
+        <line x1="${actualWidth+8}" y1="${barHeight/2}" x2="${actualWidth+16}" y2="${barHeight/2}" stroke="${theme.emblem}" stroke-width="1" opacity="0.6" />
+      </g>
+    `;
+  }
+  if (aesthetic.name === 'pixel') {
+    return `
+      <!-- 8-Bit Stepped Pixel Brackets -->
+      <g class="${pfx}bracket-pixel-${b}">
+        <rect x="-10" y="5" width="2" height="${barHeight - 10}" fill="${theme.frameInner}" />
+        <rect x="-8" y="3" width="2" height="${barHeight - 6}" fill="${theme.frameOuter}" />
+        <rect x="-6" y="1" width="2" height="${barHeight - 2}" fill="${theme.frameInner}" />
+        <rect x="-4" y="-1" width="2" height="${barHeight + 2}" fill="#000000" />
+        <rect x="${actualWidth + 2}" y="-1" width="2" height="${barHeight + 2}" fill="#000000" />
+        <rect x="${actualWidth + 4}" y="1" width="2" height="${barHeight - 2}" fill="${theme.frameInner}" />
+        <rect x="${actualWidth + 6}" y="3" width="2" height="${barHeight - 6}" fill="${theme.frameOuter}" />
+        <rect x="${actualWidth + 8}" y="5" width="2" height="${barHeight - 10}" fill="${theme.frameInner}" />
+        <!-- Stepped Pixel Corners -->
+        <rect x="-4" y="-3" width="6" height="2" fill="#000" /><rect x="-4" y="-3" width="2" height="6" fill="#000" />
+        <rect x="-4" y="${barHeight+1}" width="6" height="2" fill="#000" /><rect x="-4" y="${barHeight-3}" width="2" height="6" fill="#000" />
+        <rect x="${actualWidth-2}" y="-3" width="6" height="2" fill="#000" /><rect x="${actualWidth+2}" y="-3" width="2" height="6" fill="#000" />
+        <rect x="${actualWidth-2}" y="${barHeight+1}" width="6" height="2" fill="#000" /><rect x="${actualWidth+2}" y="${barHeight-3}" width="2" height="6" fill="#000" />
       </g>
     `;
   }
   if (aesthetic.name === 'bloodborne') {
     return `
       <!-- Distressed Jagged Iron Brackets -->
-      <g>
-        <polygon points="-4,-2 -8,${barHeight/2} -4,${barHeight+2} -1,${barHeight/2}" fill="${theme.frameOuter}" stroke="${theme.frameInner}" stroke-width="1" />
-        <polygon points="${actualWidth+4},-2 ${actualWidth+8},${barHeight/2} ${actualWidth+4},${barHeight+2} ${actualWidth+1},${barHeight/2}" fill="${theme.frameOuter}" stroke="${theme.frameInner}" stroke-width="1" />
+      <g class="${pfx}brackets-blood-${b}">
+        <path d="M -16,${barHeight/2} L -10,-4 L -5,0 L -9,${barHeight/2} L -5,${barHeight} L -10,${barHeight+4} Z" fill="#2d060e" stroke="${theme.frameOuter}" stroke-width="1.2" />
+        <polygon points="-12,${barHeight/2} -7,${barHeight/2 - 2.5} -3,${barHeight/2} -7,${barHeight/2 + 2.5}" fill="#dc2626" />
+        <line x1="-14" y1="${barHeight/2}" x2="-1" y2="${barHeight/2}" stroke="#ef4444" stroke-width="1" />
+        <path d="M ${actualWidth+16},${barHeight/2} L ${actualWidth+10},-4 L ${actualWidth+5},0 L ${actualWidth+9},${barHeight/2} L ${actualWidth+5},${barHeight} L ${actualWidth+10},${barHeight+4} Z" fill="#2d060e" stroke="${theme.frameOuter}" stroke-width="1.2" />
+        <polygon points="${actualWidth+12},${barHeight/2} ${actualWidth+7},${barHeight/2 - 2.5} ${actualWidth+3},${barHeight/2} ${actualWidth+7},${barHeight/2 + 2.5}" fill="#dc2626" />
+        <line x1="${actualWidth+14}" y1="${barHeight/2}" x2="${actualWidth+1}" y2="${barHeight/2}" stroke="#ef4444" stroke-width="1" />
+        <!-- Top & Bottom Barbed Thorn Spikes -->
+        <polygon points="${Math.round(actualWidth*0.25)},-2 ${Math.round(actualWidth*0.25)+4},-5 ${Math.round(actualWidth*0.25)+8},-2" fill="${theme.frameOuter}" stroke="${theme.frameInner}" stroke-width="0.8" />
+        <polygon points="${Math.round(actualWidth*0.75)},-2 ${Math.round(actualWidth*0.75)+4},-5 ${Math.round(actualWidth*0.75)+8},-2" fill="${theme.frameOuter}" stroke="${theme.frameInner}" stroke-width="0.8" />
+        <polygon points="${Math.round(actualWidth*0.35)},${barHeight+2} ${Math.round(actualWidth*0.35)+4},${barHeight+5} ${Math.round(actualWidth*0.35)+8},${barHeight+2}" fill="${theme.frameOuter}" stroke="${theme.frameInner}" stroke-width="0.8" />
+        <polygon points="${Math.round(actualWidth*0.65)},${barHeight+2} ${Math.round(actualWidth*0.65)+4},${barHeight+5} ${Math.round(actualWidth*0.65)+8},${barHeight+2}" fill="${theme.frameOuter}" stroke="${theme.frameInner}" stroke-width="0.8" />
+      </g>
+    `;
+  }
+  if (aesthetic.name === 'minimal') {
+    return `
+      <!-- Sleek Modern Pill Rail -->
+      <g class="${pfx}brackets-minimal-${b}">
+        <rect x="-4" y="-3" width="${actualWidth + 8}" height="${barHeight + 6}" rx="5" ry="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+        <line x1="-8" y1="3" x2="-8" y2="${barHeight - 3}" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-linecap="round" />
+        <circle cx="-8" cy="${barHeight/2}" r="1.5" fill="${theme.pulse}" />
+        <line x1="${actualWidth + 8}" y1="3" x2="${actualWidth + 8}" y2="${barHeight - 3}" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-linecap="round" />
+        <circle cx="${actualWidth + 8}" cy="${barHeight/2}" r="1.5" fill="${theme.pulse}" />
       </g>
     `;
   }
@@ -477,6 +531,8 @@ function renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b) 
         <rect x="0" y="0" width="${segWidth}" height="${barHeight}" rx="3.5" ry="3.5" fill="#0b0f19" />
         <!-- Animated Fill Bar -->
         <rect x="0" y="0" height="${barHeight}" rx="3.5" ry="3.5" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
+        <!-- Sleek Sheen Rail -->
+        <line x1="3" y1="1" x2="${Math.max(3, segWidth - 3)}" y2="1" stroke="rgba(255,255,255,0.22)" stroke-width="0.8" stroke-linecap="round" />
         ${particleMarkup}
       </g>
     `;
@@ -519,6 +575,11 @@ function renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b) 
         <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="#111111" />
         <!-- Animated Fill Bar -->
         <rect x="0" y="0" height="${barHeight}" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
+        <!-- High-Contrast 8-Bit Arcade Bevels -->
+        <rect x="0" y="0" width="${segWidth}" height="1" fill="#ffffff" opacity="0.75" />
+        <rect x="0" y="0" width="1" height="${barHeight}" fill="#ffffff" opacity="0.75" />
+        <rect x="0" y="${barHeight-1}" width="${segWidth}" height="1" fill="#000000" opacity="0.85" />
+        <rect x="${segWidth-1}" y="0" width="1" height="${barHeight}" fill="#000000" opacity="0.85" />
         <!-- Specular Pixel Highlight -->
         <rect x="2" y="2" width="2" height="2" fill="#ffffff" opacity="0.5" />
         ${particleMarkup}
@@ -534,8 +595,9 @@ function renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b) 
         <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="${theme.frameBg}" />
         <!-- Animated Fill Bar -->
         <rect x="0" y="0" height="${barHeight}" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
-        <!-- Gothic Top Highlight Sheen -->
-        <line x1="0" y1="1" x2="${segWidth}" y2="1" stroke="rgba(255,255,255,0.25)" stroke-width="1" />
+        <!-- Gothic Top Highlight Sheen & Bottom Shadow -->
+        <line x1="0" y1="1" x2="${segWidth}" y2="1" stroke="rgba(255,255,255,0.4)" stroke-width="1" />
+        <line x1="0" y1="${barHeight-1}" x2="${segWidth}" y2="${barHeight-1}" stroke="rgba(0,0,0,0.5)" stroke-width="1" />
         ${particleMarkup}
       </g>
     `;
@@ -550,8 +612,9 @@ function renderSegmentMarkup(tb, i, segX, segWidth, barHeight, getsHit, pfx, b) 
         <rect x="0" y="0" width="${segWidth}" height="${barHeight}" fill="#0a0204" />
         <!-- Animated Fill Bar -->
         <rect x="0" y="0" height="${barHeight}" fill="${theme.bar}" class="${pfx}bar-${b}-${i}" />
-        <!-- Blood Vial Vein -->
+        <!-- Blood Vial Vein & Visceral Slash -->
         <line x1="0" y1="${barHeight-3}" x2="${segWidth}" y2="${barHeight-3}" stroke="#450a0a" stroke-width="1" opacity="0.8" />
+        <line x1="1" y1="2" x2="3" y2="${barHeight-2}" stroke="rgba(239,68,68,0.35)" stroke-width="0.8" />
         ${particleMarkup}
       </g>
     `;
@@ -1263,7 +1326,7 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
       }
     }
 
-    const containerBrackets = renderContainerBrackets(tb.aesthetic, tb.theme, actualWidth, barHeight);
+    const containerBrackets = renderContainerBrackets(tb.aesthetic, tb.theme, actualWidth, barHeight, pfx, b);
     const emblemMarkup = renderEmblemMarkup(tb.aesthetic, tb.theme.emblem, pfx, b);
     const shapeRenderingMode = (tb.aesthetic.name === 'pixel' || tb.aesthetic.name === 'classic') ? 'crispEdges' : 'geometricPrecision';
 
@@ -1294,8 +1357,36 @@ function generateBossBarSVG(bossesConfig = [], options = {}) {
 
           ${tb.isDefeated ? `
           <!-- Felled Banner Overlay -->
+          ${tb.aesthetic.name === 'souls' ? `
+          <!-- Golden Flourish Separator Lines -->
+          <path d="M ${Math.round(svgWidth/2)-110},33 L ${Math.round(svgWidth/2)-14},33 L ${Math.round(svgWidth/2)},31 L ${Math.round(svgWidth/2)+14},33 L ${Math.round(svgWidth/2)+110},33" stroke="${tb.aesthetic.bannerColor}" stroke-width="1.2" fill="none" class="${pfx}felled-banner-bg-${b}" />
+          <polygon points="${Math.round(svgWidth/2)},29 ${Math.round(svgWidth/2)+4},33 ${Math.round(svgWidth/2)},37 ${Math.round(svgWidth/2)-4},33" fill="${tb.aesthetic.bannerColor}" class="${pfx}felled-banner-bg-${b}" />
+          <path d="M ${Math.round(svgWidth/2)-110},57 L ${Math.round(svgWidth/2)-14},57 L ${Math.round(svgWidth/2)},59 L ${Math.round(svgWidth/2)+14},57 L ${Math.round(svgWidth/2)+110},57" stroke="${tb.aesthetic.bannerColor}" stroke-width="1.2" fill="none" class="${pfx}felled-banner-bg-${b}" />
+          <polygon points="${Math.round(svgWidth/2)},53 ${Math.round(svgWidth/2)+4},57 ${Math.round(svgWidth/2)},61 ${Math.round(svgWidth/2)-4},57" fill="${tb.aesthetic.bannerColor}" class="${pfx}felled-banner-bg-${b}" />
+          ` : ''}
+          ${tb.aesthetic.name === 'pixel' ? `
+          <!-- Chunky 8-Bit Arcade Box -->
+          <rect x="${Math.round(svgWidth/2)-110}" y="31" width="220" height="26" fill="#000000" stroke="#facc15" stroke-width="2" class="${pfx}felled-banner-bg-${b}" />
+          <rect x="${Math.round(svgWidth/2)-107}" y="34" width="214" height="20" fill="#111111" class="${pfx}felled-banner-bg-${b}" />
+          <rect x="${Math.round(svgWidth/2)-105}" y="36" width="3" height="3" fill="#facc15" class="${pfx}felled-banner-bg-${b}" />
+          <rect x="${Math.round(svgWidth/2)+102}" y="36" width="3" height="3" fill="#facc15" class="${pfx}felled-banner-bg-${b}" />
+          <rect x="${Math.round(svgWidth/2)-105}" y="49" width="3" height="3" fill="#facc15" class="${pfx}felled-banner-bg-${b}" />
+          <rect x="${Math.round(svgWidth/2)+102}" y="49" width="3" height="3" fill="#facc15" class="${pfx}felled-banner-bg-${b}" />
+          ` : ''}
+          ${tb.aesthetic.name === 'bloodborne' ? `
+          <!-- Visceral Abyssal Splatter Backdrop -->
+          <path d="M ${Math.round(svgWidth/2)-120},45 L ${Math.round(svgWidth/2)-40},33 L ${Math.round(svgWidth/2)+110},35 L ${Math.round(svgWidth/2)+130},45 L ${Math.round(svgWidth/2)+40},57 L ${Math.round(svgWidth/2)-100},55 Z" fill="rgba(153, 27, 27, 0.45)" class="${pfx}felled-banner-bg-${b}" />
+          <line x1="${Math.round(svgWidth/2)-130}" y1="45" x2="${Math.round(svgWidth/2)+130}" y2="45" stroke="#ef4444" stroke-width="1.2" opacity="0.7" class="${pfx}felled-banner-bg-${b}" />
+          ` : ''}
           ${tb.aesthetic.name === 'minimal' ? `
-          <rect x="${Math.round(svgWidth / 2) - 110}" y="33" width="220" height="22" rx="11" fill="rgba(11, 15, 25, 0.92)" stroke="rgba(255,255,255,0.18)" stroke-width="1" class="${pfx}felled-banner-bg-${b}" />
+          <!-- Clean Floating Status Pill -->
+          <rect x="${Math.round(svgWidth / 2) - 110}" y="33" width="220" height="22" rx="11" fill="rgba(11, 15, 25, 0.94)" stroke="rgba(255,255,255,0.18)" stroke-width="1" class="${pfx}felled-banner-bg-${b}" />
+          ` : ''}
+          ${tb.aesthetic.name === 'cyberpunk' ? `
+          <!-- Cyber HUD Targeting Overlay -->
+          <rect x="${Math.round(svgWidth/2)-120}" y="33" width="240" height="22" fill="rgba(4, 12, 20, 0.92)" stroke="#06b6d4" stroke-width="1" stroke-dasharray="6 3" class="${pfx}felled-banner-bg-${b}" />
+          <polygon points="${Math.round(svgWidth/2)-120},33 ${Math.round(svgWidth/2)-114},33 ${Math.round(svgWidth/2)-120},39" fill="#06b6d4" class="${pfx}felled-banner-bg-${b}" />
+          <polygon points="${Math.round(svgWidth/2)+120},55 ${Math.round(svgWidth/2)+114},55 ${Math.round(svgWidth/2)+120},49" fill="#06b6d4" class="${pfx}felled-banner-bg-${b}" />
           ` : ''}
           <text x="${Math.round(svgWidth / 2)}" text-anchor="middle" y="48" class="${pfx}felled-text-${b}">${escapeXml(tb.felledText)}</text>
           ` : ''}
