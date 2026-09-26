@@ -296,6 +296,58 @@ async function runBrowserTests() {
           resetBtn.click();
           assert(stages[0].name === 'STARCOURGE RADAHN', 'Clean final reset');
 
+          // --- Gateway, Hub Ecosystem & Avant-Garde Infrastructure Assertions ---
+          const gatewayEl = document.getElementById('view-gateway');
+          assert(gatewayEl, 'Gateway hero section exists');
+          const sigil = document.querySelector('.sigil-crest-wrap');
+          assert(sigil, 'Vector cyber-sigil crest emblem rendered');
+
+          const executeBtn = document.querySelector('.btn-execute-system');
+          assert(executeBtn, 'Tactical execute system button exists');
+
+          // Verify 4 Ecosystem Hub Cards
+          const hubCards = document.querySelectorAll('.hub-card');
+          assert(hubCards.length === 4, 'All 4 ecosystem hub directory cards present');
+          const hubLinks = Array.from(document.querySelectorAll('.hub-card a')).map(a => a.href);
+          assert(hubLinks.some(h => h.includes('SS2Genji/readme-boss-bar')), 'Boss Bar repo link verified');
+          assert(hubLinks.some(h => h.includes('SS2Genji/42-Cursus')), '42-Cursus algorithms link verified');
+          assert(hubLinks.some(h => h.includes('github.com/SS2Genji')), 'Developer Matrix mainframe profile verified');
+
+          // Verify View Navigation & Execute System
+          switchView('hub');
+          assert(currentView === 'hub', 'Switched to hub view');
+          assert(document.getElementById('tab-hub').classList.contains('active'), 'Hub tab active');
+
+          executeSystem();
+          assert(currentView === 'studio', 'executeSystem transitioned to studio');
+          assert(document.getElementById('tab-studio').classList.contains('active'), 'Studio tab active');
+          assert(glitchIntensity > 0.5, 'executeSystem triggered shader glitch burst');
+
+          switchView('hub');
+
+          // Verify Web Audio Synthesizer & Audio Toggle
+          assert(sound && typeof sound.playClick === 'function', 'Audio synthesizer loaded');
+          assert(sound.enabled === true, 'Audio enabled by default');
+          toggleAudio();
+          assert(sound.enabled === false, 'Audio toggled to muted');
+          assert(document.getElementById('audio-label').innerText === 'AUDIO: MUTED', 'Audio label shows MUTED');
+          toggleAudio();
+          assert(sound.enabled === true, 'Audio toggled back to ON');
+          assert(document.getElementById('audio-label').innerText === 'AUDIO: ON', 'Audio label shows ON');
+
+          // Verify Design Manifesto Modal
+          const modal = document.getElementById('modal-manifesto');
+          assert(modal, 'Manifesto modal exists');
+          assert(!modal.classList.contains('open'), 'Manifesto modal closed initially');
+          openManifesto();
+          assert(modal.classList.contains('open'), 'Manifesto modal opened via openManifesto');
+          closeManifesto();
+          assert(!modal.classList.contains('open'), 'Manifesto modal closed via closeManifesto');
+
+          // Verify Canvas Background
+          const bgCanvas = document.getElementById('bg-canvas');
+          assert(bgCanvas && bgCanvas.width > 0 && bgCanvas.height > 0, 'Procedural background canvas dimensions valid');
+
           return { success: true, count: checks.length };
         })()
       `,

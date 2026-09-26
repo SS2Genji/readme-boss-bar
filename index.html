@@ -204,6 +204,22 @@
       color: var(--amber-bright);
     }
 
+    /* Persistent HUD Navigation Bar */
+    .hud-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--border-subtle);
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+    .hud-nav .btn-tab {
+      padding: 4px 10px;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
     /* Container */
     .container {
       width: 100%;
@@ -1303,9 +1319,24 @@
     @media (max-width: 640px) {
       .specimen-card { position: static; }
       .btn-execute-system { font-size: 11.5px; padding: 12px 20px; }
-      .hud-bar { padding: 6px 10px; }
+      .hud-bar { padding: 6px 10px; gap: 8px; flex-wrap: wrap; }
+      .hud-nav { order: 3; width: 100%; justify-content: center; }
       .view-switcher-deck { width: 100%; justify-content: space-around; }
-      .btn-tab { padding: 6px 10px; font-size: 10px; }
+      .btn-tab { padding: 5px 10px; font-size: 9.5px; letter-spacing: 1px; }
+    }
+    @media (max-width: 480px) {
+      .hud-bar { padding: 6px 8px; }
+      .hud-telemetry { width: auto; font-size: 9.5px; }
+      .hud-telemetry .sys-name { font-size: 9.5px; letter-spacing: 1px; }
+      .hud-actions { gap: 4px; }
+      .btn-hud { font-size: 9px; padding: 4px 6px; letter-spacing: 0.5px; }
+      .sigil-crest-wrap { width: 130px; height: 130px; margin-bottom: 0; }
+      .gateway-h1 { font-size: 20px; letter-spacing: 2px; }
+      .gateway-telemetry-badge { font-size: 9px; letter-spacing: 1px; flex-direction: column; gap: 2px; }
+      .gateway-manifesto-sub { font-size: 13.5px; }
+      .btn-execute-system { font-size: 10px; padding: 10px 14px; letter-spacing: 1px; width: 100%; justify-content: center; }
+      .hub-grid { grid-template-columns: 1fr; }
+      .hub-card { padding: 14px; }
     }
   </style>
 </head>
@@ -1326,6 +1357,14 @@
         <span class="tag-pill">ENGINE: v0.2.0</span>
         <span class="tag-pill">SEC: PURE-SVG 100%</span>
       </div>
+      <nav class="hud-nav" aria-label="Global View Quick Switcher">
+        <button class="btn-tab active" id="tab-hub-nav" onclick="switchView('hub')">
+          <span>⚡</span> <span>MAIN HUB</span>
+        </button>
+        <button class="btn-tab" id="tab-studio-nav" onclick="switchView('studio')">
+          <span>⚔</span> <span>FORGE STUDIO</span>
+        </button>
+      </nav>
       <div class="hud-actions">
         <button class="btn-hud" id="btn-toggle-audio" onclick="toggleAudio()" title="Toggle synthesized procedural sound effects">
           <span id="audio-icon">♫</span> <span id="audio-label">AUDIO: ON</span>
@@ -1690,6 +1729,7 @@
       constructor() {
         this.ctx = null;
         this.enabled = true;
+        this.lastHover = 0;
       }
       init() {
         if (!this.ctx) {
@@ -1723,6 +1763,9 @@
       }
       playHover() {
         if (!this.enabled) return;
+        const nowMs = performance.now();
+        if (nowMs - this.lastHover < 40) return;
+        this.lastHover = nowMs;
         this.init();
         if (!this.ctx) return;
         try {
@@ -1730,13 +1773,14 @@
           const gain = this.ctx.createGain();
           const now = this.ctx.currentTime;
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(3600, now);
-          gain.gain.setValueAtTime(0.015, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.008);
+          osc.frequency.setValueAtTime(3200, now);
+          osc.frequency.exponentialRampToValueAtTime(1200, now + 0.012);
+          gain.gain.setValueAtTime(0.018, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.012);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start(now);
-          osc.stop(now + 0.008);
+          osc.stop(now + 0.012);
         } catch(e) {}
       }
       playExecute() {
@@ -1748,14 +1792,14 @@
           const subOsc = this.ctx.createOscillator();
           const subGain = this.ctx.createGain();
           subOsc.type = 'sawtooth';
-          subOsc.frequency.setValueAtTime(50, now);
-          subOsc.frequency.exponentialRampToValueAtTime(140, now + 0.3);
-          subGain.gain.setValueAtTime(0.16, now);
-          subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          subOsc.frequency.setValueAtTime(45, now);
+          subOsc.frequency.exponentialRampToValueAtTime(160, now + 0.35);
+          subGain.gain.setValueAtTime(0.2, now);
+          subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
           subOsc.connect(subGain);
           subGain.connect(this.ctx.destination);
           subOsc.start(now);
-          subOsc.stop(now + 0.35);
+          subOsc.stop(now + 0.4);
 
           [220, 330, 440, 880].forEach((freq, i) => {
             const o = this.ctx.createOscillator();
@@ -1763,12 +1807,12 @@
             const t = now + 0.035 * i;
             o.type = 'sine';
             o.frequency.setValueAtTime(freq, t);
-            g.gain.setValueAtTime(0.05, t);
-            g.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+            g.gain.setValueAtTime(0.06, t);
+            g.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
             o.connect(g);
             g.connect(this.ctx.destination);
             o.start(t);
-            o.stop(t + 0.08);
+            o.stop(t + 0.09);
           });
         } catch(e) {}
       }
@@ -1795,91 +1839,272 @@
 
     const sound = new AudioSynthesizer();
 
+    // Browser audio autoplay unlocking on initial user interaction
+    function unlockAudio() {
+      sound.init();
+      window.removeEventListener('pointerdown', unlockAudio);
+      window.removeEventListener('keydown', unlockAudio);
+    }
+    window.addEventListener('pointerdown', unlockAudio, { passive: true, once: true });
+    window.addEventListener('keydown', unlockAudio, { passive: true, once: true });
+
+    // Delegated hover sound effects on interactive buttons & controls
+    document.addEventListener('mouseover', (e) => {
+      const btn = e.target.closest('button, a, .btn-preset, .btn-aesthetic, .swatch, .btn-shake, .opt-chip');
+      if (btn) {
+        sound.playHover();
+      }
+    }, { passive: true });
+
     function toggleAudio() {
       sound.enabled = !sound.enabled;
-      document.getElementById('audio-label').innerText = sound.enabled ? 'AUDIO: ON' : 'AUDIO: MUTED';
-      document.getElementById('audio-icon').innerText = sound.enabled ? '♫' : '✕';
+      const lbl = document.getElementById('audio-label');
+      const icn = document.getElementById('audio-icon');
+      if (lbl) lbl.innerText = sound.enabled ? 'AUDIO: ON' : 'AUDIO: MUTED';
+      if (icn) icn.innerText = sound.enabled ? '♫' : '✕';
       if (sound.enabled) sound.playClick();
       showToast(sound.enabled ? "Synthesized sound effects enabled" : "Sound effects muted");
     }
 
     /* ==========================================================================
-       PROCEDURAL CANVAS BACKGROUND (BAYER MATRIX & SCANLINES)
+       AVANT-GARDE PROCEDURAL CANVAS: GLSL SHADER (4x4 BAYER DITHER, CRT & NOISE)
        ========================================================================== */
     const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
     let cWidth = 0, cHeight = 0;
-    let mouse = { x: -1000, y: -1000, vx: 0, vy: 0, lastX: 0, lastY: 0, speed: 0 };
+    let mouse = { x: -1000, y: -1000, vx: 0, vy: 0, lastX: -1000, lastY: -1000, speed: 0 };
     let time = 0;
     let glitchIntensity = 0;
+
+    let gl = null;
+    let glProgram = null;
+    let glBuf = null;
+    let uResolutionLoc, uMouseLoc, uTimeLoc, uSpeedLoc, uGlitchLoc;
+    let isWebGLSupported = false;
+
+    try {
+      gl = canvas.getContext('webgl', { antialias: false, depth: false }) || canvas.getContext('experimental-webgl');
+      if (gl) {
+        const vsSource = `
+          attribute vec2 a_position;
+          void main() {
+            gl_Position = vec4(a_position, 0.0, 1.0);
+          }
+        `;
+        const fsSource = `
+          precision highp float;
+          uniform vec2 u_resolution;
+          uniform vec2 u_mouse;
+          uniform float u_time;
+          uniform float u_speed;
+          uniform float u_glitch;
+
+          float getBayer4x4(vec2 p) {
+            int x = int(mod(p.x, 4.0));
+            int y = int(mod(p.y, 4.0));
+            int idx = x + y * 4;
+            if (idx == 0) return 0.0/16.0; if (idx == 1) return 8.0/16.0; if (idx == 2) return 2.0/16.0; if (idx == 3) return 10.0/16.0;
+            if (idx == 4) return 12.0/16.0; if (idx == 5) return 4.0/16.0; if (idx == 6) return 14.0/16.0; if (idx == 7) return 6.0/16.0;
+            if (idx == 8) return 3.0/16.0; if (idx == 9) return 11.0/16.0; if (idx == 10) return 1.0/16.0; if (idx == 11) return 9.0/16.0;
+            if (idx == 12) return 15.0/16.0; if (idx == 13) return 7.0/16.0; if (idx == 14) return 13.0/16.0; return 5.0/16.0;
+          }
+
+          float hash(vec2 p) {
+            p = fract(p * vec2(123.34, 456.21));
+            p += dot(p, p + 45.32);
+            return fract(p.x * p.y);
+          }
+
+          float noise(vec2 p) {
+            vec2 i = floor(p);
+            vec2 f = fract(p);
+            f = f * f * (3.0 - 2.0 * f);
+            return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
+          }
+
+          void main() {
+            vec2 uv = gl_FragCoord.xy / u_resolution;
+            vec2 mUv = u_mouse / u_resolution;
+            mUv.y = 1.0 - mUv.y;
+            vec2 toMouse = uv - mUv;
+            float dist = length(toMouse);
+            vec2 uvDisp = uv;
+            float gFactor = u_glitch + clamp(u_speed * 0.4, 0.0, 1.0);
+            if (gFactor > 0.02 && dist < 0.45) {
+              float rip = sin(uv.y * 70.0 + u_time * 24.0) * gFactor * 0.018 * (1.0 - dist / 0.45);
+              uvDisp.x += rip;
+            }
+            vec2 px = gl_FragCoord.xy;
+            float grid = 0.0;
+            if (mod(px.x, 48.0) < 1.0 || mod(px.y, 48.0) < 1.0) grid = 0.05;
+            if (mod(px.x, 144.0) < 1.0 || mod(px.y, 144.0) < 1.0) grid += 0.05;
+
+            float n = noise(uvDisp * 6.0 + vec2(u_time * 0.05, u_time * 0.02));
+            float micro = hash(px + vec2(fract(u_time), fract(u_time * 1.3))) * 0.07;
+            float halo = u_mouse.x > 0.0 ? max(0.0, 1.0 - dist / 0.35) * 0.12 : 0.0;
+            float lum = 0.018 + grid + n * 0.035 + micro + halo;
+
+            float bayer = getBayer4x4(px);
+            float dithered = lum + (bayer - 0.5) * 0.08;
+            float q = clamp(floor(dithered * 16.0 + 0.5) / 16.0, 0.0, 0.95);
+            q -= sin(gl_FragCoord.y * 1.8) * 0.035;
+
+            float r = q; float g = q; float b = q;
+            if (gFactor > 0.03) {
+              float cShift = gFactor * 0.01;
+              vec2 dir = normalize(toMouse + vec2(0.0001));
+              r += noise((uvDisp + dir * cShift) * 12.0 + u_time) * gFactor * 0.16;
+              b += noise((uvDisp - dir * cShift) * 12.0 - u_time) * gFactor * 0.16;
+            }
+            gl_FragColor = vec4(r, g, b, 1.0);
+          }
+        `;
+
+        function compileShader(glCtx, type, source) {
+          const s = glCtx.createShader(type);
+          glCtx.shaderSource(s, source);
+          glCtx.compileShader(s);
+          if (!glCtx.getShaderParameter(s, glCtx.COMPILE_STATUS)) {
+            glCtx.deleteShader(s);
+            return null;
+          }
+          return s;
+        }
+
+        const vs = compileShader(gl, gl.VERTEX_SHADER, vsSource);
+        const fs = compileShader(gl, gl.FRAGMENT_SHADER, fsSource);
+        if (vs && fs) {
+          glProgram = gl.createProgram();
+          gl.attachShader(glProgram, vs);
+          gl.attachShader(glProgram, fs);
+          gl.linkProgram(glProgram);
+          if (gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
+            glBuf = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, glBuf);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+              -1, -1,
+               1, -1,
+              -1,  1,
+              -1,  1,
+               1, -1,
+               1,  1
+            ]), gl.STATIC_DRAW);
+
+            uResolutionLoc = gl.getUniformLocation(glProgram, 'u_resolution');
+            uMouseLoc = gl.getUniformLocation(glProgram, 'u_mouse');
+            uTimeLoc = gl.getUniformLocation(glProgram, 'u_time');
+            uSpeedLoc = gl.getUniformLocation(glProgram, 'u_speed');
+            uGlitchLoc = gl.getUniformLocation(glProgram, 'u_glitch');
+            isWebGLSupported = true;
+          }
+        }
+      }
+    } catch(e) {
+      isWebGLSupported = false;
+    }
+
+    const ctx2d = isWebGLSupported ? null : canvas.getContext('2d');
 
     function resizeCanvas() {
       cWidth = canvas.width = window.innerWidth;
       cHeight = canvas.height = window.innerHeight;
+      if (gl && isWebGLSupported) gl.viewport(0, 0, cWidth, cHeight);
     }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
     window.addEventListener('mousemove', (e) => {
+      if (mouse.lastX < 0) {
+        mouse.lastX = e.clientX;
+        mouse.lastY = e.clientY;
+      }
       const dx = e.clientX - mouse.lastX;
       const dy = e.clientY - mouse.lastY;
-      mouse.speed = Math.hypot(dx, dy);
+      mouse.vx = dx;
+      mouse.vy = dy;
+      mouse.speed = Math.min(1.0, Math.hypot(dx, dy) / 45.0);
       mouse.lastX = e.clientX;
       mouse.lastY = e.clientY;
       mouse.x = e.clientX;
       mouse.y = e.clientY;
-      if (mouse.speed > 55) {
-        glitchIntensity = Math.min(1, glitchIntensity + 0.25);
+      if (mouse.speed > 0.6) {
+        glitchIntensity = Math.min(1.0, glitchIntensity + 0.3);
       }
     });
 
+    const BAYER_4X4 = [
+       0/16,  8/16,  2/16, 10/16,
+      12/16,  4/16, 14/16,  6/16,
+       3/16, 11/16,  1/16,  9/16,
+      15/16,  7/16, 13/16,  5/16
+    ];
+
     function drawCanvas() {
-      time += 0.015;
-      glitchIntensity *= 0.94;
-      ctx.fillStyle = '#010204';
-      ctx.fillRect(0, 0, cWidth, cHeight);
+      time += 0.016;
+      glitchIntensity *= 0.93;
 
-      // Micro Data Grid
-      const gridSize = 36;
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
-      ctx.beginPath();
-      for (let x = 0; x < cWidth; x += gridSize) {
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, cHeight);
-      }
-      for (let y = 0; y < cHeight; y += gridSize) {
-        ctx.moveTo(0, y);
-        ctx.lineTo(cWidth, y);
-      }
-      ctx.stroke();
+      if (isWebGLSupported && gl && glProgram) {
+        gl.useProgram(glProgram);
+        const aPos = gl.getAttribLocation(glProgram, 'a_position');
+        gl.enableVertexAttribArray(aPos);
+        gl.bindBuffer(gl.ARRAY_BUFFER, glBuf);
+        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
-      // Precision Reticle Markers at Grid Intersections
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-      for (let x = 0; x < cWidth; x += gridSize * 3) {
-        for (let y = 0; y < cHeight; y += gridSize * 3) {
-          ctx.fillRect(x - 2, y, 5, 1);
-          ctx.fillRect(x, y - 2, 1, 5);
+        gl.uniform2f(uResolutionLoc, cWidth, cHeight);
+        gl.uniform2f(uMouseLoc, mouse.x, mouse.y);
+        gl.uniform1f(uTimeLoc, time);
+        gl.uniform1f(uSpeedLoc, mouse.speed);
+        gl.uniform1f(uGlitchLoc, glitchIntensity);
+
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+      } else if (ctx2d) {
+        ctx2d.fillStyle = '#010204';
+        ctx2d.fillRect(0, 0, cWidth, cHeight);
+
+        // 2D Tactical Grid
+        const gridSize = 48;
+        ctx2d.lineWidth = 1;
+        ctx2d.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+        ctx2d.beginPath();
+        for (let x = 0; x < cWidth; x += gridSize) {
+          ctx2d.moveTo(x, 0); ctx2d.lineTo(x, cHeight);
         }
-      }
+        for (let y = 0; y < cHeight; y += gridSize) {
+          ctx2d.moveTo(0, y); ctx2d.lineTo(cWidth, y);
+        }
+        ctx2d.stroke();
 
-      // Cursor Reactive Vector Field
-      if (mouse.x > 0) {
-        const grad = ctx.createRadialGradient(mouse.x, mouse.y, 8, mouse.x, mouse.y, 240);
-        grad.addColorStop(0, 'rgba(0, 240, 255, 0.04)');
-        grad.addColorStop(0.6, 'rgba(245, 158, 11, 0.012)');
-        grad.addColorStop(1, 'transparent');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, cWidth, cHeight);
-      }
+        // 4x4 Bayer Dither Grid Sample Points
+        ctx2d.fillStyle = 'rgba(255, 255, 255, 0.04)';
+        for (let x = 0; x < cWidth; x += gridSize * 2) {
+          for (let y = 0; y < cHeight; y += gridSize * 2) {
+            const bx = Math.floor(x / gridSize) % 4;
+            const by = Math.floor(y / gridSize) % 4;
+            const bVal = BAYER_4X4[bx + by * 4];
+            if (bVal > 0.4) {
+              ctx2d.fillRect(x - 2, y, 5, 1);
+              ctx2d.fillRect(x, y - 2, 1, 5);
+            }
+          }
+        }
 
-      // Stochastic Micro Glitch Scanlines
-      if (glitchIntensity > 0.04) {
-        ctx.fillStyle = 'rgba(255, 0, 60, ' + (glitchIntensity * 0.06) + ')';
-        const gy = (time * 600) % cHeight;
-        ctx.fillRect(0, gy, cWidth, 2 + Math.random() * 6);
-        ctx.fillStyle = 'rgba(0, 240, 255, ' + (glitchIntensity * 0.06) + ')';
-        ctx.fillRect(0, (gy + 14) % cHeight, cWidth, 1 + Math.random() * 3);
+        // Cursor Reactive Halo
+        if (mouse.x > 0) {
+          const grad = ctx2d.createRadialGradient(mouse.x, mouse.y, 4, mouse.x, mouse.y, 220);
+          grad.addColorStop(0, 'rgba(0, 240, 255, 0.04)');
+          grad.addColorStop(0.6, 'rgba(245, 158, 11, 0.015)');
+          grad.addColorStop(1, 'transparent');
+          ctx2d.fillStyle = grad;
+          ctx2d.fillRect(0, 0, cWidth, cHeight);
+        }
+
+        // Stochastic Glitch Scanlines
+        if (glitchIntensity > 0.04) {
+          ctx2d.fillStyle = 'rgba(255, 0, 60, ' + (glitchIntensity * 0.08) + ')';
+          const gy = (time * 650) % cHeight;
+          ctx2d.fillRect(0, gy, cWidth, 3 + Math.random() * 5);
+          ctx2d.fillStyle = 'rgba(0, 240, 255, ' + (glitchIntensity * 0.08) + ')';
+          ctx2d.fillRect(0, (gy + 16) % cHeight, cWidth, 2 + Math.random() * 3);
+        }
       }
 
       requestAnimationFrame(drawCanvas);
@@ -1895,8 +2120,11 @@
       currentView = viewName;
       sound.playSwitch();
       document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
-      const activeTab = document.getElementById('tab-' + viewName);
-      if (activeTab) activeTab.classList.add('active');
+      const activeTabs = [
+        document.getElementById('tab-' + viewName),
+        document.getElementById('tab-' + viewName + '-nav')
+      ];
+      activeTabs.forEach(t => { if (t) t.classList.add('active'); });
 
       const hubEl = document.getElementById('view-gateway');
       const studioEl = document.getElementById('view-studio');
@@ -1910,6 +2138,7 @@
 
     function executeSystem() {
       sound.playExecute();
+      glitchIntensity = 1.0;
       switchView('studio');
       showToast("⚡ System Executed: Boss Bar Studio Initialized");
     }
@@ -1919,12 +2148,42 @@
       executeSystem();
     }
 
+    // Scroll spy for view synchronization
+    const viewObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.25) {
+          const v = entry.target.id === 'view-gateway' ? 'hub' : 'studio';
+          if (currentView !== v) {
+            currentView = v;
+            document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
+            const activeTabs = [
+              document.getElementById('tab-' + v),
+              document.getElementById('tab-' + v + '-nav')
+            ];
+            activeTabs.forEach(t => { if (t) t.classList.add('active'); });
+          }
+        }
+      });
+    }, { threshold: [0.25] });
+
+    const gEl = document.getElementById('view-gateway');
+    const sEl = document.getElementById('view-studio');
+    if (gEl) viewObserver.observe(gEl);
+    if (sEl) viewObserver.observe(sEl);
+
     window.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
       if (e.code === 'Space' || e.code === 'Enter') {
         if (currentView === 'hub') {
           e.preventDefault();
           executeSystem();
+        }
+      } else if (e.code === 'Escape') {
+        const modal = document.getElementById('modal-manifesto');
+        if (modal && modal.classList.contains('open')) {
+          closeManifesto();
+        } else if (currentView === 'studio') {
+          switchView('hub');
         }
       }
     });
