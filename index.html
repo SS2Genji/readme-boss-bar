@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Boss Bar Studio - Dynamic Dark Fantasy & Pixel Art Health Bars for GitHub README</title>
+  <title>Boss Bar Studio - Dynamic Dark Fantasy &amp; Pixel Art Health Bars for GitHub README</title>
   <meta name="description" content="Design authentic manga woodcut, dark gothic fantasy, and retro pixel-art boss health bars for your GitHub README with real-time preview, multi-phase encounters, and 1-click export.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,14 +12,17 @@
     :root {
       --void-0: #020306;
       --void-1: #05080e;
-      --void-2: #080c15;
-      --void-3: #0c121f;
-      --void-card: rgba(8, 12, 21, 0.92);
+      --void-2: #080c14;
+      --void-3: #0d121e;
+      --void-card: rgba(8, 12, 20, 0.94);
       --void-input: #030509;
+      --github-dark: #0d1117;
       --border-subtle: #141c2c;
       --border-steel: #1c273c;
-      --border-gold: rgba(217, 119, 6, 0.35);
-      --border-cyan: rgba(6, 182, 212, 0.35);
+      --border-highlight: #283750;
+      --border-gold: rgba(217, 119, 6, 0.4);
+      --border-cyan: rgba(6, 182, 212, 0.4);
+      --border-crimson: rgba(220, 38, 38, 0.45);
       --border-focus: #f59e0b;
       --gold-dark: #b45309;
       --gold: #d97706;
@@ -32,6 +35,7 @@
       --cyan-dark: #0e7490;
       --cyan: #06b6d4;
       --cyan-bright: #38bdf8;
+      --cyan-light: #e0f2fe;
       --emerald: #10b981;
       --emerald-bright: #34d399;
       --purple: #8b5cf6;
@@ -49,15 +53,15 @@
     body {
       background-color: var(--void-0);
       background-image: 
-        radial-gradient(ellipse 90% 45% at 50% -5%, rgba(220, 38, 38, 0.10), transparent 70%),
-        radial-gradient(ellipse 60% 40% at 92% 75%, rgba(6, 182, 212, 0.06), transparent 60%),
-        radial-gradient(circle at 10% 30%, rgba(217, 119, 6, 0.05), transparent 50%),
-        radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        radial-gradient(ellipse 90% 45% at 50% -5%, rgba(220, 38, 38, 0.12), transparent 70%),
+        radial-gradient(ellipse 60% 40% at 92% 75%, rgba(6, 182, 212, 0.08), transparent 60%),
+        radial-gradient(circle at 10% 30%, rgba(217, 119, 6, 0.06), transparent 50%),
+        radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
         linear-gradient(180deg, rgba(0, 0, 0, 0.45) 50%, transparent 50%);
       background-size: 100% 100%, 100% 100%, 100% 100%, 20px 20px, 100% 4px;
       color: var(--text-main);
       font-family: var(--font-mono);
-      padding: 28px 16px 88px;
+      padding: 24px 16px 88px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -67,21 +71,32 @@
 
     .container {
       width: 100%;
-      max-width: 960px;
+      max-width: 1040px;
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 20px;
     }
 
-    /* Masthead / Header */
+    /* Masthead / Gothic Telemetry Header */
     .header {
       text-align: center;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
-      padding: 10px 0 16px;
+      padding: 8px 0 14px;
       position: relative;
+    }
+    .header-telemetry-strip {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      color: var(--cyan-bright);
+      letter-spacing: 1.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-transform: uppercase;
+      opacity: 0.85;
     }
     .header-badge-row {
       display: flex;
@@ -91,7 +106,7 @@
       align-items: center;
     }
     .badge {
-      padding: 4px 11px;
+      padding: 4px 10px;
       font-size: 9px;
       font-family: var(--font-mono);
       font-weight: 700;
@@ -116,43 +131,43 @@
       50% { opacity: 0.35; transform: scale(0.8); }
     }
     .badge-gold { 
-      background: #1c1305; 
+      background: #181004; 
       color: var(--gold-light); 
       border: 1px solid var(--gold-bright); 
-      box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
     }
     .badge-cyan { 
-      background: #031c24; 
+      background: #03161c; 
       color: var(--cyan-bright); 
       border: 1px solid var(--cyan); 
-      box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
     }
     .badge-crimson { 
-      background: #200505; 
+      background: #1a0404; 
       color: var(--crimson-light); 
       border: 1px solid var(--crimson); 
-      box-shadow: 0 0 12px rgba(220, 38, 38, 0.2);
+      box-shadow: 0 0 10px rgba(220, 38, 38, 0.2);
     }
 
     .header h1 {
       font-family: var(--font-gothic);
-      font-size: 26px;
+      font-size: 27px;
       font-weight: 900;
-      line-height: 1.3;
-      letter-spacing: 3px;
+      line-height: 1.25;
+      letter-spacing: 3.5px;
       text-transform: uppercase;
       background: linear-gradient(180deg, #ffffff 0%, #fef08a 35%, #f59e0b 70%, #b45309 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 16px rgba(245, 158, 11, 0.45));
-      margin-top: 4px;
+      filter: drop-shadow(0 2px 14px rgba(245, 158, 11, 0.4));
+      margin-top: 2px;
     }
     .header .subtitle-lore {
       font-family: var(--font-lore);
       font-size: 15px;
       font-style: italic;
       color: var(--text-muted);
-      max-width: 720px;
+      max-width: 760px;
       line-height: 1.5;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
     }
@@ -162,11 +177,11 @@
       justify-content: center;
       gap: 12px;
       width: 100%;
-      max-width: 480px;
+      max-width: 520px;
       margin-top: 2px;
       color: var(--gold-bright);
-      opacity: 0.75;
-      font-size: 12px;
+      opacity: 0.8;
+      font-size: 11px;
     }
     .filigree-divider::before, .filigree-divider::after {
       content: "";
@@ -177,7 +192,7 @@
     .filigree-divider span.cross {
       font-size: 14px;
       color: var(--crimson-bright);
-      text-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+      text-shadow: 0 0 8px rgba(239, 68, 68, 0.65);
     }
 
     /* Ornate Section Cards with Engraved Notches */
@@ -185,11 +200,11 @@
       background: var(--void-card);
       border: 1px solid var(--border-subtle);
       border-radius: 4px;
-      padding: 18px 22px;
+      padding: 16px 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      gap: 14px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
       position: relative;
       backdrop-filter: blur(8px);
     }
@@ -219,43 +234,40 @@
       flex-wrap: wrap;
       gap: 12px;
       border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 12px;
+      padding-bottom: 10px;
     }
     .section-title {
       font-family: var(--font-gothic);
-      font-size: 14px;
+      font-size: 13.5px;
       text-transform: uppercase;
       letter-spacing: 1.5px;
       color: var(--gold-bright);
       font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
     }
-    .section-title span.icon {
-      font-size: 15px;
-      filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.5));
-    }
-    .section-title .telemetry-tag {
+    .glyph-mark {
       font-family: var(--font-mono);
-      font-size: 9.5px;
+      font-size: 12px;
       color: var(--cyan-bright);
-      font-weight: 600;
-      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Live Preview Viewport (Hero Sanctum) */
     .preview-card {
-      background: rgba(6, 9, 16, 0.94);
+      background: rgba(6, 9, 15, 0.96);
       border: 1px solid var(--border-steel);
       border-radius: 6px;
       padding: 18px 22px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.92), 0 0 20px rgba(6, 182, 212, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.95), 0 0 24px rgba(6, 182, 212, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       position: sticky;
-      top: 14px;
+      top: 12px;
       z-index: 100;
       backdrop-filter: blur(14px);
     }
@@ -263,7 +275,7 @@
       content: "";
       position: absolute;
       top: -1px; left: -1px;
-      width: 12px; height: 12px;
+      width: 14px; height: 14px;
       border-top: 2px solid var(--cyan-bright);
       border-left: 2px solid var(--cyan-bright);
       pointer-events: none;
@@ -272,7 +284,7 @@
       content: "";
       position: absolute;
       bottom: -1px; right: -1px;
-      width: 12px; height: 12px;
+      width: 14px; height: 14px;
       border-bottom: 2px solid var(--cyan-bright);
       border-right: 2px solid var(--cyan-bright);
       pointer-events: none;
@@ -285,11 +297,11 @@
       flex-wrap: wrap;
       gap: 12px;
       border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 12px;
+      padding-bottom: 10px;
     }
     .preview-title {
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 800;
       letter-spacing: 1.5px;
       text-transform: uppercase;
@@ -315,17 +327,22 @@
       background: var(--void-2);
       border: 1px solid var(--border-steel);
       color: var(--text-main);
-      padding: 6px 14px;
+      padding: 6px 13px;
       border-radius: 3px;
       font-size: 11px;
       font-family: var(--font-mono);
       font-weight: 700;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
       transition: all 0.15s ease;
       box-shadow: 0 2px 0 #000;
+    }
+    .btn-small svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
     }
     .btn-small:hover {
       background: var(--void-3);
@@ -340,14 +357,14 @@
     }
 
     .viewport {
-      background: #020306;
-      border: 1px solid #101726;
+      background: var(--github-dark);
+      border: 1px solid #21262d;
       border-radius: 4px;
       padding: 20px 14px;
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: inset 0 6px 36px rgba(0, 0, 0, 0.98), 0 2px 8px rgba(0, 0, 0, 0.6);
+      box-shadow: inset 0 6px 36px rgba(0, 0, 0, 0.85), 0 2px 8px rgba(0, 0, 0, 0.6);
       min-height: 116px;
       overflow: hidden;
       position: relative;
@@ -370,14 +387,14 @@
       font-family: var(--font-mono);
       color: var(--text-dim);
       border-top: 1px solid var(--border-subtle);
-      padding-top: 12px;
+      padding-top: 10px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
     .stat-pill {
       background: var(--void-input);
       border: 1px solid var(--border-subtle);
-      padding: 6px 8px;
+      padding: 6px 9px;
       border-radius: 2px;
       display: flex;
       justify-content: space-between;
@@ -395,20 +412,25 @@
       gap: 12px;
     }
     .btn-export {
-      padding: 13px 18px;
+      padding: 12px 16px;
       border-radius: 3px;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 800;
       letter-spacing: 0.8px;
       text-transform: uppercase;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 9px;
+      gap: 8px;
       transition: all 0.15s ease;
       box-shadow: 0 4px 0 #000;
+    }
+    .btn-export svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
     }
     .btn-export-primary {
       background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 40%, #d97706 100%);
@@ -444,13 +466,13 @@
 
     /* Reset to Defaults Button (Tactile Gothic Relic Reset) */
     .btn-reset-defaults {
-      background: #140707;
-      border: 1px solid rgba(220, 38, 38, 0.4);
+      background: #160606;
+      border: 1px solid rgba(220, 38, 38, 0.45);
       color: #fca5a5;
-      padding: 6px 14px;
+      padding: 6px 13px;
       border-radius: 3px;
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       letter-spacing: 0.5px;
       text-transform: uppercase;
@@ -461,8 +483,13 @@
       transition: all 0.15s ease;
       box-shadow: 0 2px 0 #000;
     }
+    .btn-reset-defaults svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+    }
     .btn-reset-defaults:hover {
-      background: #280b0b;
+      background: #2a0a0a;
       border-color: var(--crimson-bright);
       color: #fff;
       box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
@@ -473,26 +500,34 @@
       box-shadow: 0 0 0 #000;
     }
 
+    /* Command Center: Presets & Aesthetics Top Deck */
+    .command-deck {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
     /* Aesthetic Selector Bar */
     .aesthetic-pills {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(138px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
     }
     .btn-aesthetic {
       background: var(--void-input);
       border: 1px solid var(--border-subtle);
       color: var(--text-main);
-      padding: 10px 8px;
+      padding: 9px 8px;
       border-radius: 3px;
-      font-size: 12px;
+      font-size: 11px;
       font-family: var(--font-mono);
       font-weight: 700;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       justify-content: center;
       transition: all 0.15s ease;
       box-shadow: 0 2px 0 #000;
@@ -510,7 +545,7 @@
       box-shadow: 0 2px 0 #000, 0 0 14px rgba(245, 158, 11, 0.35);
     }
     .btn-aesthetic .subtext {
-      font-size: 9.5px;
+      font-size: 9px;
       color: var(--text-dim);
       font-weight: 500;
     }
@@ -521,25 +556,34 @@
     /* Presets Bar */
     .preset-pills {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 8px;
     }
     .btn-preset {
       background: var(--void-input);
       border: 1px solid var(--border-subtle);
       color: var(--text-main);
-      padding: 9px 12px;
+      padding: 8px 10px;
       border-radius: 3px;
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 8px;
-      justify-content: center;
+      justify-content: flex-start;
       transition: all 0.15s ease;
       box-shadow: 0 2px 0 #000;
+    }
+    .preset-icon {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 11px;
+      color: var(--cyan-bright);
+      width: 16px;
+      text-align: center;
+      flex-shrink: 0;
     }
     .btn-preset:hover {
       background: var(--void-2);
@@ -552,8 +596,12 @@
       color: #fff;
       box-shadow: 0 2px 0 #000, 0 0 12px rgba(6, 182, 212, 0.35);
     }
+    .btn-preset.active .preset-icon {
+      color: var(--gold-bright);
+      text-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+    }
 
-    /* Stages Manager */
+    /* Boss Stages / Encounter Phases Manager */
     .stages-manager {
       display: flex;
       flex-direction: column;
@@ -564,25 +612,30 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 12px;
+      padding-bottom: 10px;
     }
     .btn-add-stage {
       background: #031c26;
       border: 1px solid var(--cyan);
       color: var(--cyan-bright);
-      padding: 7px 15px;
+      padding: 6px 14px;
       border-radius: 3px;
       font-family: var(--font-mono);
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
       transition: all 0.15s;
       box-shadow: 0 2px 0 #000;
+    }
+    .btn-add-stage svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
     }
     .btn-add-stage:hover {
       background: var(--cyan);
@@ -600,10 +653,10 @@
       background: var(--void-2);
       border: 1px solid var(--border-steel);
       border-radius: 4px;
-      padding: 18px 20px;
+      padding: 16px 18px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.6);
       position: relative;
     }
@@ -621,10 +674,10 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 12px;
+      padding-bottom: 10px;
     }
     .stage-card-title {
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 800;
       display: flex;
       align-items: center;
@@ -639,10 +692,18 @@
       padding: 5px 11px;
       border-radius: 3px;
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: all 0.15s;
+    }
+    .btn-remove-stage svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
     }
     .btn-remove-stage:hover:not(:disabled) {
       background: var(--crimson);
@@ -659,8 +720,8 @@
     /* Ergonomic Controls Layout */
     .controls-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
     }
     .control-group {
       display: flex;
@@ -668,7 +729,7 @@
       gap: 6px;
     }
     .control-label {
-      font-size: 11px;
+      font-size: 10.5px;
       color: var(--text-muted);
       font-family: var(--font-mono);
       font-weight: 700;
@@ -691,7 +752,7 @@
       border-radius: 3px;
       padding: 8px 10px;
       color: #fff;
-      font-size: 12px;
+      font-size: 11.5px;
       font-family: var(--font-mono);
       outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
@@ -719,11 +780,11 @@
       padding: 12px 14px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       grid-column: 1 / -1;
     }
     .subcard-title {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -736,8 +797,8 @@
     }
     .subcard-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
     }
 
     /* Theme Swatches */
@@ -827,10 +888,10 @@
       background: var(--void-card);
       border: 1px solid var(--border-subtle);
       border-radius: 4px;
-      padding: 18px 22px;
+      padding: 16px 20px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
       position: relative;
     }
     .code-row {
@@ -842,7 +903,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 11px;
+      font-size: 10.5px;
       font-family: var(--font-mono);
       color: var(--text-muted);
       font-weight: 700;
@@ -853,9 +914,9 @@
       background: var(--void-input);
       border: 1px solid var(--border-steel);
       border-radius: 3px;
-      padding: 11px 13px;
+      padding: 10px 12px;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--cyan-bright);
       overflow-x: auto;
       white-space: pre-wrap;
@@ -871,10 +932,10 @@
       background: #081a13;
       border: 1px solid var(--emerald);
       color: var(--emerald-bright);
-      padding: 11px 20px;
+      padding: 10px 18px;
       border-radius: 4px;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 800;
       box-shadow: 0 10px 30px rgba(0,0,0,0.9), 0 0 20px rgba(16, 185, 129, 0.25);
       opacity: 0;
@@ -891,36 +952,31 @@
       transform: translateY(0);
     }
 
-    /* Studio Console 2-Column Deck */
-    .studio-deck {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 20px;
-      align-items: start;
-    }
-    .deck-column {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    /* Responsive */
+    /* Responsive adjustments */
     @media (max-width: 860px) {
-      .studio-deck { grid-template-columns: 1fr; }
+      .command-deck { grid-template-columns: 1fr; }
       .export-bar { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
       .preview-card { position: static; }
       .header h1 { font-size: 20px; }
       .btn-export { font-size: 11px; padding: 10px 12px; }
+      .header-telemetry-strip { font-size: 8.5px; }
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <!-- Header -->
+    <!-- Masthead -->
     <header class="header">
+      <div class="header-telemetry-strip">
+        <span>// SEC: PURE-SVG 100%</span>
+        <span>◈</span>
+        <span>CANVAS: 700x95</span>
+        <span>◈</span>
+        <span>ENGINE: v0.2.0</span>
+      </div>
       <div class="header-badge-row">
         <span class="badge badge-gold"><span class="dot-online"></span> RETRO FORGE // STUDIO</span>
         <span class="badge badge-cyan">PIXEL ART &amp; DARK FANTASY</span>
@@ -929,7 +985,7 @@
       <h1>README BOSS BAR STUDIO</h1>
       <p class="subtitle-lore">"Inscribe epic multi-phase milestone encounters into your GitHub realm. Pure SVG. Zero dependencies. Felled enemies leave glorious ashes."</p>
       <div class="filigree-divider">
-        <span>◈</span><span class="cross">⚔</span><span>◈</span>
+        <span>◈</span><span class="cross">† ⚔ †</span><span>◈</span>
       </div>
     </header>
 
@@ -940,11 +996,13 @@
           <span class="dot-live"></span> Live Boss Bar Preview
         </div>
         <div class="preview-actions">
-          <button class="btn-small" onclick="toggleViewportBg()" title="Toggle Light / Dark Viewport background">
-            <span>🌓</span> Toggle BG
+          <button class="btn-small" onclick="toggleViewportBg()" title="Toggle GitHub Dark / Light background mode">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+            <span>Toggle BG</span>
           </button>
           <button class="btn-small" onclick="replayAnimation()" title="Restart combat animation">
-            <span>🔄</span> Restart Battle
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            <span>Restart Battle</span>
           </button>
         </div>
       </div>
@@ -955,162 +1013,165 @@
         <div class="stat-pill">Aesthetic: <span id="stat-aesthetic">souls</span></div>
         <div class="stat-pill">Stages: <span id="stat-stages">1</span></div>
         <div class="stat-pill">Total Bars: <span id="stat-bars">10</span></div>
-        <div class="stat-pill">Total Hits: <span id="stat-hits">2</span></div>
-        <div class="stat-pill">Duration: <span id="stat-duration">8.4s</span></div>
+        <div class="stat-pill">Total Hits: <span id="stat-hits">4</span></div>
+        <div class="stat-pill">Duration: <span id="stat-duration">4.5s</span></div>
       </div>
     </section>
 
     <!-- 1-Click Tactile Export Bar -->
     <section class="export-bar">
       <button class="btn-export btn-export-primary" onclick="copyMarkdown()">
-        <span>📋</span> Copy Markdown for README
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+        <span>Copy Markdown for README</span>
       </button>
       <button class="btn-export btn-export-secondary" onclick="downloadSVG()">
-        <span>⬇️</span> Download SVG File
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Download SVG File</span>
       </button>
       <button class="btn-export btn-export-secondary" onclick="copyCLI()">
-        <span>💻</span> Copy CLI Command
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        <span>Copy CLI Command</span>
       </button>
     </section>
 
-    <!-- Studio Console 2-Column Deck -->
-    <div class="studio-deck">
-      <!-- Deck Left: Presets & Encounter Phases -->
-      <div class="deck-column">
-        <!-- 1-Click Encounter Presets -->
-        <section class="section-card preset-section">
-          <div class="section-header-bar">
-            <div class="section-title">
-              <span class="icon">⚔️</span> 1-Click Encounter Presets
-            </div>
-            <button class="btn-reset-defaults" id="btn-reset-defaults" onclick="resetToDefaults()" title="Reset all settings to default state">
-              <span>↺</span> Reset to Defaults
-            </button>
-          </div>
-          <div class="preset-pills">
-            <button class="btn-preset active" id="btn-p-single" onclick="loadPreset('single')">
-              <span>⚡</span> Single Boss
-            </button>
-            <button class="btn-preset" id="btn-p-cyberpunk" onclick="loadPreset('cyberpunk')">
-              <span>🤖</span> Cyber Mech
-            </button>
-            <button class="btn-preset" id="btn-p-bloodborne" onclick="loadPreset('bloodborne')">
-              <span>🩸</span> Bloodborne
-            </button>
-            <button class="btn-preset" id="btn-p-pixel" onclick="loadPreset('pixel')">
-              <span>👾</span> 8-Bit Arcade
-            </button>
-            <button class="btn-preset" id="btn-p-minimal" onclick="loadPreset('minimal')">
-              <span>✨</span> Minimal
-            </button>
-            <button class="btn-preset" id="btn-p-school42" onclick="loadPreset('school42')">
-              <span>🎓</span> 42 Milestone
-            </button>
-            <button class="btn-preset" id="btn-p-elden" onclick="loadPreset('eldenRing')">
-              <span>🗡️</span> Elden Ring
-            </button>
-            <button class="btn-preset" id="btn-p-demigod" onclick="loadPreset('demigod')">
-              <span>🐉</span> 3-Phase
-            </button>
-          </div>
-        </section>
-
-        <!-- Boss Stages / Encounter Phases Manager -->
-        <section class="stages-manager">
-          <div class="stages-header">
-            <div class="section-title">
-              <span class="icon">🛡️</span> Encounter Phases
-            </div>
-            <button class="btn-add-stage" id="btn-add-stage" onclick="addStage()">
-              <span>+</span> Add Phase
-            </button>
-          </div>
-
-          <div id="stages-container" class="stages-manager"></div>
-        </section>
-      </div>
-
-      <!-- Deck Right: Aesthetic & Global Tuning -->
-      <div class="deck-column">
-        <!-- Aesthetic Style Selector -->
-        <section class="section-card aesthetic-section">
+    <!-- Command Center Deck: Presets & Aesthetics -->
+    <div class="command-deck">
+      <!-- 1-Click Encounter Presets -->
+      <section class="section-card preset-section">
+        <div class="section-header-bar">
           <div class="section-title">
-            <span class="icon">🎨</span> Visual Aesthetic Style
+            <span class="glyph-mark">⚔</span> 1-Click Encounter Presets
           </div>
-          <div class="aesthetic-pills">
-            <button class="btn-aesthetic" id="btn-a-classic" data-style="classic" onclick="selectAesthetic('classic')">
-              <span>Classic</span>
-              <span class="subtext">16-Bit RPG</span>
-            </button>
-            <button class="btn-aesthetic active" id="btn-a-souls" data-style="souls" onclick="selectAesthetic('souls')">
-              <span>Souls</span>
-              <span class="subtext">Gothic Filigree</span>
-            </button>
-            <button class="btn-aesthetic" id="btn-a-cyberpunk" data-style="cyberpunk" onclick="selectAesthetic('cyberpunk')">
-              <span>Cyberpunk</span>
-              <span class="subtext">Sci-Fi 45° HUD</span>
-            </button>
-            <button class="btn-aesthetic" id="btn-a-pixel" data-style="pixel" onclick="selectAesthetic('pixel')">
-              <span>Pixel</span>
-              <span class="subtext">8-Bit Arcade</span>
-            </button>
-            <button class="btn-aesthetic" id="btn-a-bloodborne" data-style="bloodborne" onclick="selectAesthetic('bloodborne')">
-              <span>Bloodborne</span>
-              <span class="subtext">Eldritch Horror</span>
-            </button>
-            <button class="btn-aesthetic" id="btn-a-minimal" data-style="minimal" onclick="selectAesthetic('minimal')">
-              <span>Minimal</span>
-              <span class="subtext">Modern Pill</span>
-            </button>
-          </div>
-        </section>
+          <button class="btn-reset-defaults" id="btn-reset-defaults" onclick="resetToDefaults()" title="Reset all settings to default state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L2 9"/><path d="M3 3v6h6"/></svg>
+            <span>Reset to Defaults</span>
+          </button>
+        </div>
+        <div class="preset-pills">
+          <button class="btn-preset active" id="btn-p-single" onclick="loadPreset('single')">
+            <span class="preset-icon">⚡</span> Single Boss
+          </button>
+          <button class="btn-preset" id="btn-p-cyberpunk" onclick="loadPreset('cyberpunk')">
+            <span class="preset-icon">⌖</span> Cyber Mech
+          </button>
+          <button class="btn-preset" id="btn-p-bloodborne" onclick="loadPreset('bloodborne')">
+            <span class="preset-icon">†</span> Bloodborne
+          </button>
+          <button class="btn-preset" id="btn-p-pixel" onclick="loadPreset('pixel')">
+            <span class="preset-icon">▣</span> 8-Bit Arcade
+          </button>
+          <button class="btn-preset" id="btn-p-minimal" onclick="loadPreset('minimal')">
+            <span class="preset-icon">◇</span> Minimal
+          </button>
+          <button class="btn-preset" id="btn-p-school42" onclick="loadPreset('school42')">
+            <span class="preset-icon">42</span> 42 Milestone
+          </button>
+          <button class="btn-preset" id="btn-p-elden" onclick="loadPreset('eldenRing')">
+            <span class="preset-icon">⚔</span> Elden Ring
+          </button>
+          <button class="btn-preset" id="btn-p-demigod" onclick="loadPreset('demigod')">
+            <span class="preset-icon">▲</span> 3-Phase
+          </button>
+        </div>
+      </section>
 
-        <!-- Combat & Banner Customization -->
-        <section class="section-card global-settings">
+      <!-- Aesthetic Style Selector -->
+      <section class="section-card aesthetic-section">
+        <div class="section-header-bar">
           <div class="section-title">
-            <span class="icon">⚔️</span> Global Combat, Banners &amp; Tags
+            <span class="glyph-mark">◈</span> Visual Aesthetic Style
           </div>
-          <div class="controls-grid">
-            <div class="control-group">
-              <label class="control-label">Damage Pop-up Text</label>
-              <input type="text" id="glob-dmgpop" class="control-input" value="-{N} BARS" oninput="updateStudio()" placeholder="-{N} BARS or false" />
-            </div>
-
-            <div class="control-group">
-              <label class="control-label">Damage Pop-up Color</label>
-              <div class="color-picker-row">
-                <input type="color" id="glob-dmgpop-color-picker" class="color-swatch-input" value="#facc15" oninput="syncColorInput('glob-dmgpop-color', this.value)" />
-                <input type="text" id="glob-dmgpop-color" class="control-input hex-input" value="#facc15" maxlength="7" oninput="syncColorPicker('glob-dmgpop-color-picker', this.value)" placeholder="#facc15" />
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label">Defeated Banner Color</label>
-              <div class="color-picker-row">
-                <input type="color" id="glob-felled-color-picker" class="color-swatch-input" value="#f59e0b" oninput="syncColorInput('glob-felled-color', this.value)" />
-                <input type="text" id="glob-felled-color" class="control-input hex-input" value="" maxlength="7" oninput="syncColorPicker('glob-felled-color-picker', this.value)" placeholder="Default theme" />
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label">Global Live Tag Color</label>
-              <div class="color-picker-row">
-                <input type="color" id="glob-tag-color-picker" class="color-swatch-input" value="#38bdf8" oninput="syncColorInput('glob-tag-color', this.value)" />
-                <input type="text" id="glob-tag-color" class="control-input hex-input" value="" maxlength="7" oninput="syncColorPicker('glob-tag-color-picker', this.value)" placeholder="Default theme" />
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label">Global Felled Tag Color</label>
-              <div class="color-picker-row">
-                <input type="color" id="glob-tag-felled-color-picker" class="color-swatch-input" value="#f59e0b" oninput="syncColorInput('glob-tag-felled-color', this.value)" />
-                <input type="text" id="glob-tag-felled-color" class="control-input hex-input" value="" maxlength="7" oninput="syncColorPicker('glob-tag-felled-color-picker', this.value)" placeholder="Default theme" />
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
+        </div>
+        <div class="aesthetic-pills">
+          <button class="btn-aesthetic" id="btn-a-classic" data-style="classic" onclick="selectAesthetic('classic')">
+            <span>Classic</span>
+            <span class="subtext">16-Bit RPG</span>
+          </button>
+          <button class="btn-aesthetic active" id="btn-a-souls" data-style="souls" onclick="selectAesthetic('souls')">
+            <span>Souls</span>
+            <span class="subtext">Gothic Filigree</span>
+          </button>
+          <button class="btn-aesthetic" id="btn-a-cyberpunk" data-style="cyberpunk" onclick="selectAesthetic('cyberpunk')">
+            <span>Cyberpunk</span>
+            <span class="subtext">Sci-Fi 45° HUD</span>
+          </button>
+          <button class="btn-aesthetic" id="btn-a-pixel" data-style="pixel" onclick="selectAesthetic('pixel')">
+            <span>Pixel</span>
+            <span class="subtext">8-Bit Arcade</span>
+          </button>
+          <button class="btn-aesthetic" id="btn-a-bloodborne" data-style="bloodborne" onclick="selectAesthetic('bloodborne')">
+            <span>Bloodborne</span>
+            <span class="subtext">Eldritch Horror</span>
+          </button>
+          <button class="btn-aesthetic" id="btn-a-minimal" data-style="minimal" onclick="selectAesthetic('minimal')">
+            <span>Minimal</span>
+            <span class="subtext">Modern Pill</span>
+          </button>
+        </div>
+      </section>
     </div>
+
+    <!-- Encounter Phases (Battle Forge) -->
+    <section class="stages-manager">
+      <div class="stages-header">
+        <div class="section-title">
+          <span class="glyph-mark">🛡</span> Encounter Phases
+        </div>
+        <button class="btn-add-stage" id="btn-add-stage" onclick="addStage()">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Add Phase</span>
+        </button>
+      </div>
+
+      <div id="stages-container" class="stages-manager"></div>
+    </section>
+
+    <!-- Combat & Banner Customization -->
+    <section class="section-card global-settings">
+      <div class="section-header-bar">
+        <div class="section-title">
+          <span class="glyph-mark">⌁</span> Global Combat, Banners &amp; Tags
+        </div>
+      </div>
+      <div class="controls-grid">
+        <div class="control-group">
+          <label class="control-label">Damage Pop-up Text</label>
+          <input type="text" id="glob-dmgpop" class="control-input" value="-{N} BARS" oninput="updateStudio()" placeholder="-{N} BARS or false" />
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Damage Pop-up Color</label>
+          <div class="color-picker-row">
+            <input type="color" id="glob-dmgpop-color-picker" class="color-swatch-input" value="#facc15" oninput="syncColorInput('glob-dmgpop-color', this.value)" />
+            <input type="text" id="glob-dmgpop-color" class="control-input hex-input" value="#facc15" maxlength="7" oninput="syncColorPicker('glob-dmgpop-color-picker', this.value)" placeholder="#facc15" />
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Defeated Banner Color</label>
+          <div class="color-picker-row">
+            <input type="color" id="glob-felled-color-picker" class="color-swatch-input" value="#f59e0b" oninput="syncColorInput('glob-felled-color', this.value)" />
+            <input type="text" id="glob-felled-color" class="control-input hex-input" value="" maxlength="7" oninput="syncColorPicker('glob-felled-color-picker', this.value)" placeholder="Default theme" />
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Global Live Tag Color</label>
+          <div class="color-picker-row">
+            <input type="color" id="glob-tag-color-picker" class="color-swatch-input" value="#38bdf8" oninput="syncColorInput('glob-tag-color', this.value)" />
+            <input type="text" id="glob-tag-color" class="control-input hex-input" value="" maxlength="7" oninput="syncColorPicker('glob-tag-color-picker', this.value)" placeholder="Default theme" />
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Global Felled Tag Color</label>
+          <div class="color-picker-row">
+            <input type="color" id="glob-tag-felled-color-picker" class="color-swatch-input" value="#f59e0b" oninput="syncColorInput('glob-tag-felled-color', this.value)" />
+            <input type="text" id="glob-tag-felled-color" class="control-input hex-input" value="" maxlength="7" oninput="syncColorPicker('glob-tag-felled-color-picker', this.value)" placeholder="Default theme" />
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Embed & Export Inspector -->
     <section class="code-viewer">
@@ -1420,8 +1481,8 @@
     function toggleViewportBg() {
       isLightBg = !isLightBg;
       const vp = document.getElementById('studio-viewport');
-      vp.style.background = isLightBg ? '#ffffff' : '#020306';
-      vp.style.borderColor = isLightBg ? '#cbd5e1' : '#101726';
+      vp.style.background = isLightBg ? '#ffffff' : '#0d1117';
+      vp.style.borderColor = isLightBg ? '#cbd5e1' : '#21262d';
       showToast(isLightBg ? "Light background mode" : "Dark background mode");
     }
 
@@ -1435,6 +1496,7 @@
 
     function selectAesthetic(styleName) {
       currentAesthetic = styleName;
+      clearActivePreset();
       document.querySelectorAll('.btn-aesthetic').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.style === styleName);
       });
@@ -1563,6 +1625,41 @@
       updateStudio();
     }
 
+    function updateStageBarsOrDmg(index, prop, value) {
+      if (!stages[index]) return;
+      stages[index][prop] = value;
+      clearActivePreset();
+
+      const st = stages[index];
+      const maxHits = Math.max(1, Math.ceil(st.totalBars / st.damagePerHit));
+
+      const hitsSlider = document.getElementById(`slider-hits-${index}`);
+      if (hitsSlider) {
+        hitsSlider.max = maxHits;
+        if (st.hits !== undefined && st.hits > maxHits) {
+          st.hits = maxHits;
+          hitsSlider.value = maxHits;
+        }
+        const hitsTag = document.getElementById(`val-hits-${index}`);
+        if (hitsTag) {
+          hitsTag.innerText = (st.hits !== undefined ? st.hits : maxHits) + ' hits';
+        }
+      }
+      updateStudio();
+    }
+
+    function updateStageHits(index, hitsVal) {
+      if (!stages[index]) return;
+      const st = stages[index];
+      const maxHits = Math.max(1, Math.ceil(st.totalBars / st.damagePerHit));
+      const clamped = Math.min(Math.max(1, hitsVal), maxHits);
+      st.hits = clamped;
+      clearActivePreset();
+      const hitsTag = document.getElementById(`val-hits-${index}`);
+      if (hitsTag) hitsTag.innerText = clamped + ' hits';
+      updateStudio();
+    }
+
     function renderStages() {
       const container = document.getElementById('stages-container');
       container.innerHTML = '';
@@ -1583,7 +1680,8 @@
               <span id="stage-title-${idx}">${escapeHtml(st.name)}</span>
             </div>
             <button class="btn-remove-stage" ${isOnly ? 'disabled' : ''} onclick="removeStage(${idx})" title="Remove phase">
-              🗑️ Remove Phase
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              <span>Remove Phase</span>
             </button>
           </div>
 
@@ -1613,7 +1711,7 @@
               </label>
               <div class="range-row">
                 <input type="range" min="1" max="20" value="${st.totalBars}" 
-                  oninput="document.getElementById('val-bars-${idx}').innerText = this.value; updateStageProp(${idx}, 'totalBars', parseInt(this.value, 10))" />
+                  oninput="document.getElementById('val-bars-${idx}').innerText = this.value; updateStageBarsOrDmg(${idx}, 'totalBars', parseInt(this.value, 10))" />
               </div>
             </div>
 
@@ -1624,7 +1722,7 @@
               </label>
               <div class="range-row">
                 <input type="range" min="1" max="10" value="${st.damagePerHit}" 
-                  oninput="document.getElementById('val-dmg-${idx}').innerText = this.value + ' bars'; updateStageProp(${idx}, 'damagePerHit', parseInt(this.value, 10))" />
+                  oninput="document.getElementById('val-dmg-${idx}').innerText = this.value + ' bars'; updateStageBarsOrDmg(${idx}, 'damagePerHit', parseInt(this.value, 10))" />
               </div>
             </div>
 
@@ -1634,8 +1732,8 @@
                 <span class="val-tag" id="val-hits-${idx}">${currentHits} hits</span>
               </label>
               <div class="range-row">
-                <input type="range" min="1" max="20" value="${currentHits}" 
-                  oninput="document.getElementById('val-hits-${idx}').innerText = this.value + ' hits'; updateStageProp(${idx}, 'hits', parseInt(this.value, 10))" />
+                <input type="range" id="slider-hits-${idx}" min="1" max="${totalHitsToDefeat}" value="${currentHits}" 
+                  oninput="updateStageHits(${idx}, parseInt(this.value, 10))" />
               </div>
             </div>
 
@@ -1677,13 +1775,14 @@
 
             <div class="control-group" style="grid-column: 1 / -1;">
               <label class="control-label">Defeated Banner Text</label>
-              <input type="text" class="control-input" value="${escapeHtml(st.felledText || 'GREAT ENEMY FELLED')}" 
-                oninput="updateStageProp(${idx}, 'felledText', this.value.trim() || 'GREAT ENEMY FELLED')" />
+              <input type="text" class="control-input" value="${escapeHtml(st.felledText || '')}" 
+                placeholder="Default: based on aesthetic"
+                oninput="updateStageProp(${idx}, 'felledText', this.value.trim() || undefined)" />
             </div>
 
             <div class="subcard-box">
               <div class="subcard-title">
-                <span>🏷️</span> Status Tags &amp; Emblem Badges
+                <span class="glyph-mark">◈</span> Status Tags &amp; Emblem Badges
               </div>
               <div class="subcard-grid">
                 <div class="control-group">
@@ -1821,16 +1920,22 @@
 
       let totalBarsCount = 0;
       let totalHitsCount = 0;
-      stages.forEach(s => {
+      let calculatedDuration = 0;
+
+      stages.forEach((s, idx) => {
         totalBarsCount += s.totalBars;
-        const hits = s.hits || Math.ceil(s.totalBars / s.damagePerHit);
+        const hits = (s.hits !== undefined && s.hits !== null) ? s.hits : Math.ceil(s.totalBars / s.damagePerHit);
         totalHitsCount += hits;
+        const interval = (s.hitInterval !== undefined && s.hitInterval !== null) ? s.hitInterval : 0.5;
+        const stageDuration = hits * interval + (idx < stages.length - 1 ? 1.5 : 2.5);
+        calculatedDuration += stageDuration;
       });
+
       document.getElementById('stat-aesthetic').innerText = currentAesthetic;
       document.getElementById('stat-stages').innerText = stages.length;
       document.getElementById('stat-bars').innerText = totalBarsCount;
       document.getElementById('stat-hits').innerText = totalHitsCount;
-      document.getElementById('stat-duration').innerText = (totalHitsCount * 0.5 + 2.5).toFixed(1) + 's';
+      document.getElementById('stat-duration').innerText = calculatedDuration.toFixed(1) + 's';
 
       let mdUrl = '';
       let cliCmd = '';

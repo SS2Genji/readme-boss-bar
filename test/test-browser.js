@@ -271,6 +271,35 @@ async function runBrowserTests() {
           resetBtn.click();
           assert(stages[0].name === 'STARCOURGE RADAHN', 'Final reset back to pristine single Radahn');
 
+          // Verify selectAesthetic deactivates activePreset
+          loadPreset('single');
+          assert(activePreset === 'single', 'Active preset set to single');
+          selectAesthetic('cyberpunk');
+          assert(activePreset === null, 'selectAesthetic deactivated active preset');
+          assert(!document.querySelector('.btn-preset.active'), 'No preset button has active class');
+
+          // Dynamic slider synchronization and hit clamping
+          loadPreset('single');
+          const barsInput = document.querySelector('#stage-card-0 input[type="range"]');
+          barsInput.value = '4';
+          barsInput.dispatchEvent(new Event('input', { bubbles: true }));
+          assert(stages[0].totalBars === 4, 'Total bars set to 4');
+          const hitsSlider = document.getElementById('slider-hits-0');
+          assert(hitsSlider && parseInt(hitsSlider.max, 10) === 2, 'Hits slider max clamped to 2 for 4 bars / 3 dmg');
+          assert(stages[0].hits === 2, 'Stage hits clamped to 2');
+          assert(document.getElementById('val-hits-0').innerText.includes('2 hits'), 'Hits label displays 2 hits');
+
+          // Defeated banner fallback on empty string
+          const felledInput = document.querySelector('#stage-card-0 input[placeholder="Default: based on aesthetic"]');
+          assert(felledInput, 'Defeated banner input exists');
+          felledInput.value = '';
+          felledInput.dispatchEvent(new Event('input', { bubbles: true }));
+          assert(stages[0].felledText === undefined, 'Empty defeated banner falls back to aesthetic default');
+
+          // Re-reset before ending
+          resetBtn.click();
+          assert(stages[0].name === 'STARCOURGE RADAHN', 'Clean final reset');
+
           return { success: true, count: checks.length };
         })()
       `,
