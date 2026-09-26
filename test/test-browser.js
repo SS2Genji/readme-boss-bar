@@ -237,10 +237,6 @@ async function runBrowserTests() {
           await new Promise(r => setTimeout(r, 100));
           assert(document.getElementById('toast-text').innerText.includes('Copied'), 'Copy Markdown triggered');
 
-          copyCLI();
-          await new Promise(r => setTimeout(r, 100));
-          assert(document.getElementById('toast-text').innerText.includes('Copied'), 'Copy CLI triggered');
-
           // Toggle Viewport BG
           toggleViewportBg();
           assert(isLightBg === true, 'Light background toggled');

@@ -408,7 +408,7 @@
     /* 1-Click Tactile Export Bar */
     .export-bar {
       display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr;
+      grid-template-columns: 1.2fr 1fr;
       gap: 12px;
     }
     .btn-export {
@@ -1028,10 +1028,6 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         <span>Download SVG File</span>
       </button>
-      <button class="btn-export btn-export-secondary" onclick="copyCLI()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-        <span>Copy CLI Command</span>
-      </button>
     </section>
 
     <!-- Command Center Deck: Presets & Aesthetics -->
@@ -1181,13 +1177,6 @@
           <button class="btn-small" onclick="copyMarkdown()">Copy</button>
         </div>
         <div class="code-box" id="code-markdown"></div>
-      </div>
-      <div class="code-row">
-        <div class="code-header">
-          <span>CLI Generation Command</span>
-          <button class="btn-small" onclick="copyCLI()">Copy</button>
-        </div>
-        <div class="code-box" id="code-cli"></div>
       </div>
     </section>
   </div>
@@ -1458,10 +1447,6 @@
 
     function copyMarkdown() {
       copyToClipboard(currentMd, "✔ Copied Markdown embed code!");
-    }
-
-    function copyCLI() {
-      copyToClipboard(currentCli, "✔ Copied CLI command!");
     }
 
     function downloadSVG() {
@@ -2037,7 +2022,6 @@
 
       document.getElementById('studio-viewport').innerHTML = svg;
       document.getElementById('code-markdown').innerText = currentMd;
-      document.getElementById('code-cli').innerText = currentCli;
     }
 
     // Initialize from URL or defaults
