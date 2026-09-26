@@ -3,421 +3,682 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Boss Bar Studio - Dynamic Dark Fantasy &amp; Pixel Art Health Bars for GitHub README</title>
-  <meta name="description" content="Design authentic manga woodcut, dark gothic fantasy, and retro pixel-art boss health bars for your GitHub README with real-time preview, multi-phase encounters, and 1-click export.">
+  <title>README BOSS BAR // AVANT-GARDE STUDIO & ECOSYSTEM GATEWAY</title>
+  <meta name="description" content="Avant-garde Cyber-Gothic & Biomechanical HUD Animated Souls Boss Health Bar Generator for GitHub READMEs. Pure SVG architecture, 1-bit ditherpunk dynamics, zero external runtime.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=IM+Fell+English:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=IM+Fell+English:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800;900&family=Press+Start+2P&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --void-0: #020306;
-      --void-1: #05080e;
-      --void-2: #080c14;
-      --void-3: #0d121e;
-      --void-card: rgba(8, 12, 20, 0.94);
-      --void-input: #030509;
-      --github-dark: #0d1117;
-      --border-subtle: #141c2c;
-      --border-steel: #1c273c;
-      --border-highlight: #283750;
-      --border-gold: rgba(217, 119, 6, 0.4);
-      --border-cyan: rgba(6, 182, 212, 0.4);
-      --border-crimson: rgba(220, 38, 38, 0.45);
-      --border-focus: #f59e0b;
-      --gold-dark: #b45309;
-      --gold: #d97706;
-      --gold-bright: #f59e0b;
-      --gold-light: #fef08a;
-      --crimson-dark: #991b1b;
-      --crimson: #dc2626;
-      --crimson-bright: #ef4444;
-      --crimson-light: #fca5a5;
-      --cyan-dark: #0e7490;
-      --cyan: #06b6d4;
+      --void-0: #000000;
+      --void-1: #030407;
+      --void-2: #07090e;
+      --void-3: #0c0f17;
+      --void-panel: rgba(8, 10, 16, 0.94);
+      --void-card: rgba(12, 15, 24, 0.92);
+      --void-input: #020305;
+      
+      --border-ghost: rgba(255, 255, 255, 0.06);
+      --border-subtle: rgba(255, 255, 255, 0.12);
+      --border-steel: #1b2130;
+      --border-bright: rgba(255, 255, 255, 0.35);
+      
+      --signal-white: #ffffff;
+      --signal-bright: #e2e8f0;
+      --signal-dim: #94a3b8;
+      --signal-dark: #475569;
+      
+      --amber-core: #f59e0b;
+      --amber-bright: #fbbf24;
+      --amber-dark: #92400e;
+      --amber-glow: rgba(245, 158, 11, 0.35);
+      
+      --cyan-core: #00f0ff;
       --cyan-bright: #38bdf8;
-      --cyan-light: #e0f2fe;
-      --emerald: #10b981;
-      --emerald-bright: #34d399;
-      --purple: #8b5cf6;
-      --purple-bright: #a855f7;
-      --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
+      --cyan-dark: #0369a1;
+      --cyan-glow: rgba(0, 240, 255, 0.35);
+      
+      --crimson-core: #ff003c;
+      --crimson-bright: #ef4444;
+      --crimson-dark: #991b1b;
+      --crimson-glow: rgba(255, 0, 60, 0.35);
+      
+      --emerald-core: #00ff66;
+      --emerald-bright: #10b981;
+      --emerald-glow: rgba(0, 255, 102, 0.35);
+      
+      --purple-core: #a855f7;
+      
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-gothic: 'Cinzel', serif;
+      --font-lore: 'IM Fell English', serif;
       --font-pixel: 'Press Start 2P', monospace;
-      --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-      --font-gothic: 'Cinzel', 'Times New Roman', serif;
-      --font-lore: 'IM Fell English', 'Georgia', serif;
+      --font-cyber: 'Orbitron', monospace;
+      --font-display: 'Syne', sans-serif;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    body {
-      background-color: var(--void-0);
-      background-image: 
-        radial-gradient(ellipse 90% 45% at 50% -5%, rgba(220, 38, 38, 0.12), transparent 70%),
-        radial-gradient(ellipse 60% 40% at 92% 75%, rgba(6, 182, 212, 0.08), transparent 60%),
-        radial-gradient(circle at 10% 30%, rgba(217, 119, 6, 0.06), transparent 50%),
-        radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(0, 0, 0, 0.45) 50%, transparent 50%);
-      background-size: 100% 100%, 100% 100%, 100% 100%, 20px 20px, 100% 4px;
-      color: var(--text-main);
-      font-family: var(--font-mono);
-      padding: 24px 16px 88px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       -webkit-font-smoothing: antialiased;
     }
 
-    .container {
-      width: 100%;
-      max-width: 1040px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    /* Masthead / Gothic Telemetry Header */
-    .header {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: center;
-      padding: 8px 0 14px;
+    body {
+      background-color: var(--void-0);
+      color: var(--signal-bright);
+      font-family: var(--font-mono);
+      min-height: 100vh;
+      overflow-x: hidden;
       position: relative;
     }
-    .header-telemetry-strip {
-      font-size: 10px;
-      font-family: var(--font-mono);
-      color: var(--cyan-bright);
-      letter-spacing: 1.5px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-transform: uppercase;
+
+    ::selection {
+      background: var(--amber-core);
+      color: #000;
+    }
+
+    /* Procedural Canvas Background */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* CRT Scanline & Grain Overlay */
+    .crt-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+      background: 
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.015), rgba(0, 255, 0, 0.008), rgba(0, 0, 255, 0.015));
+      background-size: 100% 3px, 6px 100%;
       opacity: 0.85;
     }
-    .header-badge-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-    }
-    .badge {
-      padding: 4px 10px;
-      font-size: 9px;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      border-radius: 2px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .dot-online {
-      width: 6px;
-      height: 6px;
-      background: var(--crimson-bright);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--crimson-bright);
-      animation: pulseAlert 1.8s infinite ease-in-out;
-    }
-    @keyframes pulseAlert {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.35; transform: scale(0.8); }
-    }
-    .badge-gold { 
-      background: #181004; 
-      color: var(--gold-light); 
-      border: 1px solid var(--gold-bright); 
-      box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
-    }
-    .badge-cyan { 
-      background: #03161c; 
-      color: var(--cyan-bright); 
-      border: 1px solid var(--cyan); 
-      box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
-    }
-    .badge-crimson { 
-      background: #1a0404; 
-      color: var(--crimson-light); 
-      border: 1px solid var(--crimson); 
-      box-shadow: 0 0 10px rgba(220, 38, 38, 0.2);
-    }
 
-    .header h1 {
-      font-family: var(--font-gothic);
-      font-size: 27px;
-      font-weight: 900;
-      line-height: 1.25;
-      letter-spacing: 3.5px;
-      text-transform: uppercase;
-      background: linear-gradient(180deg, #ffffff 0%, #fef08a 35%, #f59e0b 70%, #b45309 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 14px rgba(245, 158, 11, 0.4));
-      margin-top: 2px;
-    }
-    .header .subtitle-lore {
-      font-family: var(--font-lore);
-      font-size: 15px;
-      font-style: italic;
-      color: var(--text-muted);
-      max-width: 760px;
-      line-height: 1.5;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-    }
-    .filigree-divider {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      width: 100%;
-      max-width: 520px;
-      margin-top: 2px;
-      color: var(--gold-bright);
-      opacity: 0.8;
-      font-size: 11px;
-    }
-    .filigree-divider::before, .filigree-divider::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
-    }
-    .filigree-divider span.cross {
-      font-size: 14px;
-      color: var(--crimson-bright);
-      text-shadow: 0 0 8px rgba(239, 68, 68, 0.65);
-    }
-
-    /* Ornate Section Cards with Engraved Notches */
-    .section-card {
-      background: var(--void-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 4px;
-      padding: 16px 20px;
+    /* Master Layout Wrapper */
+    .app-root {
+      position: relative;
+      z-index: 2;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-      position: relative;
-      backdrop-filter: blur(8px);
-    }
-    .section-card::before {
-      content: "";
-      position: absolute;
-      top: -1px; left: -1px;
-      width: 8px; height: 8px;
-      border-top: 2px solid var(--gold-bright);
-      border-left: 2px solid var(--gold-bright);
-      pointer-events: none;
-    }
-    .section-card::after {
-      content: "";
-      position: absolute;
-      bottom: -1px; right: -1px;
-      width: 8px; height: 8px;
-      border-bottom: 2px solid var(--gold-bright);
-      border-right: 2px solid var(--gold-bright);
-      pointer-events: none;
+      align-items: center;
+      width: 100%;
+      min-height: 100vh;
+      padding-bottom: 80px;
     }
 
-    .section-header-bar {
+    /* Fixed Telemetry & Global HUD Bar */
+    .hud-bar {
+      width: 100%;
+      background: rgba(3, 4, 7, 0.95);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 8px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 10px;
-    }
-    .section-title {
-      font-family: var(--font-gothic);
-      font-size: 13.5px;
-      text-transform: uppercase;
+      font-size: 11px;
       letter-spacing: 1.5px;
-      color: var(--gold-bright);
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-    .glyph-mark {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--cyan-bright);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      text-transform: uppercase;
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
-    /* Live Preview Viewport (Hero Sanctum) */
-    .preview-card {
-      background: rgba(6, 9, 15, 0.96);
+    .hud-telemetry {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--signal-dim);
+    }
+    .hud-telemetry .status-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--emerald-core);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--emerald-core);
+      animation: pulseLive 2s infinite ease-in-out;
+    }
+    .hud-telemetry .sys-name {
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+    .hud-telemetry .tag-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-ghost);
+      padding: 2px 7px;
+      border-radius: 2px;
+      font-size: 10px;
+      color: var(--cyan-core);
+    }
+
+    @keyframes pulseLive {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.85); }
+    }
+
+    .hud-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-hud {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--signal-bright);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 2px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+    .btn-hud:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--signal-white);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .btn-hud.active {
+      background: var(--amber-glow);
+      border-color: var(--amber-bright);
+      color: var(--amber-bright);
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1080px;
+      padding: 24px 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* View Switcher Deck */
+    .view-switcher-deck {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      background: var(--void-1);
+      border: 1px solid var(--border-subtle);
+      padding: 4px;
+      border-radius: 4px;
+      width: fit-content;
+      margin: 0 auto;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+    }
+    .btn-tab {
+      background: transparent;
+      border: none;
+      color: var(--signal-dim);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 7px 18px;
+      border-radius: 2px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-tab:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .btn-tab.active {
+      background: #fff;
+      color: #000;
+      font-weight: 800;
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.4);
+    }
+
+    /* SECTION 1: MAIN HUB & GATEWAY HERO */
+    .section-gateway {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 24px;
+      position: relative;
+      padding: 20px 0 10px;
+    }
+
+    /* Vector Cyber-Sigil / Primacist Emblem */
+    .sigil-crest-wrap {
+      width: 180px;
+      height: 180px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .sigil-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .sigil-ring-outer {
+      transform-origin: center;
+      animation: spinClockwise 45s linear infinite;
+    }
+    .sigil-ring-inner {
+      transform-origin: center;
+      animation: spinCounter 30s linear infinite;
+    }
+    @keyframes spinClockwise { 100% { transform: rotate(360deg); } }
+    @keyframes spinCounter { 100% { transform: rotate(-360deg); } }
+
+    .sigil-center-core {
+      position: absolute;
+      font-size: 26px;
+      color: var(--amber-bright);
+      text-shadow: 0 0 18px var(--amber-glow);
+      animation: pulseCore 3s ease-in-out infinite;
+    }
+    @keyframes pulseCore {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.6)); }
+      50% { transform: scale(0.92); filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.2)); }
+    }
+
+    .gateway-title-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .gateway-telemetry-badge {
+      font-size: 10.5px;
+      letter-spacing: 2.5px;
+      color: var(--cyan-core);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .gateway-h1 {
+      font-family: var(--font-gothic);
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.2));
+      line-height: 1.15;
+    }
+    .gateway-manifesto-sub {
+      font-family: var(--font-lore);
+      font-size: 16px;
+      font-style: italic;
+      color: var(--signal-dim);
+      max-width: 780px;
+      line-height: 1.5;
+    }
+
+    /* Big Tactical [ EXECUTE SYSTEM ] Action Gate */
+    .execute-system-box {
+      margin: 10px 0 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-execute-system {
+      background: #000;
+      border: 1px solid var(--amber-bright);
+      color: #fff;
+      padding: 16px 36px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 0 24px var(--amber-glow), inset 0 0 16px rgba(245, 158, 11, 0.15);
+      position: relative;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+    .btn-execute-system::before {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+      transition: left 0.6s ease;
+    }
+    .btn-execute-system:hover::before {
+      left: 100%;
+    }
+    .btn-execute-system:hover {
+      background: var(--amber-core);
+      color: #000;
+      box-shadow: 0 0 36px rgba(245, 158, 11, 0.8);
+      transform: translateY(-2px);
+    }
+    .btn-execute-system:active {
+      transform: translateY(1px);
+    }
+    .execute-hint {
+      font-size: 9.5px;
+      color: var(--signal-dark);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* Ecosystem / Project Hub Grid */
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      width: 100%;
+      text-align: left;
+      margin-top: 10px;
+    }
+
+    .hub-card {
+      background: var(--void-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 3px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+      transition: all 0.2s ease;
+    }
+    .hub-card:hover {
+      border-color: var(--signal-white);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.95), 0 0 18px rgba(255, 255, 255, 0.08);
+    }
+    .hub-card::before {
+      content: "+";
+      position: absolute;
+      top: -6px; left: -6px;
+      font-size: 10px;
+      color: var(--signal-dim);
+      font-family: var(--font-mono);
+    }
+    .hub-card::after {
+      content: "+";
+      position: absolute;
+      bottom: -6px; right: -6px;
+      font-size: 10px;
+      color: var(--signal-dim);
+      font-family: var(--font-mono);
+    }
+
+    .hub-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-ghost);
+      padding-bottom: 8px;
+    }
+    .hub-card-tag {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--cyan-core);
+      text-transform: uppercase;
+    }
+    .hub-card-glyph {
+      font-size: 12px;
+      color: var(--amber-bright);
+    }
+    .hub-card-title {
+      font-family: var(--font-gothic);
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .hub-card-desc {
+      font-size: 11.5px;
+      color: var(--signal-dim);
+      line-height: 1.45;
+      flex: 1;
+    }
+    .hub-card-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .hub-btn {
+      background: var(--void-input);
+      border: 1px solid var(--border-subtle);
+      color: var(--signal-bright);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 2px;
+      text-decoration: none;
+      cursor: pointer;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+    .hub-btn:hover {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+    .hub-btn-primary {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--amber-bright);
+      color: var(--amber-bright);
+    }
+    .hub-btn-primary:hover {
+      background: var(--amber-bright);
+      color: #000;
+    }
+
+    /* SECTION 2: BOSS BAR STUDIO (FORGE WORKSPACE) */
+    .section-studio {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+    }
+
+    /* Specimen Viewport (Hero Preview Sanctum) */
+    .specimen-card {
+      background: rgba(6, 8, 14, 0.96);
       border: 1px solid var(--border-steel);
-      border-radius: 6px;
-      padding: 18px 22px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.95), 0 0 24px rgba(6, 182, 212, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      border-radius: 3px;
+      padding: 18px 20px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.95), 0 0 28px rgba(0, 240, 255, 0.05);
       display: flex;
       flex-direction: column;
       gap: 14px;
       position: sticky;
-      top: 12px;
+      top: 48px;
       z-index: 100;
       backdrop-filter: blur(14px);
     }
-    .preview-card::before {
+    .specimen-card::before {
       content: "";
       position: absolute;
       top: -1px; left: -1px;
-      width: 14px; height: 14px;
-      border-top: 2px solid var(--cyan-bright);
-      border-left: 2px solid var(--cyan-bright);
+      width: 12px; height: 12px;
+      border-top: 2px solid var(--cyan-core);
+      border-left: 2px solid var(--cyan-core);
       pointer-events: none;
     }
-    .preview-card::after {
+    .specimen-card::after {
       content: "";
       position: absolute;
       bottom: -1px; right: -1px;
-      width: 14px; height: 14px;
-      border-bottom: 2px solid var(--cyan-bright);
-      border-right: 2px solid var(--cyan-bright);
+      width: 12px; height: 12px;
+      border-bottom: 2px solid var(--cyan-core);
+      border-right: 2px solid var(--cyan-core);
       pointer-events: none;
     }
 
-    .preview-header {
+    .specimen-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 10px;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-ghost);
+      padding-bottom: 8px;
     }
-    .preview-title {
+    .specimen-title {
       font-family: var(--font-mono);
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 800;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: #fff;
       display: flex;
       align-items: center;
-      gap: 10px;
-    }
-    .preview-title .dot-live {
-      width: 8px;
-      height: 8px;
-      background: var(--crimson-bright);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--crimson-bright), 0 0 20px var(--crimson);
-      animation: pulseAlert 1.6s infinite ease-in-out;
-    }
-    .preview-actions {
-      display: flex;
       gap: 8px;
+    }
+    .specimen-title .dot-signal {
+      width: 7px;
+      height: 7px;
+      background: var(--crimson-core);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--crimson-core);
+      animation: pulseLive 1.6s infinite ease-in-out;
+    }
+    .specimen-actions {
+      display: flex;
+      gap: 6px;
       align-items: center;
     }
-    .btn-small {
+
+    .btn-action-sm {
       background: var(--void-2);
-      border: 1px solid var(--border-steel);
-      color: var(--text-main);
-      padding: 6px 13px;
-      border-radius: 3px;
-      font-size: 11px;
+      border: 1px solid var(--border-subtle);
+      color: var(--signal-bright);
+      padding: 5px 11px;
+      border-radius: 2px;
+      font-size: 10.5px;
       font-family: var(--font-mono);
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.15s ease;
-      box-shadow: 0 2px 0 #000;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .btn-small svg {
+    .btn-action-sm svg {
       width: 12px;
       height: 12px;
       stroke: currentColor;
     }
-    .btn-small:hover {
-      background: var(--void-3);
-      border-color: var(--cyan-bright);
-      color: #fff;
-      box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
-      transform: translateY(-1px);
-    }
-    .btn-small:active {
-      transform: translateY(2px);
-      box-shadow: 0 0 0 #000;
+    .btn-action-sm:hover {
+      background: #fff;
+      border-color: #fff;
+      color: #000;
     }
 
+    /* Viewport Frame for SVG */
     .viewport {
-      background: var(--github-dark);
+      background: #0d1117;
       border: 1px solid #21262d;
-      border-radius: 4px;
-      padding: 20px 14px;
+      border-radius: 3px;
+      padding: 22px 14px;
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: inset 0 6px 36px rgba(0, 0, 0, 0.85), 0 2px 8px rgba(0, 0, 0, 0.6);
-      min-height: 116px;
+      min-height: 118px;
       overflow: hidden;
       position: relative;
-      transition: background 0.25s ease, border-color 0.25s ease;
+      transition: background 0.2s ease, border-color 0.2s ease;
+      box-shadow: inset 0 4px 30px rgba(0, 0, 0, 0.9);
     }
     .viewport svg {
       width: 100%;
       max-width: 700px;
       height: auto;
       display: block;
-      filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.75));
+      filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.8));
     }
 
-    /* Live Telemetry Bar */
-    .preview-stats {
+    /* Live Telemetry Readout */
+    .telemetry-row {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 10px;
+      gap: 8px;
       font-size: 10.5px;
       font-family: var(--font-mono);
-      color: var(--text-dim);
-      border-top: 1px solid var(--border-subtle);
-      padding-top: 10px;
+      color: var(--signal-dark);
+      border-top: 1px solid var(--border-ghost);
+      padding-top: 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    .stat-pill {
+    .telemetry-pill {
       background: var(--void-input);
-      border: 1px solid var(--border-subtle);
-      padding: 6px 9px;
+      border: 1px solid var(--border-ghost);
+      padding: 5px 8px;
       border-radius: 2px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .stat-pill span {
-      color: var(--cyan-bright);
+    .telemetry-pill span {
+      color: var(--cyan-core);
       font-weight: 700;
     }
 
-    /* 1-Click Tactile Export Bar */
-    .export-bar {
+    /* 1-Click Export Tactical Bar */
+    .export-grid {
       display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 12px;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 10px;
     }
     .btn-export {
       padding: 12px 16px;
-      border-radius: 3px;
+      border-radius: 2px;
       font-family: var(--font-mono);
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 800;
-      letter-spacing: 0.8px;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
       cursor: pointer;
       display: inline-flex;
@@ -425,212 +686,243 @@
       justify-content: center;
       gap: 8px;
       transition: all 0.15s ease;
-      box-shadow: 0 4px 0 #000;
+      border: 1px solid transparent;
     }
     .btn-export svg {
       width: 14px;
       height: 14px;
-      flex-shrink: 0;
     }
     .btn-export-primary {
-      background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 40%, #d97706 100%);
-      border: 1px solid #fef08a;
-      color: #060910;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+      background: #ffffff;
+      color: #000000;
+      border-color: #ffffff;
+      box-shadow: 0 4px 18px rgba(255, 255, 255, 0.2);
     }
     .btn-export-primary:hover {
-      background: linear-gradient(180deg, #fde047 0%, #fbbf24 40%, #f59e0b 100%);
-      box-shadow: 0 4px 0 #000, 0 0 20px rgba(245, 158, 11, 0.45);
-      transform: translateY(-2px);
-    }
-    .btn-export-primary:active {
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 #000;
+      background: var(--amber-bright);
+      border-color: var(--amber-bright);
+      box-shadow: 0 0 24px rgba(245, 158, 11, 0.6);
+      transform: translateY(-1px);
     }
     .btn-export-secondary {
       background: var(--void-2);
-      border: 1px solid var(--border-steel);
-      color: var(--text-main);
+      border-color: var(--border-subtle);
+      color: var(--signal-bright);
     }
     .btn-export-secondary:hover {
       background: var(--void-3);
-      border-color: var(--cyan-bright);
+      border-color: var(--cyan-core);
       color: #fff;
-      box-shadow: 0 4px 0 #000, 0 0 14px rgba(6, 182, 212, 0.3);
-      transform: translateY(-2px);
-    }
-    .btn-export-secondary:active {
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 #000;
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.25);
+      transform: translateY(-1px);
     }
 
-    /* Reset to Defaults Button (Tactile Gothic Relic Reset) */
-    .btn-reset-defaults {
-      background: #160606;
-      border: 1px solid rgba(220, 38, 38, 0.45);
-      color: #fca5a5;
-      padding: 6px 13px;
+    /* Command Center: Presets & Aesthetics */
+    .command-deck {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 14px;
+    }
+
+    .tactical-card {
+      background: var(--void-card);
+      border: 1px solid var(--border-subtle);
       border-radius: 3px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.7);
+    }
+    .tactical-card::before {
+      content: "";
+      position: absolute;
+      top: -1px; left: -1px;
+      width: 8px; height: 8px;
+      border-top: 2px solid var(--amber-bright);
+      border-left: 2px solid var(--amber-bright);
+      pointer-events: none;
+    }
+    .tactical-card::after {
+      content: "";
+      position: absolute;
+      bottom: -1px; right: -1px;
+      width: 8px; height: 8px;
+      border-bottom: 2px solid var(--amber-bright);
+      border-right: 2px solid var(--amber-bright);
+      pointer-events: none;
+    }
+
+    .card-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-ghost);
+      padding-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .card-title {
+      font-family: var(--font-gothic);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--amber-bright);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title .mark {
       font-family: var(--font-mono);
-      font-size: 10.5px;
+      color: var(--cyan-core);
+    }
+
+    /* Reset to Defaults Tactical Button */
+    .btn-reset-defaults {
+      background: rgba(255, 0, 60, 0.1);
+      border: 1px solid rgba(255, 0, 60, 0.4);
+      color: #fca5a5;
+      padding: 5px 10px;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.5px;
       text-transform: uppercase;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.15s ease;
-      box-shadow: 0 2px 0 #000;
     }
     .btn-reset-defaults svg {
-      width: 12px;
-      height: 12px;
+      width: 11px;
+      height: 11px;
       stroke: currentColor;
     }
     .btn-reset-defaults:hover {
-      background: #2a0a0a;
-      border-color: var(--crimson-bright);
+      background: var(--crimson-core);
       color: #fff;
-      box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
-      transform: translateY(-1px);
-    }
-    .btn-reset-defaults:active {
-      transform: translateY(2px);
-      box-shadow: 0 0 0 #000;
+      border-color: var(--crimson-core);
+      box-shadow: 0 0 14px rgba(255, 0, 60, 0.5);
     }
 
-    /* Command Center: Presets & Aesthetics Top Deck */
-    .command-deck {
+    /* Presets Pills */
+    .preset-pills {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 16px;
-      align-items: stretch;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 6px;
+    }
+    .btn-preset {
+      background: var(--void-input);
+      border: 1px solid var(--border-ghost);
+      color: var(--signal-bright);
+      padding: 7px 9px;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .btn-preset .preset-icon {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 11px;
+      color: var(--cyan-core);
+      width: 14px;
+      text-align: center;
+    }
+    .btn-preset:hover {
+      background: var(--void-3);
+      border-color: var(--border-bright);
+      transform: translateY(-1px);
+    }
+    .btn-preset.active {
+      background: rgba(0, 240, 255, 0.12);
+      border-color: var(--cyan-core);
+      color: #fff;
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.3);
+    }
+    .btn-preset.active .preset-icon {
+      color: var(--amber-bright);
     }
 
     /* Aesthetic Selector Bar */
     .aesthetic-pills {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 6px;
     }
     .btn-aesthetic {
       background: var(--void-input);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-main);
-      padding: 9px 8px;
-      border-radius: 3px;
-      font-size: 11px;
+      border: 1px solid var(--border-ghost);
+      color: var(--signal-bright);
+      padding: 8px 6px;
+      border-radius: 2px;
+      font-size: 10.5px;
       font-family: var(--font-mono);
       font-weight: 700;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      gap: 2px;
       justify-content: center;
       transition: all 0.15s ease;
-      box-shadow: 0 2px 0 #000;
-      position: relative;
-    }
-    .btn-aesthetic:hover {
-      background: var(--void-2);
-      border-color: var(--border-steel);
-      transform: translateY(-1px);
-    }
-    .btn-aesthetic.active {
-      background: #181104;
-      border-color: var(--gold-bright);
-      color: var(--gold-light);
-      box-shadow: 0 2px 0 #000, 0 0 14px rgba(245, 158, 11, 0.35);
     }
     .btn-aesthetic .subtext {
       font-size: 9px;
-      color: var(--text-dim);
+      color: var(--signal-dark);
       font-weight: 500;
     }
-    .btn-aesthetic.active .subtext {
-      color: var(--gold-bright);
-    }
-
-    /* Presets Bar */
-    .preset-pills {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 8px;
-    }
-    .btn-preset {
-      background: var(--void-input);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-main);
-      padding: 8px 10px;
-      border-radius: 3px;
-      font-family: var(--font-mono);
-      font-size: 10.5px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      justify-content: flex-start;
-      transition: all 0.15s ease;
-      box-shadow: 0 2px 0 #000;
-    }
-    .preset-icon {
-      font-family: var(--font-mono);
-      font-weight: 800;
-      font-size: 11px;
-      color: var(--cyan-bright);
-      width: 16px;
-      text-align: center;
-      flex-shrink: 0;
-    }
-    .btn-preset:hover {
-      background: var(--void-2);
-      border-color: var(--border-steel);
+    .btn-aesthetic:hover {
+      background: var(--void-3);
+      border-color: var(--border-bright);
       transform: translateY(-1px);
     }
-    .btn-preset.active {
-      background: #061922;
-      border-color: var(--cyan);
-      color: #fff;
-      box-shadow: 0 2px 0 #000, 0 0 12px rgba(6, 182, 212, 0.35);
+    .btn-aesthetic.active {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--amber-bright);
+      color: var(--amber-bright);
+      box-shadow: 0 0 14px var(--amber-glow);
     }
-    .btn-preset.active .preset-icon {
-      color: var(--gold-bright);
-      text-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+    .btn-aesthetic.active .subtext {
+      color: #fff;
     }
 
-    /* Boss Stages / Encounter Phases Manager */
+    /* Phase Manager (Stages Forge) */
     .stages-manager {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
     }
-    .stages-header {
+    .stages-header-line {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 10px;
     }
     .btn-add-stage {
-      background: #031c26;
-      border: 1px solid var(--cyan);
-      color: var(--cyan-bright);
+      background: var(--void-input);
+      border: 1px solid var(--cyan-core);
+      color: var(--cyan-core);
       padding: 6px 14px;
-      border-radius: 3px;
+      border-radius: 2px;
       font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 800;
+      letter-spacing: 1px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.15s;
-      box-shadow: 0 2px 0 #000;
+      transition: all 0.15s ease;
     }
     .btn-add-stage svg {
       width: 12px;
@@ -638,225 +930,191 @@
       stroke: currentColor;
     }
     .btn-add-stage:hover {
-      background: var(--cyan);
+      background: var(--cyan-core);
       color: #000;
-      box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
-      transform: translateY(-1px);
-    }
-    .btn-add-stage:active {
-      transform: translateY(2px);
-      box-shadow: 0 0 0 #000;
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.5);
     }
 
-    /* Individual Phase Cards */
     .stage-card {
-      background: var(--void-2);
-      border: 1px solid var(--border-steel);
-      border-radius: 4px;
+      background: var(--void-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 3px;
       padding: 16px 18px;
       display: flex;
       flex-direction: column;
       gap: 14px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
       position: relative;
-    }
-    .stage-card::before {
-      content: "";
-      position: absolute;
-      top: -1px; left: -1px;
-      width: 6px; height: 6px;
-      border-top: 1.5px solid var(--cyan-bright);
-      border-left: 1.5px solid var(--cyan-bright);
-      pointer-events: none;
     }
     .stage-card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-ghost);
+      padding-bottom: 8px;
     }
     .stage-card-title {
-      font-size: 12.5px;
-      font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-family: var(--font-mono);
-      color: var(--gold-light);
+      gap: 8px;
+      font-weight: 800;
+      color: #fff;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .stage-badge {
+      background: #181104;
+      color: var(--amber-bright);
+      border: 1px solid var(--amber-bright);
+      padding: 2px 7px;
+      font-size: 9.5px;
+      font-weight: 800;
+      border-radius: 2px;
+      letter-spacing: 1px;
     }
     .btn-remove-stage {
       background: transparent;
-      border: 1px solid rgba(220, 38, 38, 0.5);
-      color: var(--crimson-bright);
-      padding: 5px 11px;
-      border-radius: 3px;
+      border: 1px solid rgba(255, 0, 60, 0.4);
+      color: #fca5a5;
+      padding: 4px 8px;
+      border-radius: 2px;
+      font-size: 10px;
       font-family: var(--font-mono);
-      font-size: 10.5px;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      transition: all 0.15s;
+      gap: 5px;
+      text-transform: uppercase;
+      transition: all 0.15s ease;
     }
     .btn-remove-stage svg {
-      width: 12px;
-      height: 12px;
+      width: 11px;
+      height: 11px;
       stroke: currentColor;
     }
     .btn-remove-stage:hover:not(:disabled) {
-      background: var(--crimson);
+      background: var(--crimson-core);
       color: #fff;
-      box-shadow: 0 0 10px rgba(220, 38, 38, 0.4);
+      border-color: var(--crimson-core);
     }
     .btn-remove-stage:disabled {
-      opacity: 0.25;
+      opacity: 0.35;
       cursor: not-allowed;
-      border-color: #333;
-      color: #555;
+      border-color: var(--border-ghost);
     }
 
-    /* Ergonomic Controls Layout */
+    /* Controls Grid */
     .controls-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 12px;
     }
     .control-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
     }
     .control-label {
       font-size: 10.5px;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
+      color: var(--signal-dim);
       font-weight: 700;
+      letter-spacing: 0.8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     .val-tag {
-      color: var(--cyan-bright);
-      font-family: var(--font-mono);
-      font-weight: 700;
-      background: var(--void-input);
-      padding: 1px 6px;
-      border-radius: 2px;
-      border: 1px solid var(--border-subtle);
+      color: var(--cyan-core);
+      font-weight: 800;
+      text-transform: none;
     }
     .control-input, .control-select {
       background: var(--void-input);
-      border: 1px solid var(--border-steel);
-      border-radius: 3px;
-      padding: 8px 10px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 2px;
       color: #fff;
-      font-size: 11.5px;
       font-family: var(--font-mono);
+      font-size: 11.5px;
+      padding: 7px 9px;
       outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
+      transition: border-color 0.15s ease;
     }
     .control-input:focus, .control-select:focus {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 8px rgba(245, 158, 11, 0.25);
+      border-color: var(--amber-bright);
+      box-shadow: 0 0 10px var(--amber-glow);
     }
     .range-row {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
-    .range-row input[type="range"] {
-      flex: 1;
-      accent-color: var(--gold-bright);
-      cursor: pointer;
-    }
-
-    /* Sub-card Container for Tags */
-    .subcard-box {
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
       background: var(--void-input);
       border: 1px solid var(--border-subtle);
-      border-radius: 4px;
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      grid-column: 1 / -1;
+      border-radius: 2px;
+      outline: none;
     }
-    .subcard-title {
-      font-size: 10.5px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--gold-bright);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      padding-bottom: 6px;
-    }
-    .subcard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 12px;
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      background: var(--amber-bright);
+      border-radius: 2px;
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--amber-glow);
     }
 
-    /* Theme Swatches */
+    /* Swatches & Shake */
     .theme-swatches {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       align-items: center;
       flex-wrap: wrap;
     }
     .swatch {
-      width: 22px;
-      height: 22px;
-      border-radius: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 2px;
       cursor: pointer;
-      border: 2px solid transparent;
-      box-shadow: 0 2px 0 #000;
+      border: 1px solid transparent;
       transition: transform 0.15s, border-color 0.15s;
     }
     .swatch:hover { transform: scale(1.15); }
     .swatch.selected {
       border-color: #fff;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.85);
+      box-shadow: 0 0 8px #fff;
       transform: scale(1.1);
-    }
-
-    /* Color Picker Row */
-    .color-picker-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .color-swatch-input {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      width: 32px;
-      height: 32px;
-      background: none;
-      border: 1px solid var(--border-steel);
-      border-radius: 3px;
-      cursor: pointer;
-      padding: 0;
-      flex-shrink: 0;
-    }
-    .color-swatch-input::-webkit-color-swatch-wrapper {
-      padding: 0;
-    }
-    .color-swatch-input::-webkit-color-swatch {
-      border: none;
-      border-radius: 2px;
     }
     .hex-input {
       font-family: var(--font-mono);
       text-transform: uppercase;
       font-size: 11px;
     }
+    .color-picker-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .color-swatch-input {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 30px;
+      height: 30px;
+      background: none;
+      border: 1px solid var(--border-subtle);
+      border-radius: 2px;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .color-swatch-input::-webkit-color-swatch-wrapper { padding: 0; }
+    .color-swatch-input::-webkit-color-swatch { border: none; border-radius: 1px; }
 
-    /* Shake Buttons */
     .shake-buttons {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -864,10 +1122,10 @@
     }
     .btn-shake {
       background: var(--void-input);
-      border: 1px solid var(--border-steel);
-      color: var(--text-main);
-      padding: 7px 2px;
-      border-radius: 3px;
+      border: 1px solid var(--border-ghost);
+      color: var(--signal-bright);
+      padding: 6px 2px;
+      border-radius: 2px;
       font-size: 10px;
       font-family: var(--font-mono);
       font-weight: 700;
@@ -877,51 +1135,133 @@
     }
     .btn-shake:hover { background: var(--void-3); }
     .btn-shake.active {
-      background: #231604;
-      border-color: var(--gold-bright);
-      color: var(--gold-light);
-      box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--amber-bright);
+      color: var(--amber-bright);
+      box-shadow: 0 0 8px var(--amber-glow);
     }
 
-    /* Code Viewer */
+    /* Subcard Box for Tags */
+    .subcard-box {
+      grid-column: 1 / -1;
+      background: var(--void-input);
+      border: 1px solid var(--border-ghost);
+      border-radius: 2px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .subcard-title {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--cyan-core);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .subcard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+
+    /* Code Inspector */
     .code-viewer {
       background: var(--void-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 4px;
-      padding: 16px 20px;
+      border-radius: 3px;
+      padding: 16px 18px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      position: relative;
-    }
-    .code-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+      gap: 10px;
     }
     .code-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 10.5px;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-      font-weight: 700;
+      font-size: 10px;
+      color: var(--signal-dim);
+      font-weight: 800;
+      letter-spacing: 1px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
     .code-box {
       background: var(--void-input);
-      border: 1px solid var(--border-steel);
-      border-radius: 3px;
+      border: 1px solid var(--border-ghost);
+      border-radius: 2px;
       padding: 10px 12px;
       font-family: var(--font-mono);
-      font-size: 11.5px;
-      color: var(--cyan-bright);
+      font-size: 11px;
+      color: var(--cyan-core);
       overflow-x: auto;
       white-space: pre-wrap;
       word-break: break-all;
-      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Manifesto Modal Drawer */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 9000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-content {
+      background: var(--void-1);
+      border: 1px solid var(--amber-bright);
+      width: 100%;
+      max-width: 780px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 28px;
+      border-radius: 3px;
+      box-shadow: 0 0 40px var(--amber-glow);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: none;
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+    .modal-close-btn:hover { background: #fff; color: #000; }
+    .manifesto-body {
+      font-size: 12.5px;
+      color: var(--signal-dim);
+      line-height: 1.6;
+    }
+    .manifesto-body h2 {
+      font-family: var(--font-gothic);
+      font-size: 18px;
+      color: var(--amber-bright);
+      margin-bottom: 8px;
+    }
+    .manifesto-body h3 {
+      font-size: 13px;
+      color: #fff;
+      margin: 14px 0 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     /* Toast Notification */
@@ -929,15 +1269,15 @@
       position: fixed;
       bottom: 24px;
       right: 24px;
-      background: #081a13;
-      border: 1px solid var(--emerald);
-      color: var(--emerald-bright);
-      padding: 10px 18px;
-      border-radius: 4px;
+      background: #030d08;
+      border: 1px solid var(--emerald-core);
+      color: var(--emerald-core);
+      padding: 9px 16px;
+      border-radius: 2px;
       font-family: var(--font-mono);
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 800;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.9), 0 0 20px rgba(16, 185, 129, 0.25);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.95), 0 0 16px var(--emerald-glow);
       opacity: 0;
       transform: translateY(16px);
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -946,239 +1286,391 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      letter-spacing: 0.5px;
     }
     .toast.show {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* Responsive adjustments */
+    /* Responsive */
     @media (max-width: 860px) {
       .command-deck { grid-template-columns: 1fr; }
-      .export-bar { grid-template-columns: 1fr; }
+      .export-grid { grid-template-columns: 1fr; }
+      .gateway-h1 { font-size: 26px; }
+      .hud-telemetry .tag-pill { display: none; }
     }
     @media (max-width: 640px) {
-      .preview-card { position: static; }
-      .header h1 { font-size: 20px; }
-      .btn-export { font-size: 11px; padding: 10px 12px; }
-      .header-telemetry-strip { font-size: 8.5px; }
+      .specimen-card { position: static; }
+      .btn-execute-system { font-size: 11.5px; padding: 12px 20px; }
+      .hud-bar { padding: 6px 10px; }
+      .view-switcher-deck { width: 100%; justify-content: space-around; }
+      .btn-tab { padding: 6px 10px; font-size: 10px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <!-- Masthead -->
-    <header class="header">
-      <div class="header-telemetry-strip">
-        <span>// SEC: PURE-SVG 100%</span>
-        <span>◈</span>
-        <span>CANVAS: 700x95</span>
-        <span>◈</span>
-        <span>ENGINE: v0.2.0</span>
+  <!-- Background Procedural Canvas -->
+  <canvas id="bg-canvas"></canvas>
+  <div class="crt-overlay"></div>
+
+  <!-- Master App Shell -->
+  <div class="app-root">
+
+    <!-- Top Telemetry & HUD Bar -->
+    <header class="hud-bar">
+      <div class="hud-telemetry">
+        <span class="status-dot"></span>
+        <span class="sys-name">BOSS BAR // AVANT-GARDE STUDIO</span>
+        <span class="tag-pill">ENGINE: v0.2.0</span>
+        <span class="tag-pill">SEC: PURE-SVG 100%</span>
       </div>
-      <div class="header-badge-row">
-        <span class="badge badge-gold"><span class="dot-online"></span> RETRO FORGE // STUDIO</span>
-        <span class="badge badge-cyan">PIXEL ART &amp; DARK FANTASY</span>
-        <span class="badge badge-crimson">CAMO SANITIZER SAFE</span>
-      </div>
-      <h1>README BOSS BAR STUDIO</h1>
-      <p class="subtitle-lore">"Inscribe epic multi-phase milestone encounters into your GitHub realm. Pure SVG. Zero dependencies. Felled enemies leave glorious ashes."</p>
-      <div class="filigree-divider">
-        <span>◈</span><span class="cross">† ⚔ †</span><span>◈</span>
+      <div class="hud-actions">
+        <button class="btn-hud" id="btn-toggle-audio" onclick="toggleAudio()" title="Toggle synthesized procedural sound effects">
+          <span id="audio-icon">♫</span> <span id="audio-label">AUDIO: ON</span>
+        </button>
+        <button class="btn-hud" onclick="openManifesto()" title="Inspect design manifesto and anti-slop rules">
+          <span>◈</span> <span>MANIFESTO</span>
+        </button>
+        <a class="btn-hud" href="https://github.com/SS2Genji/readme-boss-bar" target="_blank" rel="noopener" title="Source repository">
+          <span>↗</span> <span>GITHUB</span>
+        </a>
       </div>
     </header>
 
-    <!-- Live Real-Time Preview (Hero Sanctum) -->
-    <section class="preview-card">
-      <div class="preview-header">
-        <div class="preview-title">
-          <span class="dot-live"></span> Live Boss Bar Preview
-        </div>
-        <div class="preview-actions">
-          <button class="btn-small" onclick="toggleViewportBg()" title="Toggle GitHub Dark / Light background mode">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
-            <span>Toggle BG</span>
-          </button>
-          <button class="btn-small" onclick="replayAnimation()" title="Restart combat animation">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
-            <span>Restart Battle</span>
-          </button>
-        </div>
-      </div>
+    <div class="container">
 
-      <div class="viewport" id="studio-viewport"></div>
-
-      <div class="preview-stats" id="preview-stats">
-        <div class="stat-pill">Aesthetic: <span id="stat-aesthetic">souls</span></div>
-        <div class="stat-pill">Stages: <span id="stat-stages">1</span></div>
-        <div class="stat-pill">Total Bars: <span id="stat-bars">10</span></div>
-        <div class="stat-pill">Total Hits: <span id="stat-hits">4</span></div>
-        <div class="stat-pill">Duration: <span id="stat-duration">4.5s</span></div>
-      </div>
-    </section>
-
-    <!-- 1-Click Tactile Export Bar -->
-    <section class="export-bar">
-      <button class="btn-export btn-export-primary" onclick="copyMarkdown()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-        <span>Copy Markdown for README</span>
-      </button>
-      <button class="btn-export btn-export-secondary" onclick="downloadSVG()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span>Download SVG File</span>
-      </button>
-    </section>
-
-    <!-- Command Center Deck: Presets & Aesthetics -->
-    <div class="command-deck">
-      <!-- 1-Click Encounter Presets -->
-      <section class="section-card preset-section">
-        <div class="section-header-bar">
-          <div class="section-title">
-            <span class="glyph-mark">⚔</span> 1-Click Encounter Presets
-          </div>
-          <button class="btn-reset-defaults" id="btn-reset-defaults" onclick="resetToDefaults()" title="Reset all settings to default state">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L2 9"/><path d="M3 3v6h6"/></svg>
-            <span>Reset to Defaults</span>
-          </button>
-        </div>
-        <div class="preset-pills">
-          <button class="btn-preset active" id="btn-p-single" onclick="loadPreset('single')">
-            <span class="preset-icon">⚡</span> Single Boss
-          </button>
-          <button class="btn-preset" id="btn-p-cyberpunk" onclick="loadPreset('cyberpunk')">
-            <span class="preset-icon">⌖</span> Cyber Mech
-          </button>
-          <button class="btn-preset" id="btn-p-bloodborne" onclick="loadPreset('bloodborne')">
-            <span class="preset-icon">†</span> Bloodborne
-          </button>
-          <button class="btn-preset" id="btn-p-pixel" onclick="loadPreset('pixel')">
-            <span class="preset-icon">▣</span> 8-Bit Arcade
-          </button>
-          <button class="btn-preset" id="btn-p-minimal" onclick="loadPreset('minimal')">
-            <span class="preset-icon">◇</span> Minimal
-          </button>
-          <button class="btn-preset" id="btn-p-school42" onclick="loadPreset('school42')">
-            <span class="preset-icon">42</span> 42 Milestone
-          </button>
-          <button class="btn-preset" id="btn-p-elden" onclick="loadPreset('eldenRing')">
-            <span class="preset-icon">⚔</span> Elden Ring
-          </button>
-          <button class="btn-preset" id="btn-p-demigod" onclick="loadPreset('demigod')">
-            <span class="preset-icon">▲</span> 3-Phase
-          </button>
-        </div>
-      </section>
-
-      <!-- Aesthetic Style Selector -->
-      <section class="section-card aesthetic-section">
-        <div class="section-header-bar">
-          <div class="section-title">
-            <span class="glyph-mark">◈</span> Visual Aesthetic Style
-          </div>
-        </div>
-        <div class="aesthetic-pills">
-          <button class="btn-aesthetic" id="btn-a-classic" data-style="classic" onclick="selectAesthetic('classic')">
-            <span>Classic</span>
-            <span class="subtext">16-Bit RPG</span>
-          </button>
-          <button class="btn-aesthetic active" id="btn-a-souls" data-style="souls" onclick="selectAesthetic('souls')">
-            <span>Souls</span>
-            <span class="subtext">Gothic Filigree</span>
-          </button>
-          <button class="btn-aesthetic" id="btn-a-cyberpunk" data-style="cyberpunk" onclick="selectAesthetic('cyberpunk')">
-            <span>Cyberpunk</span>
-            <span class="subtext">Sci-Fi 45° HUD</span>
-          </button>
-          <button class="btn-aesthetic" id="btn-a-pixel" data-style="pixel" onclick="selectAesthetic('pixel')">
-            <span>Pixel</span>
-            <span class="subtext">8-Bit Arcade</span>
-          </button>
-          <button class="btn-aesthetic" id="btn-a-bloodborne" data-style="bloodborne" onclick="selectAesthetic('bloodborne')">
-            <span>Bloodborne</span>
-            <span class="subtext">Eldritch Horror</span>
-          </button>
-          <button class="btn-aesthetic" id="btn-a-minimal" data-style="minimal" onclick="selectAesthetic('minimal')">
-            <span>Minimal</span>
-            <span class="subtext">Modern Pill</span>
-          </button>
-        </div>
-      </section>
-    </div>
-
-    <!-- Encounter Phases (Battle Forge) -->
-    <section class="stages-manager">
-      <div class="stages-header">
-        <div class="section-title">
-          <span class="glyph-mark">🛡</span> Encounter Phases
-        </div>
-        <button class="btn-add-stage" id="btn-add-stage" onclick="addStage()">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          <span>Add Phase</span>
+      <!-- View Switcher Deck: Hub / Gateway vs Forge Studio -->
+      <nav class="view-switcher-deck" aria-label="Sanctum Navigation">
+        <button class="btn-tab active" id="tab-hub" onclick="switchView('hub')">
+          <span>⚡</span> <span>MAIN HUB &amp; GATEWAY</span>
         </button>
-      </div>
+        <button class="btn-tab" id="tab-studio" onclick="switchView('studio')">
+          <span>⚔</span> <span>BOSS BAR FORGE</span>
+        </button>
+      </nav>
 
-      <div id="stages-container" class="stages-manager"></div>
-    </section>
-
-    <!-- Combat & Banner Customization -->
-    <section class="section-card global-settings">
-      <div class="section-header-bar">
-        <div class="section-title">
-          <span class="glyph-mark">⌁</span> Global Combat, Banners &amp; Tags
+      <!-- VIEW 1: MAIN HUB & GATEWAY HERO -->
+      <section class="section-gateway" id="view-gateway">
+        <!-- Biomechanical Vector Sigil Crest -->
+        <div class="sigil-crest-wrap">
+          <svg class="sigil-svg" viewBox="0 0 200 200" fill="none">
+            <!-- Outer Dial -->
+            <circle class="sigil-ring-outer" cx="100" cy="100" r="92" stroke="rgba(255,255,255,0.18)" stroke-width="1.2" stroke-dasharray="4 8" />
+            <circle class="sigil-ring-outer" cx="100" cy="100" r="82" stroke="rgba(0,240,255,0.3)" stroke-width="1" stroke-dasharray="20 4" />
+            <!-- Inner Dial -->
+            <circle class="sigil-ring-inner" cx="100" cy="100" r="68" stroke="rgba(245,158,11,0.4)" stroke-width="1.5" stroke-dasharray="6 14" />
+            <circle class="sigil-ring-inner" cx="100" cy="100" r="54" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="2 6" />
+            <!-- Cardinal Ticks -->
+            <line x1="100" y1="2" x2="100" y2="198" stroke="rgba(255,255,255,0.12)" stroke-width="0.8" />
+            <line x1="2" y1="100" x2="198" y2="100" stroke="rgba(255,255,255,0.12)" stroke-width="0.8" />
+            <!-- Corner Brackets -->
+            <polygon points="100,24 105,32 95,32" fill="#f59e0b" />
+            <polygon points="100,176 105,168 95,168" fill="#f59e0b" />
+            <polygon points="24,100 32,105 32,95" fill="#00f0ff" />
+            <polygon points="176,100 168,105 168,95" fill="#00f0ff" />
+          </svg>
+          <div class="sigil-center-core">⚔</div>
         </div>
-      </div>
-      <div class="controls-grid">
-        <div class="control-group">
-          <label class="control-label">Damage Pop-up Text</label>
-          <input type="text" id="glob-dmgpop" class="control-input" value="-{N} BARS" oninput="updateStudio()" placeholder="-{N} BARS or false" />
-        </div>
 
-        <div class="control-group">
-          <label class="control-label">Damage Pop-up Color</label>
-          <div class="color-picker-row">
-            <input type="color" id="glob-dmgpop-color-picker" class="color-swatch-input" value="#facc15" oninput="syncColorInput('glob-dmgpop-color', this.value)" />
-            <input type="text" id="glob-dmgpop-color" class="control-input hex-input" value="#facc15" maxlength="7" oninput="syncColorPicker('glob-dmgpop-color-picker', this.value)" placeholder="#facc15" />
+        <div class="gateway-title-block">
+          <div class="gateway-telemetry-badge">
+            <span>[ SYSTEM: HIGH-DENSITY DATA ]</span>
+            <span>◈</span>
+            <span>[ AESTHETIC: CYBER-GOTHIC HUD ]</span>
           </div>
+          <h1 class="gateway-h1">README BOSS BAR</h1>
+          <p class="gateway-manifesto-sub">"Reject algorithmic slop. Inscribe authentic dark fantasy, gothic filigree, and 1-bit pixel milestone encounters directly into your GitHub realm. Pure SVG. Zero foreignObject."</p>
         </div>
 
-        <div class="control-group">
-          <label class="control-label">Defeated Banner Color</label>
-          <div class="color-picker-row">
-            <input type="color" id="glob-felled-color-picker" class="color-swatch-input" value="#f59e0b" oninput="syncColorInput('glob-felled-color', this.value)" />
-            <input type="text" id="glob-felled-color" class="control-input hex-input" value="" maxlength="7" oninput="syncColorPicker('glob-felled-color-picker', this.value)" placeholder="Default theme" />
-          </div>
+        <!-- Primary Action Gate: [ EXECUTE SYSTEM ] -->
+        <div class="execute-system-box">
+          <button class="btn-execute-system" id="btn-execute-system" onclick="executeSystem()">
+            <span>[ ⚡ EXECUTE SYSTEM // INITIALIZE STUDIO ]</span>
+          </button>
+          <span class="execute-hint">Press [Enter] or [Space] to Execute</span>
         </div>
 
-        <div class="control-group">
-          <label class="control-label">Global Live Tag Color</label>
-          <div class="color-picker-row">
-            <input type="color" id="glob-tag-color-picker" class="color-swatch-input" value="#38bdf8" oninput="syncColorInput('glob-tag-color', this.value)" />
-            <input type="text" id="glob-tag-color" class="control-input hex-input" value="" maxlength="7" oninput="syncColorPicker('glob-tag-color-picker', this.value)" placeholder="Default theme" />
+        <!-- Ecosystem Projects & Repos Hub Directory -->
+        <div class="hub-grid">
+          <!-- Card 1: Readme Boss Bar Studio -->
+          <article class="hub-card">
+            <div class="hub-card-header">
+              <span class="hub-card-tag">// CURRENT ENGINE</span>
+              <span class="hub-card-glyph">⚔</span>
+            </div>
+            <h2 class="hub-card-title">Boss Bar Studio</h2>
+            <p class="hub-card-desc">Interactive real-time forge for multi-stage boss combat animations. Pure XML/SVG vector engine, Camo-safe, 6 visual aesthetics.</p>
+            <div class="hub-card-actions">
+              <button class="hub-btn hub-btn-primary" onclick="executeSystem()">Launch Studio</button>
+              <a class="hub-btn" href="https://github.com/SS2Genji/readme-boss-bar" target="_blank" rel="noopener">Repo ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 2: 42 Cursus Repositories -->
+          <article class="hub-card">
+            <div class="hub-card-header">
+              <span class="hub-card-tag">// 42 SCHOOL REPOS</span>
+              <span class="hub-card-glyph">⚡</span>
+            </div>
+            <h2 class="hub-card-title">42-Cursus Core</h2>
+            <p class="hub-card-desc">Rigorous low-level systems &amp; algorithms: Libft, ft_printf, push_swap (O(N log N) sorting derivations), get_next_line.</p>
+            <div class="hub-card-actions">
+              <button class="hub-btn hub-btn-primary" onclick="loadAndLaunch('school42')">Load 42 Preset</button>
+              <a class="hub-btn" href="https://github.com/SS2Genji/42-Cursus" target="_blank" rel="noopener">42 Repos ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 3: SS2Genji Mainframe Profile -->
+          <article class="hub-card">
+            <div class="hub-card-header">
+              <span class="hub-card-tag">// DEVELOPER MATRIX</span>
+              <span class="hub-card-glyph">◈</span>
+            </div>
+            <h2 class="hub-card-title">Ahmet Emir Şimşek</h2>
+            <p class="hub-card-desc">Creative Technologist, Systems Developer, and Digital Art Director. Exploration of procedural art and high-density HUD interfaces.</p>
+            <div class="hub-card-actions">
+              <a class="hub-btn hub-btn-primary" href="https://github.com/SS2Genji" target="_blank" rel="noopener">GitHub Profile ↗</a>
+            </div>
+          </article>
+
+          <!-- Card 4: Anti-AI Slop Manifesto -->
+          <article class="hub-card">
+            <div class="hub-card-header">
+              <span class="hub-card-tag">// DESIGN MANIFESTO</span>
+              <span class="hub-card-glyph">⌖</span>
+            </div>
+            <h2 class="hub-card-title">Anti-Slop Pipeline</h2>
+            <p class="hub-card-desc">Awwwards-level methodology: Rosa Menkman Glitch Theory, David Rudnick Primacism, 1-bit Ditherpunk &amp; Web Brutalism.</p>
+            <div class="hub-card-actions">
+              <button class="hub-btn hub-btn-primary" onclick="openManifesto()">Read Manifesto</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- VIEW 2: BOSS BAR STUDIO (FORGE WORKSPACE) -->
+      <main class="section-studio" id="view-studio">
+
+        <!-- Specimen Hero Preview Viewport -->
+        <section class="specimen-card">
+          <div class="specimen-header">
+            <div class="specimen-title">
+              <span class="dot-signal"></span> Real-Time Specimen Viewport
+            </div>
+            <div class="specimen-actions">
+              <button class="btn-action-sm" onclick="toggleViewportBg()" title="Toggle GitHub Dark / Light background mode">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+                <span>Toggle BG</span>
+              </button>
+              <button class="btn-action-sm" onclick="replayAnimation()" title="Restart combat animation">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                <span>Restart Battle</span>
+              </button>
+            </div>
           </div>
+
+          <div class="viewport" id="studio-viewport"></div>
+
+          <!-- Live Telemetry Stats -->
+          <div class="telemetry-row" id="preview-stats">
+            <div class="telemetry-pill">Aesthetic: <span id="stat-aesthetic">souls</span></div>
+            <div class="telemetry-pill">Stages: <span id="stat-stages">1</span></div>
+            <div class="telemetry-pill">Total Bars: <span id="stat-bars">10</span></div>
+            <div class="telemetry-pill">Total Hits: <span id="stat-hits">4</span></div>
+            <div class="telemetry-pill">Duration: <span id="stat-duration">4.5s</span></div>
+          </div>
+        </section>
+
+        <!-- 1-Click Tactile Export Bar -->
+        <section class="export-grid">
+          <button class="btn-export btn-export-primary" onclick="copyMarkdown()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+            <span>Copy Markdown for README</span>
+          </button>
+          <button class="btn-export btn-export-secondary" onclick="downloadSVG()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download SVG File</span>
+          </button>
+        </section>
+
+        <!-- Command Center Deck: Presets & Aesthetics -->
+        <div class="command-deck">
+          <!-- 1-Click Encounter Presets -->
+          <section class="tactical-card preset-section">
+            <div class="card-header-line">
+              <div class="card-title">
+                <span class="mark">⚔</span> Encounter Presets
+              </div>
+              <button class="btn-reset-defaults" id="btn-reset-defaults" onclick="resetToDefaults()" title="Reset all settings to default state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L2 9"/><path d="M3 3v6h6"/></svg>
+                <span>Reset to Defaults</span>
+              </button>
+            </div>
+            <div class="preset-pills">
+              <button class="btn-preset active" id="btn-p-single" onclick="loadPreset('single')">
+                <span class="preset-icon">⚡</span> Single Boss
+              </button>
+              <button class="btn-preset" id="btn-p-cyberpunk" onclick="loadPreset('cyberpunk')">
+                <span class="preset-icon">⌖</span> Cyber Mech
+              </button>
+              <button class="btn-preset" id="btn-p-bloodborne" onclick="loadPreset('bloodborne')">
+                <span class="preset-icon">†</span> Bloodborne
+              </button>
+              <button class="btn-preset" id="btn-p-pixel" onclick="loadPreset('pixel')">
+                <span class="preset-icon">▣</span> 8-Bit Arcade
+              </button>
+              <button class="btn-preset" id="btn-p-minimal" onclick="loadPreset('minimal')">
+                <span class="preset-icon">◇</span> Minimal
+              </button>
+              <button class="btn-preset" id="btn-p-school42" onclick="loadPreset('school42')">
+                <span class="preset-icon">42</span> 42 Milestone
+              </button>
+              <button class="btn-preset" id="btn-p-elden" onclick="loadPreset('eldenRing')">
+                <span class="preset-icon">⚔</span> Elden Ring
+              </button>
+              <button class="btn-preset" id="btn-p-demigod" onclick="loadPreset('demigod')">
+                <span class="preset-icon">▲</span> 3-Phase
+              </button>
+            </div>
+          </section>
+
+          <!-- Aesthetic Style Selector -->
+          <section class="tactical-card aesthetic-section">
+            <div class="card-header-line">
+              <div class="card-title">
+                <span class="mark">◈</span> Visual Aesthetic Style
+              </div>
+            </div>
+            <div class="aesthetic-pills">
+              <button class="btn-aesthetic" id="btn-a-classic" data-style="classic" onclick="selectAesthetic('classic')">
+                <span>Classic</span>
+                <span class="subtext">16-Bit RPG</span>
+              </button>
+              <button class="btn-aesthetic active" id="btn-a-souls" data-style="souls" onclick="selectAesthetic('souls')">
+                <span>Souls</span>
+                <span class="subtext">Gothic Filigree</span>
+              </button>
+              <button class="btn-aesthetic" id="btn-a-cyberpunk" data-style="cyberpunk" onclick="selectAesthetic('cyberpunk')">
+                <span>Cyberpunk</span>
+                <span class="subtext">Sci-Fi 45° HUD</span>
+              </button>
+              <button class="btn-aesthetic" id="btn-a-pixel" data-style="pixel" onclick="selectAesthetic('pixel')">
+                <span>Pixel</span>
+                <span class="subtext">8-Bit Arcade</span>
+              </button>
+              <button class="btn-aesthetic" id="btn-a-bloodborne" data-style="bloodborne" onclick="selectAesthetic('bloodborne')">
+                <span>Bloodborne</span>
+                <span class="subtext">Eldritch Horror</span>
+              </button>
+              <button class="btn-aesthetic" id="btn-a-minimal" data-style="minimal" onclick="selectAesthetic('minimal')">
+                <span>Minimal</span>
+                <span class="subtext">Modern Pill</span>
+              </button>
+            </div>
+          </section>
         </div>
 
-        <div class="control-group">
-          <label class="control-label">Global Felled Tag Color</label>
-          <div class="color-picker-row">
-            <input type="color" id="glob-tag-felled-color-picker" class="color-swatch-input" value="#f59e0b" oninput="syncColorInput('glob-tag-felled-color', this.value)" />
-            <input type="text" id="glob-tag-felled-color" class="control-input hex-input" value="" maxlength="7" oninput="syncColorPicker('glob-tag-felled-color-picker', this.value)" placeholder="Default theme" />
+        <!-- Encounter Phases Manager -->
+        <section class="stages-manager">
+          <div class="stages-header-line">
+            <div class="card-title">
+              <span class="mark">🛡</span> Encounter Phases
+            </div>
+            <button class="btn-add-stage" id="btn-add-stage" onclick="addStage()">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>Add Phase</span>
+            </button>
           </div>
-        </div>
+
+          <div id="stages-container" class="stages-manager"></div>
+        </section>
+
+        <!-- Global Combat, Banner & Tag Controls -->
+        <section class="tactical-card global-settings">
+          <div class="card-header-line">
+            <div class="card-title">
+              <span class="mark">⌁</span> Global Combat, Banners &amp; Tags
+            </div>
+          </div>
+          <div class="controls-grid">
+            <div class="control-group">
+              <label class="control-label">Damage Pop-up Text</label>
+              <input type="text" id="glob-dmgpop" class="control-input" value="-{N} BARS" oninput="updateStudio()" placeholder="-{N} BARS or false" />
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Damage Pop-up Color</label>
+              <div class="color-picker-row">
+                <input type="color" id="glob-dmgpop-color-picker" class="color-swatch-input" value="#facc15" oninput="syncColorInput('glob-dmgpop-color', this.value)" />
+                <input type="text" id="glob-dmgpop-color" class="control-input hex-input" value="#facc15" maxlength="7" oninput="syncColorPicker('glob-dmgpop-color-picker', this.value)" placeholder="#facc15" />
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Defeated Banner Color</label>
+              <div class="color-picker-row">
+                <input type="color" id="glob-felled-color-picker" class="color-swatch-input" value="#f59e0b" oninput="syncColorInput('glob-felled-color', this.value)" />
+                <input type="text" id="glob-felled-color" class="control-input hex-input" value="" maxlength="7" oninput="syncColorPicker('glob-felled-color-picker', this.value)" placeholder="Default theme" />
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Global Live Tag Color</label>
+              <div class="color-picker-row">
+                <input type="color" id="glob-tag-color-picker" class="color-swatch-input" value="#38bdf8" oninput="syncColorInput('glob-tag-color', this.value)" />
+                <input type="text" id="glob-tag-color" class="control-input hex-input" value="" maxlength="7" oninput="syncColorPicker('glob-tag-color-picker', this.value)" placeholder="Default theme" />
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Global Felled Tag Color</label>
+              <div class="color-picker-row">
+                <input type="color" id="glob-tag-felled-color-picker" class="color-swatch-input" value="#f59e0b" oninput="syncColorInput('glob-tag-felled-color', this.value)" />
+                <input type="text" id="glob-tag-felled-color" class="control-input hex-input" value="" maxlength="7" oninput="syncColorPicker('glob-tag-felled-color-picker', this.value)" placeholder="Default theme" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Markdown Code Inspector -->
+        <section class="code-viewer">
+          <div class="code-header">
+            <span>Markdown Embed (GitHub Profile README)</span>
+            <button class="btn-action-sm" onclick="copyMarkdown()">Copy</button>
+          </div>
+          <div class="code-box" id="code-markdown"></div>
+        </section>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Design Manifesto Modal Drawer -->
+  <div class="modal-backdrop" id="modal-manifesto" onclick="if(event.target === this) closeManifesto()">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeManifesto()">✕ CLOSE</button>
+      <div class="manifesto-body">
+        <h2>THE ANTI-SLOP DESIGN MANIFESTO</h2>
+        <p><strong>Awwwards / FWA Level Creative Engineering Framework</strong></p>
+        
+        <h3>1. AI as Component &amp; Math Co-Pilot</h3>
+        <p>Reject the "Age of Average" and generic pastel SaaS templates. We treat AI as an applied mathematician for GLSL shaders, non-Euclidean layouts, spring physics, and interaction architecture—not a lazy site generator.</p>
+
+        <h3>2. Cross-Disciplinary Semantics</h3>
+        <p>Grounded in Pascal Deville's Web Brutalism, 1-bit Ditherpunk low-tech constraints, and David Rudnick's Primacist theory. We employ high-density HUD telemetry, spiky biomechanical wireframes, and chiaroscuro tonal balance.</p>
+
+        <h3>3. Hybrid Creative Pipeline</h3>
+        <p>Four strict phases: Concept &amp; Manifesto &rarr; Procedural Textures &amp; Synthesis &rarr; Interaction &amp; Motion Math &rarr; Isolated Component Architecture.</p>
+
+        <h3>4. Web Wabi-Sabi &amp; Deliberate Imperfection</h3>
+        <p>Rosa Menkman Glitch Studies remind us that digital perfection is sterile. Micro analog scanlines, chromatic aberration vectors, and tactile procedural audio provide authentic weight.</p>
+
+        <h3>5. Strict 0-Slop Engineering Rules</h3>
+        <p>Pure SVG vectors. Zero <code>&lt;foreignObject&gt;</code> vulnerabilities. Camo-sanitizer verified. Zero bloated JavaScript frameworks.</p>
       </div>
-    </section>
-
-    <!-- Embed & Export Inspector -->
-    <section class="code-viewer">
-      <div class="code-row">
-        <div class="code-header">
-          <span>Markdown Embed (GitHub README)</span>
-          <button class="btn-small" onclick="copyMarkdown()">Copy</button>
-        </div>
-        <div class="code-box" id="code-markdown"></div>
-      </div>
-    </section>
+    </div>
   </div>
 
   <!-- Toast Notification -->
@@ -1186,11 +1678,270 @@
     <span>✔</span> <span id="toast-text">Copied to clipboard!</span>
   </div>
 
-  <!-- Include Generator -->
+  <!-- Generator Core Engine -->
   <script src="src/generator.js"></script>
 
-  <!-- Studio Application Logic -->
+  <!-- Studio & Synthesizer Application Script -->
   <script>
+    /* ==========================================================================
+       PROCEDURAL WEB AUDIO SYNTHESIZER
+       ========================================================================== */
+    class AudioSynthesizer {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playClick() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          const now = this.ctx.currentTime;
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(1400, now);
+          osc.frequency.exponentialRampToValueAtTime(160, now + 0.02);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.02);
+        } catch(e) {}
+      }
+      playHover() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          const now = this.ctx.currentTime;
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(3600, now);
+          gain.gain.setValueAtTime(0.015, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.008);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.008);
+        } catch(e) {}
+      }
+      playExecute() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const subOsc = this.ctx.createOscillator();
+          const subGain = this.ctx.createGain();
+          subOsc.type = 'sawtooth';
+          subOsc.frequency.setValueAtTime(50, now);
+          subOsc.frequency.exponentialRampToValueAtTime(140, now + 0.3);
+          subGain.gain.setValueAtTime(0.16, now);
+          subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          subOsc.connect(subGain);
+          subGain.connect(this.ctx.destination);
+          subOsc.start(now);
+          subOsc.stop(now + 0.35);
+
+          [220, 330, 440, 880].forEach((freq, i) => {
+            const o = this.ctx.createOscillator();
+            const g = this.ctx.createGain();
+            const t = now + 0.035 * i;
+            o.type = 'sine';
+            o.frequency.setValueAtTime(freq, t);
+            g.gain.setValueAtTime(0.05, t);
+            g.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+            o.connect(g);
+            g.connect(this.ctx.destination);
+            o.start(t);
+            o.stop(t + 0.08);
+          });
+        } catch(e) {}
+      }
+      playSwitch() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.setValueAtTime(880, now + 0.03);
+          gain.gain.setValueAtTime(0.03, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.06);
+        } catch(e) {}
+      }
+    }
+
+    const sound = new AudioSynthesizer();
+
+    function toggleAudio() {
+      sound.enabled = !sound.enabled;
+      document.getElementById('audio-label').innerText = sound.enabled ? 'AUDIO: ON' : 'AUDIO: MUTED';
+      document.getElementById('audio-icon').innerText = sound.enabled ? '♫' : '✕';
+      if (sound.enabled) sound.playClick();
+      showToast(sound.enabled ? "Synthesized sound effects enabled" : "Sound effects muted");
+    }
+
+    /* ==========================================================================
+       PROCEDURAL CANVAS BACKGROUND (BAYER MATRIX & SCANLINES)
+       ========================================================================== */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let cWidth = 0, cHeight = 0;
+    let mouse = { x: -1000, y: -1000, vx: 0, vy: 0, lastX: 0, lastY: 0, speed: 0 };
+    let time = 0;
+    let glitchIntensity = 0;
+
+    function resizeCanvas() {
+      cWidth = canvas.width = window.innerWidth;
+      cHeight = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    window.addEventListener('mousemove', (e) => {
+      const dx = e.clientX - mouse.lastX;
+      const dy = e.clientY - mouse.lastY;
+      mouse.speed = Math.hypot(dx, dy);
+      mouse.lastX = e.clientX;
+      mouse.lastY = e.clientY;
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      if (mouse.speed > 55) {
+        glitchIntensity = Math.min(1, glitchIntensity + 0.25);
+      }
+    });
+
+    function drawCanvas() {
+      time += 0.015;
+      glitchIntensity *= 0.94;
+      ctx.fillStyle = '#010204';
+      ctx.fillRect(0, 0, cWidth, cHeight);
+
+      // Micro Data Grid
+      const gridSize = 36;
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
+      ctx.beginPath();
+      for (let x = 0; x < cWidth; x += gridSize) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, cHeight);
+      }
+      for (let y = 0; y < cHeight; y += gridSize) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(cWidth, y);
+      }
+      ctx.stroke();
+
+      // Precision Reticle Markers at Grid Intersections
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+      for (let x = 0; x < cWidth; x += gridSize * 3) {
+        for (let y = 0; y < cHeight; y += gridSize * 3) {
+          ctx.fillRect(x - 2, y, 5, 1);
+          ctx.fillRect(x, y - 2, 1, 5);
+        }
+      }
+
+      // Cursor Reactive Vector Field
+      if (mouse.x > 0) {
+        const grad = ctx.createRadialGradient(mouse.x, mouse.y, 8, mouse.x, mouse.y, 240);
+        grad.addColorStop(0, 'rgba(0, 240, 255, 0.04)');
+        grad.addColorStop(0.6, 'rgba(245, 158, 11, 0.012)');
+        grad.addColorStop(1, 'transparent');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, cWidth, cHeight);
+      }
+
+      // Stochastic Micro Glitch Scanlines
+      if (glitchIntensity > 0.04) {
+        ctx.fillStyle = 'rgba(255, 0, 60, ' + (glitchIntensity * 0.06) + ')';
+        const gy = (time * 600) % cHeight;
+        ctx.fillRect(0, gy, cWidth, 2 + Math.random() * 6);
+        ctx.fillStyle = 'rgba(0, 240, 255, ' + (glitchIntensity * 0.06) + ')';
+        ctx.fillRect(0, (gy + 14) % cHeight, cWidth, 1 + Math.random() * 3);
+      }
+
+      requestAnimationFrame(drawCanvas);
+    }
+    requestAnimationFrame(drawCanvas);
+
+    /* ==========================================================================
+       VIEW & GATEWAY MANAGEMENT
+       ========================================================================== */
+    let currentView = 'hub';
+
+    function switchView(viewName) {
+      currentView = viewName;
+      sound.playSwitch();
+      document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
+      const activeTab = document.getElementById('tab-' + viewName);
+      if (activeTab) activeTab.classList.add('active');
+
+      const hubEl = document.getElementById('view-gateway');
+      const studioEl = document.getElementById('view-studio');
+
+      if (viewName === 'hub') {
+        hubEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        studioEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function executeSystem() {
+      sound.playExecute();
+      switchView('studio');
+      showToast("⚡ System Executed: Boss Bar Studio Initialized");
+    }
+
+    function loadAndLaunch(presetKey) {
+      loadPreset(presetKey);
+      executeSystem();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.code === 'Space' || e.code === 'Enter') {
+        if (currentView === 'hub') {
+          e.preventDefault();
+          executeSystem();
+        }
+      }
+    });
+
+    function openManifesto() {
+      sound.playClick();
+      document.getElementById('modal-manifesto').classList.add('open');
+    }
+
+    function closeManifesto() {
+      sound.playClick();
+      document.getElementById('modal-manifesto').classList.remove('open');
+    }
+
+    /* ==========================================================================
+       STUDIO CORE LOGIC & TEST CONTRACT IMPLEMENTATION
+       ========================================================================== */
     const THEME_COLORS = {
       crimson: '#dc2626',
       purple: '#9333ea',
@@ -1420,6 +2171,7 @@
     function copyToClipboard(text, successMsg) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(() => {
+          sound.playClick();
           showToast(successMsg);
         }).catch(() => fallbackCopy(text, successMsg));
       } else {
@@ -1438,6 +2190,7 @@
       el.select();
       try {
         document.execCommand('copy');
+        sound.playClick();
         showToast(successMsg);
       } catch (err) {
         showToast('❌ Copy failed');
@@ -1451,6 +2204,7 @@
 
     function downloadSVG() {
       if (!currentSvg) return;
+      sound.playClick();
       const blob = new Blob([currentSvg], { type: 'image/svg+xml;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -1464,6 +2218,7 @@
     }
 
     function toggleViewportBg() {
+      sound.playClick();
       isLightBg = !isLightBg;
       const vp = document.getElementById('studio-viewport');
       vp.style.background = isLightBg ? '#ffffff' : '#0d1117';
@@ -1472,14 +2227,16 @@
     }
 
     function replayAnimation() {
+      sound.playClick();
       const vp = document.getElementById('studio-viewport');
       vp.innerHTML = '';
-      void vp.offsetHeight; // trigger reflow
+      void vp.offsetHeight;
       vp.innerHTML = currentSvg;
       showToast("🔄 Animation restarted");
     }
 
     function selectAesthetic(styleName) {
+      sound.playClick();
       currentAesthetic = styleName;
       clearActivePreset();
       document.querySelectorAll('.btn-aesthetic').forEach(btn => {
@@ -1531,6 +2288,7 @@
     }
 
     function resetToDefaults() {
+      sound.playClick();
       document.getElementById('glob-dmgpop').value = '-{N} BARS';
       document.getElementById('glob-dmgpop-color').value = '#facc15';
       document.getElementById('glob-dmgpop-color-picker').value = '#facc15';
@@ -1552,6 +2310,7 @@
     }
 
     function loadPreset(presetKey) {
+      sound.playClick();
       activePreset = presetKey;
       document.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
       const activeBtn = document.getElementById('btn-p-' + (presetKey === 'eldenRing' ? 'elden' : presetKey));
@@ -1576,6 +2335,7 @@
     }
 
     function addStage() {
+      sound.playClick();
       clearActivePreset();
       const idx = stages.length;
       const themeKeys = Object.keys(THEME_COLORS);
@@ -1597,6 +2357,7 @@
 
     function removeStage(index) {
       if (stages.length <= 1) return;
+      sound.playClick();
       clearActivePreset();
       stages.splice(index, 1);
       renderStages();
@@ -1661,7 +2422,7 @@
         card.innerHTML = `
           <div class="stage-card-header">
             <div class="stage-card-title">
-              <span class="badge badge-gold">Phase ${idx + 1}</span>
+              <span class="stage-badge">Phase ${idx + 1}</span>
               <span id="stage-title-${idx}">${escapeHtml(st.name)}</span>
             </div>
             <button class="btn-remove-stage" ${isOnly ? 'disabled' : ''} onclick="removeStage(${idx})" title="Remove phase">
@@ -1767,7 +2528,7 @@
 
             <div class="subcard-box">
               <div class="subcard-title">
-                <span class="glyph-mark">◈</span> Status Tags &amp; Emblem Badges
+                <span>◈</span> Status Tags &amp; Emblem Badges
               </div>
               <div class="subcard-grid">
                 <div class="control-group">
@@ -1809,6 +2570,7 @@
 
     function selectStageTheme(index, color) {
       if (!stages[index]) return;
+      sound.playClick();
       stages[index].barColor = color;
       clearActivePreset();
       const swatches = document.querySelectorAll(`#swatches-${index} .swatch`);
@@ -1837,6 +2599,7 @@
 
     function selectStageShake(index, shake) {
       if (!stages[index]) return;
+      sound.playClick();
       stages[index].shake = shake;
       clearActivePreset();
       const card = document.getElementById(`stage-card-${index}`);
@@ -2024,7 +2787,6 @@
       document.getElementById('code-markdown').innerText = currentMd;
     }
 
-    // Initialize from URL or defaults
     function initStudio() {
       renderStages();
       updateStudio();
