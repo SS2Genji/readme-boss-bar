@@ -241,6 +241,36 @@ async function runBrowserTests() {
           await new Promise(r => setTimeout(r, 100));
           assert(document.getElementById('toast-text').innerText.includes('Copied'), 'Copy CLI triggered');
 
+          // Toggle Viewport BG
+          toggleViewportBg();
+          assert(isLightBg === true, 'Light background toggled');
+          assert(vp.style.background.includes('255') || vp.style.background.includes('fff'), 'Viewport background is light');
+          toggleViewportBg();
+          assert(isLightBg === false, 'Dark background restored');
+
+          // Replay animation
+          replayAnimation();
+          assert(document.getElementById('toast-text').innerText.includes('restarted'), 'Replay toast shown');
+
+          // Multi-stage accumulation then reset
+          addStage();
+          addStage();
+          assert(stages.length === 3, 'Accumulated 3 stages');
+          resetBtn.click();
+          assert(stages.length === 1, 'Reset pruned extra stages down to 1');
+          assert(stages[0].name === 'STARCOURGE RADAHN', 'Reset restored single stage Radahn');
+          assert(currentAesthetic === 'souls', 'Reset restored souls aesthetic');
+          assert(isLightBg === false, 'Reset kept dark background');
+
+          // Verify all 8 presets load cleanly
+          ['single', 'cyberpunk', 'bloodborne', 'pixel', 'minimal', 'school42', 'eldenRing', 'demigod'].forEach(p => {
+            loadPreset(p);
+            assert(stages.length >= 1, 'Loaded preset ' + p);
+            assert(vp.innerHTML.includes('<svg'), 'Preset ' + p + ' renders valid SVG');
+          });
+          resetBtn.click();
+          assert(stages[0].name === 'STARCOURGE RADAHN', 'Final reset back to pristine single Radahn');
+
           return { success: true, count: checks.length };
         })()
       `,
