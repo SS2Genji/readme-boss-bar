@@ -84,12 +84,14 @@ async function runBrowserTests() {
             checks.push(msg);
           }
 
-          // --- 1. Initial Gateway Screen & Execution Assertions ---
+          // --- 1. Initial Gateway Screen, Single Execution & HUD Cleanup Assertions ---
           const gatewayEl = document.getElementById('view-gateway');
           const studioEl = document.getElementById('view-studio');
           assert(gatewayEl, 'Gateway hero section exists');
           assert(window.getComputedStyle(gatewayEl).display !== 'none', 'Initial state: #view-gateway is visible');
           assert(window.getComputedStyle(studioEl).display === 'none', 'Initial state: #view-studio is hidden');
+          assert(hasExecuted === false, 'Initial state: hasExecuted is false');
+          assert(currentView === 'hub', 'Initial state: currentView is hub');
 
           // Verify Vector cyber-sigil crest emblem rendered
           const sigil = document.querySelector('.sigil-crest-wrap');
@@ -105,82 +107,73 @@ async function runBrowserTests() {
           assert(!document.querySelector('.gateway-telemetry-badge'), 'Telemetry badge removed from DOM');
           assert(!document.querySelector('.gateway-manifesto-sub'), 'Manifesto subtitle quote removed from DOM');
 
-          // Test Transition via Enter key
+          // Verify removed navigation tabs, deck & manifesto elements are completely absent
+          assert(!document.querySelector('.hud-nav'), '.hud-nav removed from DOM');
+          assert(!document.querySelector('.view-switcher-deck'), '.view-switcher-deck removed from DOM');
+          assert(!document.getElementById('modal-manifesto'), '#modal-manifesto removed from DOM');
+          assert(!document.getElementById('tab-hub-nav'), '#tab-hub-nav removed from DOM');
+          assert(!document.getElementById('tab-studio-nav'), '#tab-studio-nav removed from DOM');
+          assert(!document.getElementById('tab-hub'), '#tab-hub removed from DOM');
+          assert(!document.getElementById('tab-studio'), '#tab-studio removed from DOM');
+          assert(typeof openManifesto === 'undefined', 'openManifesto function removed');
+          assert(typeof closeManifesto === 'undefined', 'closeManifesto function removed');
+          assert(!Array.from(document.querySelectorAll('.hud-actions button')).some(b => b.textContent.includes('MANIFESTO')), 'Manifesto button removed from HUD');
+
+          // Verify Top Left Telemetry contains ONLY "BOSS BAR"
+          const sysNameEl = document.querySelector('.hud-telemetry .sys-name');
+          assert(sysNameEl && sysNameEl.textContent.trim() === 'BOSS BAR', 'sys-name contains strictly BOSS BAR');
+          assert(!document.querySelector('.hud-telemetry .tag-pill'), 'tag-pill spans removed from hud-telemetry');
+          assert(!document.querySelector('.hud-telemetry').textContent.includes('AVANT-GARDE'), 'AVANT-GARDE studio removed from telemetry');
+          assert(!document.querySelector('.hud-telemetry').textContent.includes('ENGINE:'), 'ENGINE: v0.2.0 removed from telemetry');
+          assert(!document.querySelector('.hud-telemetry').textContent.includes('SEC:'), 'SEC: PURE-SVG 100% removed from telemetry');
+
+          // Test Entry via Enter key (One-Way Gateway Entry)
           window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter' }));
+          assert(hasExecuted === true, 'hasExecuted flag flipped to true on entry');
           assert(currentView === 'studio', 'Enter key set currentView to studio');
           assert(window.getComputedStyle(gatewayEl).display === 'none', 'Enter key hid #view-gateway');
           assert(window.getComputedStyle(studioEl).display !== 'none', 'Enter key revealed #view-studio');
+          assert(glitchIntensity > 0.5, 'executeSystem triggered initial shader glitch burst');
 
-          // Switch back to hub
-          switchView('hub');
-          assert(currentView === 'hub', 'Switched back to hub');
-          assert(window.getComputedStyle(gatewayEl).display !== 'none', 'Gateway visible after switchView(hub)');
-          assert(window.getComputedStyle(studioEl).display === 'none', 'Studio hidden after switchView(hub)');
+          // Reset glitch and sentinel toast to test single execution idempotency
+          glitchIntensity = 0;
+          document.getElementById('toast-text').innerText = 'SENTINEL_UNCHANGED';
 
-          // Test Transition via Space key
+          // Test: Space key in studio must NEVER re-open hub or re-trigger sound/glitch/toast
           window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Space' }));
-          assert(currentView === 'studio', 'Space key set currentView to studio');
-          assert(window.getComputedStyle(gatewayEl).display === 'none', 'Space key hid #view-gateway');
-          assert(window.getComputedStyle(studioEl).display !== 'none', 'Space key revealed #view-studio');
+          assert(currentView === 'studio', 'Space key in studio did NOT re-open hub');
+          assert(window.getComputedStyle(gatewayEl).display === 'none', 'Gateway remains hidden on Space');
+          assert(glitchIntensity === 0, 'Space key did not re-trigger glitch intensity');
+          assert(document.getElementById('toast-text').innerText === 'SENTINEL_UNCHANGED', 'Space key did not re-trigger toast');
 
-          // Switch back to hub
-          switchView('hub');
+          // Test: Enter key in studio must NEVER re-trigger
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter' }));
+          assert(currentView === 'studio', 'Enter key in studio did NOT re-open hub');
+          assert(glitchIntensity === 0, 'Enter key did not re-trigger glitch intensity');
+          assert(document.getElementById('toast-text').innerText === 'SENTINEL_UNCHANGED', 'Enter key did not re-trigger toast');
 
-          // Test Transition via clicking on gateway
-          gatewayEl.click();
-          assert(currentView === 'studio', 'Gateway click set currentView to studio');
-          assert(window.getComputedStyle(gatewayEl).display === 'none', 'Gateway click hid #view-gateway');
-          assert(window.getComputedStyle(studioEl).display !== 'none', 'Gateway click revealed #view-studio');
-
-          // Switch back to hub
-          switchView('hub');
-
-          // Test Transition via executeSystem() directly
-          executeSystem();
-          assert(currentView === 'studio', 'executeSystem() set currentView to studio');
-          assert(document.getElementById('tab-studio').classList.contains('active'), 'Studio tab active');
-          assert(window.getComputedStyle(gatewayEl).display === 'none', 'executeSystem() hid #view-gateway');
-          assert(window.getComputedStyle(studioEl).display !== 'none', 'executeSystem() revealed #view-studio');
-          assert(glitchIntensity > 0.5, 'executeSystem triggered shader glitch burst');
-
-          // Test Escape key inside studio returns to hub
+          // Test: Escape key in studio must NEVER re-open hub
           window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape' }));
-          assert(currentView === 'hub', 'Escape key in studio switched back to hub');
-          assert(window.getComputedStyle(gatewayEl).display !== 'none', 'Gateway visible after Escape');
-          assert(window.getComputedStyle(studioEl).display === 'none', 'Studio hidden after Escape');
+          assert(currentView === 'studio', 'Escape key in studio did NOT re-open hub');
+          assert(window.getComputedStyle(gatewayEl).display === 'none', 'Gateway remains hidden on Escape');
 
-          // Test Manifesto Modal isolation on Gateway: backdrop click, close btn, Space key, Escape key
-          const manifestoModal = document.getElementById('modal-manifesto');
-          assert(manifestoModal, 'Manifesto modal element exists');
-          openManifesto();
-          assert(manifestoModal.classList.contains('open'), 'Manifesto modal opened');
-          assert(currentView === 'hub', 'currentView remains hub when modal opens');
+          // Test: Document click in studio must NEVER re-trigger execution
+          document.body.click();
+          assert(currentView === 'studio', 'Body click did not switch view');
+          assert(glitchIntensity === 0, 'Body click did not re-trigger glitch intensity');
+          assert(document.getElementById('toast-text').innerText === 'SENTINEL_UNCHANGED', 'Body click did not re-trigger toast');
 
-          // Space key while modal is open should NOT execute system
-          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Space' }));
-          assert(currentView === 'hub', 'Space key while modal is open did NOT execute system');
-          assert(manifestoModal.classList.contains('open'), 'Modal still open after Space key');
-
-          // Escape key while modal is open should close modal and remain on hub
-          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape' }));
-          assert(!manifestoModal.classList.contains('open'), 'Escape key closed manifesto modal');
-          assert(currentView === 'hub', 'currentView remains hub after closing modal via Escape');
-
-          // Backdrop click should close modal and NOT execute system
-          openManifesto();
-          manifestoModal.click();
-          assert(!manifestoModal.classList.contains('open'), 'Backdrop click closed modal');
-          assert(currentView === 'hub', 'Backdrop click did NOT execute system');
-
-          // Close button click should close modal and NOT execute system
-          openManifesto();
-          document.querySelector('.modal-close-btn').click();
-          assert(!manifestoModal.classList.contains('open'), 'Close button closed modal');
-          assert(currentView === 'hub', 'Close button did NOT execute system');
-
-          // Finally enter studio for remaining tests
+          // Test: Direct executeSystem() call is idempotent
           executeSystem();
-          assert(currentView === 'studio', 'Re-entered studio for studio testing');
+          assert(currentView === 'studio', 'Subsequent executeSystem() stays in studio');
+          assert(glitchIntensity === 0, 'Subsequent executeSystem() does not re-glitch');
+          assert(document.getElementById('toast-text').innerText === 'SENTINEL_UNCHANGED', 'Subsequent executeSystem() does not re-toast');
+
+          // Test: switchView('hub') is strictly blocked once executed
+          switchView('hub');
+          assert(currentView === 'studio', 'switchView(hub) strictly blocked once executed');
+          assert(window.getComputedStyle(gatewayEl).display === 'none', 'Gateway remains hidden after switchView(hub)');
+          assert(window.getComputedStyle(studioEl).display !== 'none', 'Studio remains displayed after switchView(hub)');
 
           // --- 2. Purge ALL Emojis Assertions ---
           const forbiddenChars = ['⚔', '⚡', '⌖', '†', '▣', '◇', '▲', '◈', '♫', '✕', '↗', '✔', '🔄', '◐', '🌙', '❌', '🛡', '⌁'];
@@ -432,14 +425,9 @@ async function runBrowserTests() {
           assert(sound.enabled === true, 'Audio toggled back to ON');
           assert(document.getElementById('audio-label').innerText === 'AUDIO: ON', 'Audio label shows ON');
 
-          // Verify Design Manifesto Modal
-          const modal = document.getElementById('modal-manifesto');
-          assert(modal, 'Manifesto modal exists');
-          assert(!modal.classList.contains('open'), 'Manifesto modal closed initially');
-          openManifesto();
-          assert(modal.classList.contains('open'), 'Manifesto modal opened via openManifesto');
-          closeManifesto();
-          assert(!modal.classList.contains('open'), 'Manifesto modal closed via closeManifesto');
+          // Verify Design Manifesto Modal and trigger button are completely absent
+          assert(!document.getElementById('modal-manifesto'), 'Manifesto modal absent from DOM');
+          assert(!document.querySelector('.modal-backdrop'), 'No modal backdrop in DOM');
 
           // Verify Canvas Background
           const bgCanvas = document.getElementById('bg-canvas');
