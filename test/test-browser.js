@@ -84,6 +84,92 @@ async function runBrowserTests() {
             checks.push(msg);
           }
 
+          // --- 1. Initial Gateway Screen & Execution Assertions ---
+          const gatewayEl = document.getElementById('view-gateway');
+          const studioEl = document.getElementById('view-studio');
+          assert(gatewayEl, 'Gateway hero section exists');
+          assert(window.getComputedStyle(gatewayEl).display !== 'none', 'Initial state: #view-gateway is visible');
+          assert(window.getComputedStyle(studioEl).display === 'none', 'Initial state: #view-studio is hidden');
+
+          // Verify Vector cyber-sigil crest emblem rendered
+          const sigil = document.querySelector('.sigil-crest-wrap');
+          assert(sigil, 'Vector cyber-sigil crest emblem rendered');
+
+          const executeBtn = document.querySelector('.btn-execute-system');
+          assert(executeBtn, 'Tactical execute system button exists');
+
+          // Verify removed gateway hub elements and manifesto quote are absent
+          assert(!document.querySelector('.hub-grid'), 'Hub grid removed from DOM');
+          assert(document.querySelectorAll('.hub-card').length === 0, 'No hub cards in DOM');
+          assert(!document.querySelector('.hub-btn'), 'Hub buttons removed from DOM');
+          assert(!document.querySelector('.gateway-telemetry-badge'), 'Telemetry badge removed from DOM');
+          assert(!document.querySelector('.gateway-manifesto-sub'), 'Manifesto subtitle quote removed from DOM');
+
+          // Test Transition via Enter key
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter' }));
+          assert(currentView === 'studio', 'Enter key set currentView to studio');
+          assert(window.getComputedStyle(gatewayEl).display === 'none', 'Enter key hid #view-gateway');
+          assert(window.getComputedStyle(studioEl).display !== 'none', 'Enter key revealed #view-studio');
+
+          // Switch back to hub
+          switchView('hub');
+          assert(currentView === 'hub', 'Switched back to hub');
+          assert(window.getComputedStyle(gatewayEl).display !== 'none', 'Gateway visible after switchView(hub)');
+          assert(window.getComputedStyle(studioEl).display === 'none', 'Studio hidden after switchView(hub)');
+
+          // Test Transition via Space key
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Space' }));
+          assert(currentView === 'studio', 'Space key set currentView to studio');
+          assert(window.getComputedStyle(gatewayEl).display === 'none', 'Space key hid #view-gateway');
+          assert(window.getComputedStyle(studioEl).display !== 'none', 'Space key revealed #view-studio');
+
+          // Switch back to hub
+          switchView('hub');
+
+          // Test Transition via clicking on gateway
+          gatewayEl.click();
+          assert(currentView === 'studio', 'Gateway click set currentView to studio');
+          assert(window.getComputedStyle(gatewayEl).display === 'none', 'Gateway click hid #view-gateway');
+          assert(window.getComputedStyle(studioEl).display !== 'none', 'Gateway click revealed #view-studio');
+
+          // Switch back to hub
+          switchView('hub');
+
+          // Test Transition via executeSystem() directly
+          executeSystem();
+          assert(currentView === 'studio', 'executeSystem() set currentView to studio');
+          assert(document.getElementById('tab-studio').classList.contains('active'), 'Studio tab active');
+          assert(window.getComputedStyle(gatewayEl).display === 'none', 'executeSystem() hid #view-gateway');
+          assert(window.getComputedStyle(studioEl).display !== 'none', 'executeSystem() revealed #view-studio');
+          assert(glitchIntensity > 0.5, 'executeSystem triggered shader glitch burst');
+
+          // --- 2. Purge ALL Emojis Assertions ---
+          const forbiddenChars = ['⚔', '⚡', '⌖', '†', '▣', '◇', '▲', '◈', '♫', '✕', '↗', '✔', '🔄', '◐', '🌙', '❌', '🛡', '⌁'];
+          const emojiRegex = /[\u{1F300}-\u{1F9FF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u;
+
+          function assertNoEmoji(el, label) {
+            if (!el) return;
+            const txt = el.textContent || '';
+            assert(!emojiRegex.test(txt), 'No emoji in ' + label + ': ' + txt.trim());
+            for (const ch of forbiddenChars) {
+              assert(!txt.includes(ch), 'Forbidden char ' + ch + ' not in ' + label + ': ' + txt.trim());
+            }
+          }
+
+          document.querySelectorAll('.btn-preset').forEach((btn, idx) => {
+            assertNoEmoji(btn, 'preset button ' + idx);
+          });
+          document.querySelectorAll('h1, h2, h3, .card-title, .stages-header-line, .subcard-title').forEach((h, idx) => {
+            assertNoEmoji(h, 'header ' + idx);
+          });
+          document.querySelectorAll('button, .btn-tab, .btn-hud, .btn-action-sm, .btn-execute-system').forEach((b, idx) => {
+            assertNoEmoji(b, 'button ' + idx);
+          });
+          assertNoEmoji(document.querySelector('.preset-section'), 'Encounter Presets section');
+          assertNoEmoji(document.querySelector('.hud-bar'), 'HUD bar');
+          assertNoEmoji(document.querySelector('.section-gateway'), 'Gateway section');
+
+          // --- 3. Studio Engine & Controls Assertions ---
           const vp = document.getElementById('studio-viewport');
           assert(vp && vp.innerHTML.includes('STARCOURGE RADAHN'), 'Initial Radahn SVG rendered');
           assert(vp.innerHTML.includes('DEMIGOD FELLED'), 'Preset 1 victory banner rendered');
@@ -295,34 +381,6 @@ async function runBrowserTests() {
           // Re-reset before ending
           resetBtn.click();
           assert(stages[0].name === 'STARCOURGE RADAHN', 'Clean final reset');
-
-          // --- Gateway, Hub Ecosystem & Avant-Garde Infrastructure Assertions ---
-          const gatewayEl = document.getElementById('view-gateway');
-          assert(gatewayEl, 'Gateway hero section exists');
-          const sigil = document.querySelector('.sigil-crest-wrap');
-          assert(sigil, 'Vector cyber-sigil crest emblem rendered');
-
-          const executeBtn = document.querySelector('.btn-execute-system');
-          assert(executeBtn, 'Tactical execute system button exists');
-
-          // Verify removed gateway hub elements and manifesto quote are absent
-          assert(!document.querySelector('.hub-grid'), 'Hub grid removed from DOM');
-          assert(document.querySelectorAll('.hub-card').length === 0, 'No hub cards in DOM');
-          assert(!document.querySelector('.hub-btn'), 'Hub buttons removed from DOM');
-          assert(!document.querySelector('.gateway-telemetry-badge'), 'Telemetry badge removed from DOM');
-          assert(!document.querySelector('.gateway-manifesto-sub'), 'Manifesto subtitle quote removed from DOM');
-
-          // Verify View Navigation & Execute System
-          switchView('hub');
-          assert(currentView === 'hub', 'Switched to hub view');
-          assert(document.getElementById('tab-hub').classList.contains('active'), 'Hub tab active');
-
-          executeSystem();
-          assert(currentView === 'studio', 'executeSystem transitioned to studio');
-          assert(document.getElementById('tab-studio').classList.contains('active'), 'Studio tab active');
-          assert(glitchIntensity > 0.5, 'executeSystem triggered shader glitch burst');
-
-          switchView('hub');
 
           // Verify Web Audio Synthesizer & Audio Toggle
           assert(sound && typeof sound.playClick === 'function', 'Audio synthesizer loaded');

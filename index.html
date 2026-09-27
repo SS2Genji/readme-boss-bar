@@ -114,7 +114,6 @@
       align-items: center;
       width: 100%;
       min-height: 100vh;
-      padding-bottom: 80px;
     }
 
     /* Fixed Telemetry & Global HUD Bar */
@@ -224,10 +223,10 @@
     .container {
       width: 100%;
       max-width: 1080px;
-      padding: 24px 16px 0;
+      padding: 0 16px;
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 24px;
     }
 
     /* View Switcher Deck */
@@ -277,10 +276,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       text-align: center;
-      gap: 24px;
+      gap: 28px;
       position: relative;
-      padding: 20px 0 10px;
+      min-height: calc(100vh - 50px);
+      width: 100%;
+      cursor: pointer;
+      user-select: none;
+      padding: 24px 16px;
     }
 
     /* Vector Cyber-Sigil / Primacist Emblem */
@@ -397,10 +401,12 @@
 
     /* SECTION 2: BOSS BAR STUDIO (FORGE WORKSPACE) */
     .section-studio {
-      display: flex;
+      display: none;
       flex-direction: column;
       gap: 20px;
       width: 100%;
+      padding-top: 20px;
+      padding-bottom: 80px;
     }
 
     /* Specimen Viewport (Hero Preview Sanctum) */
@@ -702,24 +708,16 @@
       background: var(--void-input);
       border: 1px solid var(--border-ghost);
       color: var(--signal-bright);
-      padding: 7px 9px;
+      padding: 7px 12px;
       border-radius: 2px;
       font-family: var(--font-mono);
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
       transition: all 0.15s ease;
-    }
-    .btn-preset .preset-icon {
-      font-family: var(--font-mono);
-      font-weight: 800;
-      font-size: 11px;
-      color: var(--cyan-core);
-      width: 14px;
-      text-align: center;
     }
     .btn-preset:hover {
       background: var(--void-3);
@@ -731,9 +729,6 @@
       border-color: var(--cyan-core);
       color: #fff;
       box-shadow: 0 0 14px rgba(0, 240, 255, 0.3);
-    }
-    .btn-preset.active .preset-icon {
-      color: var(--amber-bright);
     }
 
     /* Aesthetic Selector Bar */
@@ -1222,39 +1217,30 @@
       </div>
       <nav class="hud-nav" aria-label="Global View Quick Switcher">
         <button class="btn-tab active" id="tab-hub-nav" onclick="switchView('hub')">
-          <span>⚡</span> <span>MAIN HUB</span>
+          <span>MAIN HUB</span>
         </button>
         <button class="btn-tab" id="tab-studio-nav" onclick="switchView('studio')">
-          <span>⚔</span> <span>FORGE STUDIO</span>
+          <span>FORGE STUDIO</span>
         </button>
       </nav>
       <div class="hud-actions">
         <button class="btn-hud" id="btn-toggle-audio" onclick="toggleAudio()" title="Toggle synthesized procedural sound effects">
-          <span id="audio-icon">♫</span> <span id="audio-label">AUDIO: ON</span>
+          <span id="audio-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
+          <span id="audio-label">AUDIO: ON</span>
         </button>
         <button class="btn-hud" onclick="openManifesto()" title="Inspect design manifesto and anti-slop rules">
-          <span>◈</span> <span>MANIFESTO</span>
+          <span>MANIFESTO</span>
         </button>
         <a class="btn-hud" href="https://github.com/SS2Genji/readme-boss-bar" target="_blank" rel="noopener" title="Source repository">
-          <span>↗</span> <span>GITHUB</span>
+          <span>GITHUB</span>
         </a>
       </div>
     </header>
 
     <div class="container">
 
-      <!-- View Switcher Deck: Hub / Gateway vs Forge Studio -->
-      <nav class="view-switcher-deck" aria-label="Sanctum Navigation">
-        <button class="btn-tab active" id="tab-hub" onclick="switchView('hub')">
-          <span>⚡</span> <span>MAIN HUB &amp; GATEWAY</span>
-        </button>
-        <button class="btn-tab" id="tab-studio" onclick="switchView('studio')">
-          <span>⚔</span> <span>BOSS BAR FORGE</span>
-        </button>
-      </nav>
-
       <!-- VIEW 1: MAIN HUB & GATEWAY HERO -->
-      <section class="section-gateway" id="view-gateway">
+      <section class="section-gateway" id="view-gateway" onclick="executeSystem()">
         <!-- Biomechanical Vector Sigil Crest -->
         <div class="sigil-crest-wrap">
           <svg class="sigil-svg" viewBox="0 0 200 200" fill="none">
@@ -1273,7 +1259,12 @@
             <polygon points="24,100 32,105 32,95" fill="#00f0ff" />
             <polygon points="176,100 168,105 168,95" fill="#00f0ff" />
           </svg>
-          <div class="sigil-center-core">⚔</div>
+          <div class="sigil-center-core">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polygon points="12 2 22 12 12 22 2 12" fill="rgba(245, 158, 11, 0.25)"/>
+              <circle cx="12" cy="12" r="3" fill="#f59e0b"/>
+            </svg>
+          </div>
         </div>
 
         <div class="gateway-title-block">
@@ -1283,14 +1274,24 @@
         <!-- Primary Action Gate: [ EXECUTE SYSTEM ] -->
         <div class="execute-system-box">
           <button class="btn-execute-system" id="btn-execute-system" onclick="executeSystem()">
-            <span>[ ⚡ EXECUTE SYSTEM // INITIALIZE STUDIO ]</span>
+            <span>[ EXECUTE SYSTEM // INITIALIZE STUDIO ]</span>
           </button>
           <span class="execute-hint">Press [Enter] or [Space] to Execute</span>
         </div>
       </section>
 
       <!-- VIEW 2: BOSS BAR STUDIO (FORGE WORKSPACE) -->
-      <main class="section-studio" id="view-studio">
+      <main class="section-studio" id="view-studio" style="display: none;">
+
+        <!-- View Switcher Deck: Hub / Gateway vs Forge Studio -->
+        <nav class="view-switcher-deck" aria-label="Sanctum Navigation">
+          <button class="btn-tab active" id="tab-hub" onclick="switchView('hub')">
+            <span>MAIN HUB &amp; GATEWAY</span>
+          </button>
+          <button class="btn-tab" id="tab-studio" onclick="switchView('studio')">
+            <span>BOSS BAR FORGE</span>
+          </button>
+        </nav>
 
         <!-- Specimen Hero Preview Viewport -->
         <section class="specimen-card">
@@ -1340,7 +1341,7 @@
           <section class="tactical-card preset-section">
             <div class="card-header-line">
               <div class="card-title">
-                <span class="mark">⚔</span> Encounter Presets
+                Encounter Presets
               </div>
               <button class="btn-reset-defaults" id="btn-reset-defaults" onclick="resetToDefaults()" title="Reset all settings to default state">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L2 9"/><path d="M3 3v6h6"/></svg>
@@ -1349,28 +1350,28 @@
             </div>
             <div class="preset-pills">
               <button class="btn-preset active" id="btn-p-single" onclick="loadPreset('single')">
-                <span class="preset-icon">⚡</span> Single Boss
+                <span>Single Boss</span>
               </button>
               <button class="btn-preset" id="btn-p-cyberpunk" onclick="loadPreset('cyberpunk')">
-                <span class="preset-icon">⌖</span> Cyber Mech
+                <span>Cyber Mech</span>
               </button>
               <button class="btn-preset" id="btn-p-bloodborne" onclick="loadPreset('bloodborne')">
-                <span class="preset-icon">†</span> Bloodborne
+                <span>Bloodborne</span>
               </button>
               <button class="btn-preset" id="btn-p-pixel" onclick="loadPreset('pixel')">
-                <span class="preset-icon">▣</span> 8-Bit Arcade
+                <span>8-Bit Arcade</span>
               </button>
               <button class="btn-preset" id="btn-p-minimal" onclick="loadPreset('minimal')">
-                <span class="preset-icon">◇</span> Minimal
+                <span>Minimal</span>
               </button>
               <button class="btn-preset" id="btn-p-school42" onclick="loadPreset('school42')">
-                <span class="preset-icon">42</span> 42 Milestone
+                <span>42 Milestone</span>
               </button>
               <button class="btn-preset" id="btn-p-elden" onclick="loadPreset('eldenRing')">
-                <span class="preset-icon">⚔</span> Elden Ring
+                <span>Elden Ring</span>
               </button>
               <button class="btn-preset" id="btn-p-demigod" onclick="loadPreset('demigod')">
-                <span class="preset-icon">▲</span> 3-Phase
+                <span>3-Phase</span>
               </button>
             </div>
           </section>
@@ -1379,7 +1380,7 @@
           <section class="tactical-card aesthetic-section">
             <div class="card-header-line">
               <div class="card-title">
-                <span class="mark">◈</span> Visual Aesthetic Style
+                Visual Aesthetic Style
               </div>
             </div>
             <div class="aesthetic-pills">
@@ -1393,7 +1394,7 @@
               </button>
               <button class="btn-aesthetic" id="btn-a-cyberpunk" data-style="cyberpunk" onclick="selectAesthetic('cyberpunk')">
                 <span>Cyberpunk</span>
-                <span class="subtext">Sci-Fi 45° HUD</span>
+                <span class="subtext">Sci-Fi 45-DEG HUD</span>
               </button>
               <button class="btn-aesthetic" id="btn-a-pixel" data-style="pixel" onclick="selectAesthetic('pixel')">
                 <span>Pixel</span>
@@ -1415,7 +1416,7 @@
         <section class="stages-manager">
           <div class="stages-header-line">
             <div class="card-title">
-              <span class="mark">🛡</span> Encounter Phases
+              Encounter Phases
             </div>
             <button class="btn-add-stage" id="btn-add-stage" onclick="addStage()">
               <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -1430,7 +1431,7 @@
         <section class="tactical-card global-settings">
           <div class="card-header-line">
             <div class="card-title">
-              <span class="mark">⌁</span> Global Combat, Banners &amp; Tags
+              Global Combat, Banners &amp; Tags
             </div>
           </div>
           <div class="controls-grid">
@@ -1489,13 +1490,13 @@
   <!-- Design Manifesto Modal Drawer -->
   <div class="modal-backdrop" id="modal-manifesto" onclick="if(event.target === this) closeManifesto()">
     <div class="modal-content">
-      <button class="modal-close-btn" onclick="closeManifesto()">✕ CLOSE</button>
+      <button class="modal-close-btn" onclick="closeManifesto()">CLOSE</button>
       <div class="manifesto-body">
         <h2>THE ANTI-SLOP DESIGN MANIFESTO</h2>
         <p><strong>Awwwards / FWA Level Creative Engineering Framework</strong></p>
         
         <h3>1. AI as Component &amp; Math Co-Pilot</h3>
-        <p>Reject the "Age of Average" and generic pastel SaaS templates. We treat AI as an applied mathematician for GLSL shaders, non-Euclidean layouts, spring physics, and interaction architecture—not a lazy site generator.</p>
+        <p>Reject the "Age of Average" and generic pastel SaaS templates. We treat AI as an applied mathematician for GLSL shaders, non-Euclidean layouts, spring physics, and interaction architecture--not a lazy site generator.</p>
 
         <h3>2. Cross-Disciplinary Semantics</h3>
         <p>Grounded in Pascal Deville's Web Brutalism, 1-bit Ditherpunk low-tech constraints, and David Rudnick's Primacist theory. We employ high-density HUD telemetry, spiky biomechanical wireframes, and chiaroscuro tonal balance.</p>
@@ -1514,7 +1515,7 @@
 
   <!-- Toast Notification -->
   <div id="toast" class="toast">
-    <span>✔</span> <span id="toast-text">Copied to clipboard!</span>
+    <span id="toast-text">Copied to clipboard!</span>
   </div>
 
   <!-- Generator Core Engine -->
@@ -1661,7 +1662,11 @@
       const lbl = document.getElementById('audio-label');
       const icn = document.getElementById('audio-icon');
       if (lbl) lbl.innerText = sound.enabled ? 'AUDIO: ON' : 'AUDIO: MUTED';
-      if (icn) icn.innerText = sound.enabled ? '♫' : '✕';
+      if (icn) {
+        icn.innerHTML = sound.enabled
+          ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>'
+          : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+      }
       if (sound.enabled) sound.playClick();
       showToast(sound.enabled ? "Synthesized sound effects enabled" : "Sound effects muted");
     }
@@ -1917,8 +1922,10 @@
     let currentView = 'hub';
 
     function switchView(viewName) {
+      const isDifferent = currentView !== viewName;
       currentView = viewName;
-      sound.playSwitch();
+      if (isDifferent) sound.playSwitch();
+
       document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
       const activeTabs = [
         document.getElementById('tab-' + viewName),
@@ -1930,41 +1937,33 @@
       const studioEl = document.getElementById('view-studio');
 
       if (viewName === 'hub') {
-        hubEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (hubEl) hubEl.style.display = 'flex';
+        if (studioEl) studioEl.style.display = 'none';
       } else {
-        studioEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (hubEl) hubEl.style.display = 'none';
+        if (studioEl) studioEl.style.display = 'flex';
       }
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     function executeSystem() {
+      if (currentView === 'studio') return;
       sound.playExecute();
       glitchIntensity = 1.0;
       switchView('studio');
-      showToast("⚡ System Executed: Boss Bar Studio Initialized");
+      updateStudio();
+      showToast("System Executed: Boss Bar Studio Initialized");
     }
 
-    // Scroll spy for view synchronization
-    const viewObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && entry.intersectionRatio > 0.25) {
-          const v = entry.target.id === 'view-gateway' ? 'hub' : 'studio';
-          if (currentView !== v) {
-            currentView = v;
-            document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
-            const activeTabs = [
-              document.getElementById('tab-' + v),
-              document.getElementById('tab-' + v + '-nav')
-            ];
-            activeTabs.forEach(t => { if (t) t.classList.add('active'); });
-          }
+    window.addEventListener('click', (e) => {
+      if (currentView === 'hub') {
+        const modal = document.getElementById('modal-manifesto');
+        if (modal && modal.classList.contains('open')) return;
+        if (!e.target.closest('.hud-bar')) {
+          executeSystem();
         }
-      });
-    }, { threshold: [0.25] });
-
-    const gEl = document.getElementById('view-gateway');
-    const sEl = document.getElementById('view-studio');
-    if (gEl) viewObserver.observe(gEl);
-    if (sEl) viewObserver.observe(sEl);
+      }
+    });
 
     window.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
@@ -2247,13 +2246,13 @@
         sound.playClick();
         showToast(successMsg);
       } catch (err) {
-        showToast('❌ Copy failed');
+        showToast('Copy failed');
       }
       document.body.removeChild(el);
     }
 
     function copyMarkdown() {
-      copyToClipboard(currentMd, "✔ Copied Markdown embed code!");
+      copyToClipboard(currentMd, "Copied Markdown embed code!");
     }
 
     function downloadSVG() {
@@ -2268,7 +2267,7 @@
       a.click();
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-      showToast("✔ Downloaded boss_bar.svg");
+      showToast("Downloaded boss_bar.svg");
     }
 
     function toggleViewportBg() {
@@ -2286,7 +2285,7 @@
       vp.innerHTML = '';
       void vp.offsetHeight;
       vp.innerHTML = currentSvg;
-      showToast("🔄 Animation restarted");
+      showToast("Animation restarted");
     }
 
     function selectAesthetic(styleName) {
@@ -2360,7 +2359,7 @@
         toggleViewportBg();
       }
       loadPreset('single');
-      showToast('✔ Reset all settings to defaults');
+      showToast('Reset all settings to defaults');
     }
 
     function loadPreset(presetKey) {
@@ -2497,7 +2496,7 @@
               <select class="control-select" onchange="updateStageProp(${idx}, 'style', this.value)">
                 <option value="classic" ${st.style === 'classic' ? 'selected' : ''}>Classic (16-Bit RPG)</option>
                 <option value="souls" ${st.style === 'souls' ? 'selected' : ''}>Souls (Gothic Filigree)</option>
-                <option value="cyberpunk" ${st.style === 'cyberpunk' ? 'selected' : ''}>Cyberpunk (Sci-Fi 45° HUD)</option>
+                <option value="cyberpunk" ${st.style === 'cyberpunk' ? 'selected' : ''}>Cyberpunk (Sci-Fi 45-DEG HUD)</option>
                 <option value="pixel" ${st.style === 'pixel' ? 'selected' : ''}>Pixel (8-Bit Arcade)</option>
                 <option value="bloodborne" ${st.style === 'bloodborne' ? 'selected' : ''}>Bloodborne (Eldritch Horror)</option>
                 <option value="minimal" ${st.style === 'minimal' ? 'selected' : ''}>Minimal (Modern Pill)</option>
@@ -2582,7 +2581,7 @@
 
             <div class="subcard-box">
               <div class="subcard-title">
-                <span>◈</span> Status Tags &amp; Emblem Badges
+                Status Tags &amp; Emblem Badges
               </div>
               <div class="subcard-grid">
                 <div class="control-group">
