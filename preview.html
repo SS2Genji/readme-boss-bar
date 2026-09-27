@@ -327,15 +327,6 @@
       align-items: center;
       gap: 8px;
     }
-    .gateway-telemetry-badge {
-      font-size: 10.5px;
-      letter-spacing: 2.5px;
-      color: var(--cyan-core);
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
     .gateway-h1 {
       font-family: var(--font-gothic);
       font-size: 34px;
@@ -347,14 +338,6 @@
       -webkit-text-fill-color: transparent;
       filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.2));
       line-height: 1.15;
-    }
-    .gateway-manifesto-sub {
-      font-family: var(--font-lore);
-      font-size: 16px;
-      font-style: italic;
-      color: var(--signal-dim);
-      max-width: 780px;
-      line-height: 1.5;
     }
 
     /* Big Tactical [ EXECUTE SYSTEM ] Action Gate */
@@ -410,122 +393,6 @@
       color: var(--signal-dark);
       letter-spacing: 1.5px;
       text-transform: uppercase;
-    }
-
-    /* Ecosystem / Project Hub Grid */
-    .hub-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-      width: 100%;
-      text-align: left;
-      margin-top: 10px;
-    }
-
-    .hub-card {
-      background: var(--void-panel);
-      border: 1px solid var(--border-subtle);
-      border-radius: 3px;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      position: relative;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
-      transition: all 0.2s ease;
-    }
-    .hub-card:hover {
-      border-color: var(--signal-white);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.95), 0 0 18px rgba(255, 255, 255, 0.08);
-    }
-    .hub-card::before {
-      content: "+";
-      position: absolute;
-      top: -6px; left: -6px;
-      font-size: 10px;
-      color: var(--signal-dim);
-      font-family: var(--font-mono);
-    }
-    .hub-card::after {
-      content: "+";
-      position: absolute;
-      bottom: -6px; right: -6px;
-      font-size: 10px;
-      color: var(--signal-dim);
-      font-family: var(--font-mono);
-    }
-
-    .hub-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border-ghost);
-      padding-bottom: 8px;
-    }
-    .hub-card-tag {
-      font-size: 9.5px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      color: var(--cyan-core);
-      text-transform: uppercase;
-    }
-    .hub-card-glyph {
-      font-size: 12px;
-      color: var(--amber-bright);
-    }
-    .hub-card-title {
-      font-family: var(--font-gothic);
-      font-size: 14px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-    .hub-card-desc {
-      font-size: 11.5px;
-      color: var(--signal-dim);
-      line-height: 1.45;
-      flex: 1;
-    }
-    .hub-card-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 4px;
-    }
-    .hub-btn {
-      background: var(--void-input);
-      border: 1px solid var(--border-subtle);
-      color: var(--signal-bright);
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 700;
-      padding: 6px 10px;
-      border-radius: 2px;
-      text-decoration: none;
-      cursor: pointer;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.15s ease;
-    }
-    .hub-btn:hover {
-      background: #fff;
-      color: #000;
-      border-color: #fff;
-    }
-    .hub-btn-primary {
-      background: rgba(245, 158, 11, 0.15);
-      border-color: var(--amber-bright);
-      color: var(--amber-bright);
-    }
-    .hub-btn-primary:hover {
-      background: var(--amber-bright);
-      color: #000;
     }
 
     /* SECTION 2: BOSS BAR STUDIO (FORGE WORKSPACE) */
@@ -1332,11 +1199,7 @@
       .btn-hud { font-size: 9px; padding: 4px 6px; letter-spacing: 0.5px; }
       .sigil-crest-wrap { width: 130px; height: 130px; margin-bottom: 0; }
       .gateway-h1 { font-size: 20px; letter-spacing: 2px; }
-      .gateway-telemetry-badge { font-size: 9px; letter-spacing: 1px; flex-direction: column; gap: 2px; }
-      .gateway-manifesto-sub { font-size: 13.5px; }
       .btn-execute-system { font-size: 10px; padding: 10px 14px; letter-spacing: 1px; width: 100%; justify-content: center; }
-      .hub-grid { grid-template-columns: 1fr; }
-      .hub-card { padding: 14px; }
     }
   </style>
 </head>
@@ -1414,13 +1277,7 @@
         </div>
 
         <div class="gateway-title-block">
-          <div class="gateway-telemetry-badge">
-            <span>[ SYSTEM: HIGH-DENSITY DATA ]</span>
-            <span>◈</span>
-            <span>[ AESTHETIC: CYBER-GOTHIC HUD ]</span>
-          </div>
           <h1 class="gateway-h1">README BOSS BAR</h1>
-          <p class="gateway-manifesto-sub">"Reject algorithmic slop. Inscribe authentic dark fantasy, gothic filigree, and 1-bit pixel milestone encounters directly into your GitHub realm. Pure SVG. Zero foreignObject."</p>
         </div>
 
         <!-- Primary Action Gate: [ EXECUTE SYSTEM ] -->
@@ -1429,63 +1286,6 @@
             <span>[ ⚡ EXECUTE SYSTEM // INITIALIZE STUDIO ]</span>
           </button>
           <span class="execute-hint">Press [Enter] or [Space] to Execute</span>
-        </div>
-
-        <!-- Ecosystem Projects & Repos Hub Directory -->
-        <div class="hub-grid">
-          <!-- Card 1: Readme Boss Bar Studio -->
-          <article class="hub-card">
-            <div class="hub-card-header">
-              <span class="hub-card-tag">// CURRENT ENGINE</span>
-              <span class="hub-card-glyph">⚔</span>
-            </div>
-            <h2 class="hub-card-title">Boss Bar Studio</h2>
-            <p class="hub-card-desc">Interactive real-time forge for multi-stage boss combat animations. Pure XML/SVG vector engine, Camo-safe, 6 visual aesthetics.</p>
-            <div class="hub-card-actions">
-              <button class="hub-btn hub-btn-primary" onclick="executeSystem()">Launch Studio</button>
-              <a class="hub-btn" href="https://github.com/SS2Genji/readme-boss-bar" target="_blank" rel="noopener">Repo ↗</a>
-            </div>
-          </article>
-
-          <!-- Card 2: 42 Cursus Repositories -->
-          <article class="hub-card">
-            <div class="hub-card-header">
-              <span class="hub-card-tag">// 42 SCHOOL REPOS</span>
-              <span class="hub-card-glyph">⚡</span>
-            </div>
-            <h2 class="hub-card-title">42-Cursus Core</h2>
-            <p class="hub-card-desc">Rigorous low-level systems &amp; algorithms: Libft, ft_printf, push_swap (O(N log N) sorting derivations), get_next_line.</p>
-            <div class="hub-card-actions">
-              <button class="hub-btn hub-btn-primary" onclick="loadAndLaunch('school42')">Load 42 Preset</button>
-              <a class="hub-btn" href="https://github.com/SS2Genji/42-Cursus" target="_blank" rel="noopener">42 Repos ↗</a>
-            </div>
-          </article>
-
-          <!-- Card 3: SS2Genji Mainframe Profile -->
-          <article class="hub-card">
-            <div class="hub-card-header">
-              <span class="hub-card-tag">// DEVELOPER MATRIX</span>
-              <span class="hub-card-glyph">◈</span>
-            </div>
-            <h2 class="hub-card-title">Ahmet Emir Şimşek</h2>
-            <p class="hub-card-desc">Creative Technologist, Systems Developer, and Digital Art Director. Exploration of procedural art and high-density HUD interfaces.</p>
-            <div class="hub-card-actions">
-              <a class="hub-btn hub-btn-primary" href="https://github.com/SS2Genji" target="_blank" rel="noopener">GitHub Profile ↗</a>
-            </div>
-          </article>
-
-          <!-- Card 4: Anti-AI Slop Manifesto -->
-          <article class="hub-card">
-            <div class="hub-card-header">
-              <span class="hub-card-tag">// DESIGN MANIFESTO</span>
-              <span class="hub-card-glyph">⌖</span>
-            </div>
-            <h2 class="hub-card-title">Anti-Slop Pipeline</h2>
-            <p class="hub-card-desc">Awwwards-level methodology: Rosa Menkman Glitch Theory, David Rudnick Primacism, 1-bit Ditherpunk &amp; Web Brutalism.</p>
-            <div class="hub-card-actions">
-              <button class="hub-btn hub-btn-primary" onclick="openManifesto()">Read Manifesto</button>
-            </div>
-          </article>
         </div>
       </section>
 

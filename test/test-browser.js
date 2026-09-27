@@ -11,7 +11,7 @@ async function runBrowserTests() {
     const { execSync } = require('child_process');
     execSync('which chromium || which google-chrome', { stdio: 'ignore' });
   } catch (e) {
-    console.log("⚠ Chromium/Chrome not found; skipping headless browser tests.");
+    console.log("[WARN] Chromium/Chrome not found; skipping headless browser tests.");
     return;
   }
 
@@ -305,14 +305,6 @@ async function runBrowserTests() {
           const executeBtn = document.querySelector('.btn-execute-system');
           assert(executeBtn, 'Tactical execute system button exists');
 
-          // Verify 4 Ecosystem Hub Cards
-          const hubCards = document.querySelectorAll('.hub-card');
-          assert(hubCards.length === 4, 'All 4 ecosystem hub directory cards present');
-          const hubLinks = Array.from(document.querySelectorAll('.hub-card a')).map(a => a.href);
-          assert(hubLinks.some(h => h.includes('SS2Genji/readme-boss-bar')), 'Boss Bar repo link verified');
-          assert(hubLinks.some(h => h.includes('SS2Genji/42-Cursus')), '42-Cursus algorithms link verified');
-          assert(hubLinks.some(h => h.includes('github.com/SS2Genji')), 'Developer Matrix mainframe profile verified');
-
           // Verify View Navigation & Execute System
           switchView('hub');
           assert(currentView === 'hub', 'Switched to hub view');
@@ -362,7 +354,7 @@ async function runBrowserTests() {
     if (testRes.exceptionDetails) {
       throw new Error("Browser test assertion failed: " + JSON.stringify(testRes.exceptionDetails));
     }
-    console.log(`✔ ALL ${testRes.result.value.count} BROWSER STUDIO ASSERTIONS PASSED CLEANLY!`);
+    console.log(`[PASS] ALL ${testRes.result.value.count} BROWSER STUDIO ASSERTIONS PASSED CLEANLY!`);
   } catch (err) {
     chrome.kill();
     server.close();

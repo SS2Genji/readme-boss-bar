@@ -11,7 +11,7 @@ const svg1 = generateBossBarSVG([
 ]);
 fs.writeFileSync('/tmp/test_boss_1.svg', svg1);
 execSync('rsvg-convert /tmp/test_boss_1.svg -o /tmp/test_boss_1.png');
-console.log("✔ Test 1 passed: 2-boss setup compiles cleanly!");
+console.log("[PASS] Test 1 passed: 2-boss setup compiles cleanly!");
 
 // Test 2: Single boss (4 bars, 4 hits)
 const svg2 = generateBossBarSVG([
@@ -19,7 +19,7 @@ const svg2 = generateBossBarSVG([
 ]);
 fs.writeFileSync('/tmp/test_boss_2.svg', svg2);
 execSync('rsvg-convert /tmp/test_boss_2.svg -o /tmp/test_boss_2.png');
-console.log("✔ Test 2 passed: Single boss setup compiles cleanly!");
+console.log("[PASS] Test 2 passed: Single boss setup compiles cleanly!");
 
 // Test 3: 3 bosses chain
 const svg3 = generateBossBarSVG([
@@ -29,7 +29,7 @@ const svg3 = generateBossBarSVG([
 ]);
 fs.writeFileSync('/tmp/test_boss_3.svg', svg3);
 execSync('rsvg-convert /tmp/test_boss_3.svg -o /tmp/test_boss_3.png');
-console.log("✔ Test 3 passed: 3-boss chain compiles cleanly!");
+console.log("[PASS] Test 3 passed: 3-boss chain compiles cleanly!");
 
 // Test 4: 4 bosses with 10 bars each (Stress & high-bar test)
 const svg4 = generateBossBarSVG([
@@ -40,7 +40,7 @@ const svg4 = generateBossBarSVG([
 ]);
 fs.writeFileSync('/tmp/test_boss_4.svg', svg4);
 execSync('rsvg-convert /tmp/test_boss_4.svg -o /tmp/test_boss_4.png');
-console.log("✔ Test 4 passed: 4 bosses x 10 bars compiles cleanly!");
+console.log("[PASS] Test 4 passed: 4 bosses x 10 bars compiles cleanly!");
 
 // Test 5: Clamping and extreme bars (20 bars, 0 hits, overkill hits)
 const svg5 = generateBossBarSVG([
@@ -50,7 +50,7 @@ const svg5 = generateBossBarSVG([
 ]);
 fs.writeFileSync('/tmp/test_boss_5.svg', svg5);
 execSync('rsvg-convert /tmp/test_boss_5.svg -o /tmp/test_boss_5.png');
-console.log("✔ Test 5 passed: 20-bar scale and safety clamping compile cleanly!");
+console.log("[PASS] Test 5 passed: 20-bar scale and safety clamping compile cleanly!");
 
 // Test 6: Multi-bar hits with manual interval (3 bars per hit every 0.5s)
 const svg6 = generateBossBarSVG([
@@ -67,7 +67,7 @@ const svg6 = generateBossBarSVG([
 ]);
 fs.writeFileSync('/tmp/test_boss_6.svg', svg6);
 execSync('rsvg-convert /tmp/test_boss_6.svg -o /tmp/test_boss_6.png');
-console.log("✔ Test 6 passed: Multi-bar hits (3 bars / 0.5s) with purple theme compile cleanly!");
+console.log("[PASS] Test 6 passed: Multi-bar hits (3 bars / 0.5s) with purple theme compile cleanly!");
 
 // Test 7: Defeated boss with custom felled text and rapid interval
 const svg7 = generateBossBarSVG([
@@ -84,7 +84,7 @@ const svg7 = generateBossBarSVG([
 ]);
 fs.writeFileSync('/tmp/test_boss_7.svg', svg7);
 execSync('rsvg-convert /tmp/test_boss_7.svg -o /tmp/test_boss_7.png');
-console.log("✔ Test 7 passed: Defeated boss with custom 'DEMIGOD FELLED' compiles cleanly!");
+console.log("[PASS] Test 7 passed: Defeated boss with custom 'DEMIGOD FELLED' compiles cleanly!");
 
 // Test 8: Animation customization (sparks: false, custom hit flash, subtle shake, custom dmgPop)
 const svg8 = generateBossBarSVG([
@@ -103,7 +103,7 @@ const svg8 = generateBossBarSVG([
 ]);
 fs.writeFileSync('/tmp/test_boss_8.svg', svg8);
 execSync('rsvg-convert /tmp/test_boss_8.svg -o /tmp/test_boss_8.png');
-console.log("✔ Test 8 passed: Sparks disabled, custom flash, and custom popup compile cleanly!");
+console.log("[PASS] Test 8 passed: Sparks disabled, custom flash, and custom popup compile cleanly!");
 
 // Test 9: All themes preset verification + custom hex color
 const themesToTest = ['crimson', 'purple', 'cyan', 'gold', 'green', 'orange', '#ec4899'];
@@ -115,7 +115,7 @@ themesToTest.forEach((th, idx) => {
   fs.writeFileSync(outPath, svg);
   execSync(`rsvg-convert ${outPath} -o /tmp/test_boss_theme_${idx}.png`);
 });
-console.log("✔ Test 9 passed: All 7 theme presets and custom hex color compile cleanly!");
+console.log("[PASS] Test 9 passed: All 7 theme presets and custom hex color compile cleanly!");
 
 // Test 10: Screen shake modes ('none', 'subtle', 'medium', 'heavy', false)
 const shakeModes = ['none', 'subtle', 'medium', 'heavy', false];
@@ -127,7 +127,7 @@ shakeModes.forEach((sh, idx) => {
   fs.writeFileSync(outPath, svg);
   execSync(`rsvg-convert ${outPath} -o /tmp/test_boss_shake_${idx}.png`);
 });
-console.log("✔ Test 10 passed: All screen shake options compile cleanly!");
+console.log("[PASS] Test 10 passed: All screen shake options compile cleanly!");
 
 // Test 11: Auto mode with partial boss input (only names & totalBars provided)
 const svg11 = generateBossBarSVG([
@@ -137,13 +137,13 @@ const svg11 = generateBossBarSVG([
 ], { auto: true });
 fs.writeFileSync('/tmp/test_boss_11.svg', svg11);
 execSync('rsvg-convert /tmp/test_boss_11.svg -o /tmp/test_boss_11.png');
-console.log("✔ Test 11 passed: Auto mode with partial boss configs derives sane defaults cleanly!");
+console.log("[PASS] Test 11 passed: Auto mode with partial boss configs derives sane defaults cleanly!");
 
 // Test 12: Zero-config auto preset
 const svg12 = generateBossBarSVG([], { auto: true });
 fs.writeFileSync('/tmp/test_boss_12.svg', svg12);
 execSync('rsvg-convert /tmp/test_boss_12.svg -o /tmp/test_boss_12.png');
-console.log("✔ Test 12 passed: Zero-config auto mode compiles cleanly!");
+console.log("[PASS] Test 12 passed: Zero-config auto mode compiles cleanly!");
 
 // Test 13: XML escaping safety (special characters in names and banner text)
 const svg13 = generateBossBarSVG([
@@ -157,7 +157,7 @@ const svg13 = generateBossBarSVG([
 ]);
 fs.writeFileSync('/tmp/test_boss_13.svg', svg13);
 execSync('rsvg-convert /tmp/test_boss_13.svg -o /tmp/test_boss_13.png');
-console.log("✔ Test 13 passed: Strict XML entity escaping compiles cleanly!");
+console.log("[PASS] Test 13 passed: Strict XML entity escaping compiles cleanly!");
 
 // Test 14: Manual mode with damagePerHit without specifying hits (default drains totalBars)
 const svg14 = generateBossBarSVG([
@@ -168,7 +168,7 @@ if (!svg14.includes('drain_') || !svg14.includes('dmg-pop-0-0')) {
 }
 fs.writeFileSync('/tmp/test_boss_14.svg', svg14);
 execSync('rsvg-convert /tmp/test_boss_14.svg -o /tmp/test_boss_14.png');
-console.log("✔ Test 14 passed: Manual mode without explicit hits correctly drains health and animates!");
+console.log("[PASS] Test 14 passed: Manual mode without explicit hits correctly drains health and animates!");
 
 // Test 15: Fill attribute verification (alive bars have fill and dual animation)
 const svg15 = generateBossBarSVG([
@@ -179,7 +179,7 @@ if (!svg15.includes('fill="#9333ea"') || !svg15.includes('pulse_purple 2s infini
 }
 fs.writeFileSync('/tmp/test_boss_15.svg', svg15);
 execSync('rsvg-convert /tmp/test_boss_15.svg -o /tmp/test_boss_15.png');
-console.log("✔ Test 15 passed: Fill attribute and dual CSS animation verified!");
+console.log("[PASS] Test 15 passed: Fill attribute and dual CSS animation verified!");
 
 // Test 16: Hex color without leading hash (e.g. 'ec4899')
 const svg16 = generateBossBarSVG([
@@ -190,7 +190,7 @@ if (!svg16.includes('#ec4899')) {
 }
 fs.writeFileSync('/tmp/test_boss_16.svg', svg16);
 execSync('rsvg-convert /tmp/test_boss_16.svg -o /tmp/test_boss_16.png');
-console.log("✔ Test 16 passed: Hex theme without leading # resolved and compiled cleanly!");
+console.log("[PASS] Test 16 passed: Hex theme without leading # resolved and compiled cleanly!");
 
 // Test 17: Extreme bar count safety (40 bars with high damage)
 const svg17 = generateBossBarSVG([
@@ -198,7 +198,7 @@ const svg17 = generateBossBarSVG([
 ]);
 fs.writeFileSync('/tmp/test_boss_17.svg', svg17);
 execSync('rsvg-convert /tmp/test_boss_17.svg -o /tmp/test_boss_17.png');
-console.log("✔ Test 17 passed: Extreme 40-bar stress test compiles cleanly with 0 overflow!");
+console.log("[PASS] Test 17 passed: Extreme 40-bar stress test compiles cleanly with 0 overflow!");
 
 // Test 18: CLI end-to-end execution with flags (--dmg, --interval, --theme=purple, --sparks)
 execSync('node bin/cli.js -b "RADAHN:10" --dmg 3 --interval 0.5 --theme=purple --shake=heavy -o /tmp/cli_test_advanced.svg');
@@ -214,7 +214,7 @@ if (!fs.existsSync('/tmp/cli_sparks_safe.svg')) {
   throw new Error("Test 18 failed: CLI --sparks consumed -o argument!");
 }
 execSync('rsvg-convert /tmp/cli_sparks_safe.svg -o /tmp/cli_sparks_safe.png');
-console.log("✔ Test 18 passed: CLI flags (--dmg, --interval, --flag=value, boolean safety) work cleanly!");
+console.log("[PASS] Test 18 passed: CLI flags (--dmg, --interval, --flag=value, boolean safety) work cleanly!");
 
 // Test 19: Multi-bar sequential right-to-left drainage verification
 const svg19 = generateBossBarSVG([
@@ -231,7 +231,7 @@ if (!kfBar4.includes("width: 75px; fill: #fef08a;")) {
 }
 fs.writeFileSync('/tmp/test_boss_19.svg', svg19);
 execSync('rsvg-convert /tmp/test_boss_19.svg -o /tmp/test_boss_19.png');
-console.log("✔ Test 19 passed: Multi-bar sequential right-to-left drainage verified cleanly!");
+console.log("[PASS] Test 19 passed: Multi-bar sequential right-to-left drainage verified cleanly!");
 
 // Test 20: Scoped ID prefixing isolation
 const svg20 = generateBossBarSVG([
@@ -242,7 +242,7 @@ if (!svg20.includes('test_scope-bar-0-0') || !svg20.includes('test_scope_drain_0
 }
 fs.writeFileSync('/tmp/test_boss_20.svg', svg20);
 execSync('rsvg-convert /tmp/test_boss_20.svg -o /tmp/test_boss_20.png');
-console.log("✔ Test 20 passed: Scoped ID prefixing isolation compiles cleanly!");
+console.log("[PASS] Test 20 passed: Scoped ID prefixing isolation compiles cleanly!");
 
 // Test 21: Full simulation of multi-bar drainage sequence (Radahn 10 bars, 2 hits of 3 bars)
 const svg21 = generateBossBarSVG([
@@ -261,7 +261,7 @@ if (!kf9.includes("10.00% { width: 44px;") || !kf8.includes("10.00%, 11.08% { wi
 }
 fs.writeFileSync('/tmp/test_boss_21.svg', svg21);
 execSync('rsvg-convert /tmp/test_boss_21.svg -o /tmp/test_boss_21.png');
-console.log("✔ Test 21 passed: Multi-hit multi-bar strictly monotonic sequential sweep verified cleanly!");
+console.log("[PASS] Test 21 passed: Multi-hit multi-bar strictly monotonic sequential sweep verified cleanly!");
 
 // Test 22: Interactive CLI Wizard execution with presets and custom flows
 execSync('node bin/cli.js --wizard', {
@@ -304,7 +304,7 @@ if (!zeroSvg.includes('UNDAMAGED FOE') || !zeroSvg.includes('#a855f7') || zeroSv
   throw new Error("Test 22c failed: Zero-hits bar should not have damage popups!");
 }
 execSync('rsvg-convert /tmp/cli_wizard_zero_hits.svg -o /tmp/cli_wizard_zero_hits.png');
-console.log("✔ Test 22 passed: Interactive CLI Wizard executed preset, multi-stage, and 0-hit flows cleanly!");
+console.log("[PASS] Test 22 passed: Interactive CLI Wizard executed preset, multi-stage, and 0-hit flows cleanly!");
 
 // Test 23: All 6 Visual Aesthetics (classic, souls, cyberpunk, pixel, bloodborne, minimal)
 const aestheticsList = ['classic', 'souls', 'cyberpunk', 'pixel', 'bloodborne', 'minimal'];
@@ -339,7 +339,7 @@ aestheticsList.forEach((style, idx) => {
   fs.writeFileSync(outPath, svg);
   execSync(`rsvg-convert ${outPath} -o /tmp/test_aesthetic_${idx}_${style}.png`);
 });
-console.log("✔ Test 23 passed: All 6 visual aesthetics render distinct geometries, typography, particles & emblems cleanly!");
+console.log("[PASS] Test 23 passed: All 6 visual aesthetics render distinct geometries, typography, particles & emblems cleanly!");
 
 // Test 24: Custom Defeated Banner Color (felledColor) and Damage Pop-up Color (dmgPopColor)
 const customColorBoss = [
@@ -354,7 +354,7 @@ if (!svg24.includes('fill: #10b981') || !svg24.includes('fill: #38bdf8')) {
 }
 fs.writeFileSync('/tmp/test_custom_colors_24.svg', svg24);
 execSync('rsvg-convert /tmp/test_custom_colors_24.svg -o /tmp/test_custom_colors_24.png');
-console.log("✔ Test 24 passed: Custom defeated banner color & damage popup color compile cleanly!");
+console.log("[PASS] Test 24 passed: Custom defeated banner color & damage popup color compile cleanly!");
 
 // Test 25: Defeated Banner Color per-boss stage override
 const svg25 = generateBossBarSVG([
@@ -366,7 +366,7 @@ if (!svg25.includes('fill: #ec4899') || !svg25.includes('fill: #3b82f6')) {
 }
 fs.writeFileSync('/tmp/test_boss_25.svg', svg25);
 execSync('rsvg-convert /tmp/test_boss_25.svg -o /tmp/test_boss_25.png');
-console.log("✔ Test 25 passed: Per-stage defeated banner color override compiles cleanly!");
+console.log("[PASS] Test 25 passed: Per-stage defeated banner color override compiles cleanly!");
 
 // Test 26: Defeat Banners and Tags across all Aesthetics
 const bannerTests = [
@@ -392,7 +392,7 @@ bannerTests.forEach((bTest, idx) => {
   fs.writeFileSync(outPath, svg);
   execSync(`rsvg-convert ${outPath} -o /tmp/test_banner_${idx}_${bTest.style}.png`);
 });
-console.log("✔ Test 26 passed: Defeat banners and contextual tags verified across all 6 aesthetics!");
+console.log("[PASS] Test 26 passed: Defeat banners and contextual tags verified across all 6 aesthetics!");
 
 // Test 27: Shorthand 9-part format
 const svg27 = generateBossBarSVG([
@@ -413,7 +413,7 @@ if (!svg27.includes("Cinzel") || !svg27.includes("DEMIGOD FELLED") || !svg27.inc
 }
 fs.writeFileSync('/tmp/test_boss_27.svg', svg27);
 execSync('rsvg-convert /tmp/test_boss_27.svg -o /tmp/test_boss_27.png');
-console.log("✔ Test 27 passed: Extended boss configuration with style compiles cleanly!");
+console.log("[PASS] Test 27 passed: Extended boss configuration with style compiles cleanly!");
 
 // Test 28: CLI Flags (--style, --shake, --felled-color, --dmg-pop-color)
 execSync('node bin/cli.js --style cyberpunk --shake heavy --felled-color 00ffff --dmg-pop-color ff0055 -b "CYBER MECH:8:2:0.4:4" -o /tmp/test_cli_flags_28.svg');
@@ -425,7 +425,7 @@ if (!cliFlagSvg.includes('CYBER MECH') || !cliFlagSvg.includes('Orbitron') || !c
   throw new Error("Test 28 failed: CLI generated SVG missing cyberpunk features or colors");
 }
 execSync('rsvg-convert /tmp/test_cli_flags_28.svg -o /tmp/test_cli_flags_28.png');
-console.log("✔ Test 28 passed: CLI flags (--style, --shake, --felled-color, --dmg-pop-color) work cleanly!");
+console.log("[PASS] Test 28 passed: CLI flags (--style, --shake, --felled-color, --dmg-pop-color) work cleanly!");
 
 // Test 29: CLI Wizard execution of all new aesthetic presets (Cyberpunk, Bloodborne, Pixel, Minimal)
 const wizardPresets = [
@@ -448,7 +448,7 @@ wizardPresets.forEach((wp) => {
   }
   execSync(`rsvg-convert ${wp.file} -o ${wp.file}.png`);
 });
-console.log("✔ Test 29 passed: CLI Wizard executes all dedicated aesthetic presets cleanly!");
+console.log("[PASS] Test 29 passed: CLI Wizard executes all dedicated aesthetic presets cleanly!");
 
 // Test 30: Full matrix stress test (All 6 Aesthetics with custom banner and popup colors)
 let matrixCount = 0;
@@ -461,7 +461,7 @@ aestheticsList.forEach(style => {
   execSync(`rsvg-convert ${p} -o /tmp/test_matrix_${style}.png`);
   matrixCount++;
 });
-console.log(`✔ Test 30 passed: Full matrix of ${matrixCount} aesthetics verified with 0 errors!`);
+console.log(`[PASS] Test 30 passed: Full matrix of ${matrixCount} aesthetics verified with 0 errors!`);
 
 // Test 31: Overlap prevention for high bar counts (25 and 40 bars in pixel, classic, and bloodborne styles)
 const highBarStyles = ['pixel', 'classic', 'bloodborne'];
@@ -475,7 +475,7 @@ const highBarStyles = ['pixel', 'classic', 'bloodborne'];
     execSync(`rsvg-convert ${p} -o /tmp/test_high_${style}_${barCount}.png`);
   });
 });
-console.log("✔ Test 31 passed: High bar count (25 & 40 bars) border padding scaling prevents overlap cleanly!");
+console.log("[PASS] Test 31 passed: High bar count (25 & 40 bars) border padding scaling prevents overlap cleanly!");
 
 // Test 32: Enhanced Visual FX & Signature Aesthetic Identity Verification
 const test32Aesthetics = [
@@ -516,7 +516,7 @@ test32Aesthetics.forEach((t) => {
   fs.writeFileSync(p, svg);
   execSync(`rsvg-convert ${p} -o /tmp/test_enhanced_${t.style}.png`);
 });
-console.log("✔ Test 32 passed: Enhanced visual signatures, ornate filigree, stepped pixel brackets, thorn spikes & defeat backdrops verified!");
+console.log("[PASS] Test 32 passed: Enhanced visual signatures, ornate filigree, stepped pixel brackets, thorn spikes & defeat backdrops verified!");
 
 // Test 33: Custom Status Tags & Colors (Live and Defeated)
 const test33Svg = generateBossBarSVG([
@@ -548,7 +548,7 @@ if (!test33Svg.includes('fill="#ec4899" class="pixel-txt')) {
 const p33 = '/tmp/test_custom_tags.svg';
 fs.writeFileSync(p33, test33Svg);
 execSync(`rsvg-convert ${p33} -o /tmp/test_custom_tags.png`);
-console.log("✔ Test 33 passed: Custom status tag text and tag colors compile cleanly with 0 errors!");
+console.log("[PASS] Test 33 passed: Custom status tag text and tag colors compile cleanly with 0 errors!");
 
 // Test 34: CLI Flags for Tags (--tag, --tag-color, --tag-felled, --tag-felled-color)
 const cliOutputTags = '/tmp/test_cli_tags.svg';
@@ -559,7 +559,7 @@ if (!cliTagsSvg.includes('fill="#10b981"')) throw new Error('CLI failed to apply
 if (!cliTagsSvg.includes('[FALLEN LORD]')) throw new Error('CLI failed to apply --tag-felled');
 if (!cliTagsSvg.includes('fill="#f43f5e"')) throw new Error('CLI failed to apply --tag-felled-color');
 execSync(`rsvg-convert ${cliOutputTags} -o /tmp/test_cli_tags.png`);
-console.log("✔ Test 34 passed: CLI flags for custom tag texts and colors work cleanly!");
+console.log("[PASS] Test 34 passed: CLI flags for custom tag texts and colors work cleanly!");
 
 console.log("\nALL 34 TESTS PASSED WITH 0 XML / RSVG ERRORS!");
 

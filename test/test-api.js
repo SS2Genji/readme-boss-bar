@@ -24,7 +24,7 @@ function runApiTest(query, validator, desc) {
   assert.strictEqual(headers['Access-Control-Allow-Origin'], '*', `Expected CORS header for ${desc}`);
   assert(bodyContent.includes('<svg'), `Body must contain <svg for ${desc}`);
   validator(bodyContent);
-  console.log(`✔ API test passed: ${desc}`);
+  console.log(`[PASS] API test passed: ${desc}`);
 }
 
 console.log("=== Testing Serverless API Endpoint ===");
