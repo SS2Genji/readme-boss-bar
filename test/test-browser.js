@@ -305,6 +305,13 @@ async function runBrowserTests() {
           const executeBtn = document.querySelector('.btn-execute-system');
           assert(executeBtn, 'Tactical execute system button exists');
 
+          // Verify removed gateway hub elements and manifesto quote are absent
+          assert(!document.querySelector('.hub-grid'), 'Hub grid removed from DOM');
+          assert(document.querySelectorAll('.hub-card').length === 0, 'No hub cards in DOM');
+          assert(!document.querySelector('.hub-btn'), 'Hub buttons removed from DOM');
+          assert(!document.querySelector('.gateway-telemetry-badge'), 'Telemetry badge removed from DOM');
+          assert(!document.querySelector('.gateway-manifesto-sub'), 'Manifesto subtitle quote removed from DOM');
+
           // Verify View Navigation & Execute System
           switchView('hub');
           assert(currentView === 'hub', 'Switched to hub view');
