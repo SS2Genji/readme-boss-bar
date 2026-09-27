@@ -1,318 +1,232 @@
 # readme-boss-bar
 
-> Dynamic Animated Souls & Retro Boss Health Bars for your GitHub Profile README.
+Animated boss health bars for your GitHub Profile README.
 
-A zero-dependency, Camo-safe SVG generator that brings authentic Souls-like, Cyberpunk, 8-Bit Arcade, Bloodborne, and Minimalist boss battles to your GitHub profile. Showcase your milestones, projects, or learning goals as epic boss health bars that take damage, shake violently, and dissolve into ash upon victory.
+Pure SVG vector graphics that run on GitHub's Camo image proxy without `<foreignObject>` or client-side JavaScript. Boss bars take damage, shake, drop status particles, and dissolve into defeat banners when depleted.
 
----
-
-## Features
-
-- **Six Distinct Visual Aesthetics**: Choose between `classic`, `souls`, `cyberpunk`, `pixel`, `bloodborne`, and `minimal`.
-- **Four Impact Drain Animations**: Customize bar drainage with `sweep`, `pulse`, `burst`, or `glitch`.
-- **Visceral Screen Shake**: Dynamic camera shake modes (`none`, `subtle`, `medium`, `heavy`, `glitch`).
-- **Granular Multi-Bar Hits**: Customize how many bars drain on each hit (e.g. 3 bars every 0.5s).
-- **Flexible Hit Intervals**: Set fast flurries (0.25s) or deliberate heavy impacts (0.8s).
-- **Color Themes**: Six souls-themed presets (`crimson`, `purple`, `cyan`, `gold`, `green`, `orange`) or any custom `#hex` color.
-- **Contextual Particles**: Golden embers, digital cyber bits, chunky block debris, visceral blood droplets, or soft ring pings.
-- **Custom Defeat Banners**: Replace default banners with custom text like `DEMIGOD FELLED` or `MILESTONE ACHIEVED`.
-- **Automatic Cinematic Mode**: Generate balanced, dramatic multi-stage encounters with zero manual configuration.
-- **Multi-Boss Staging**: Chain multiple bosses sequentially (defeat one, summon the next).
-- **Zero Dependencies**: Pure standard library Node.js generator.
-- **Camo Sanitizer Safe**: Pure SVG with `0` `<foreignObject>` tags and strict XML escaping.
+**Interactive Web Studio:** [https://readme-boss-barr.vercel.app](https://readme-boss-barr.vercel.app)
 
 ---
 
-## Visual Aesthetics
+## Live Showcase
 
-The generator supports 6 distinct visual styles. Each style features customized bar geometry, typography, emblem icons, particles, and defeat banner animations.
+Below are live SVGs rendered directly through the public API. Copy the markdown snippets below any example to use them in your own profile.
 
-| Aesthetic | Style Key | Visual Features | Default Victory Banner | Default Theme |
-| :--- | :--- | :--- | :--- | :--- |
-| **Classic Retro** | `classic` | 16-bit pixel frame, retro monospace typography, pixel skull crest, 4-corner sparks | `GREAT ENEMY FELLED` | `crimson` |
-| **Souls Gothic** | `souls` (or `gothic`) | Ornate gothic filigree brackets, Cinzel serif typography, Elden golden cross, floating golden embers | `GREAT ENEMY FELLED` | `gold` |
-| **Cyberpunk HUD** | `cyberpunk` (or `scifi`) | 45° chamfered angled bar polygons, tech monospace typography, tactical crosshair reticle, cyber bit slices | `// TARGET DESTROYED //` | `cyan` |
-| **8-Bit Arcade** | `pixel` (or `retro`) | Chunky stepped pixel bevel borders, Press Start 2P arcade typography, 8-bit blinking skull, square debris | `STAGE CLEAR` | `crimson` |
-| **Bloodborne Horror** | `bloodborne` (or `eldritch`) | Jagged distressed iron borders, sharp gothic typography, Hunter's Mark rune, visceral dripping blood droplets | `PREY SLAUGHTERED` | `crimson` |
-| **Modern Minimal** | `minimal` (or `clean`) | Sleek rounded pill bars (`rx="4"`), clean sans-serif typography, pulsing beacon dot, soft ambient ping ring | `STATUS: DEFEATED` | `green` |
+### Souls Gothic
 
----
+![Souls Boss Bar](https://readme-boss-barr.vercel.app/api?name=STARCOURGE+RADAHN&bars=10&dmg=3&style=souls&theme=purple&shake=heavy&felled=DEMIGOD+FELLED)
 
-## Animation Styles
+```markdown
+![Boss Bar](https://readme-boss-barr.vercel.app/api?name=STARCOURGE+RADAHN&bars=10&dmg=3&style=souls&theme=purple&shake=heavy&felled=DEMIGOD+FELLED)
+```
 
-Choose how the health bar drains upon taking impact:
+### Cyberpunk HUD
 
-| Animation | Key | Description |
-| :--- | :--- | :--- |
-| **Sequential Sweep** | `sweep` | (Default) Smooth continuous drainage flowing sequentially from right to left across bars. |
-| **Rhythmic Pulse** | `pulse` | Flash highlight followed by a rhythmic pulse wave that contracts before draining. |
-| **Visceral Burst** | `burst` | Violent hit flash holding full width, followed by an instantaneous explosive drop like shattering glass. |
-| **Digital Glitch** | `glitch` | Discrete staircase drainage with horizontal jitter and opacity flickers. |
+![Cyberpunk Boss Bar](https://readme-boss-barr.vercel.app/api?name=TITAN+MECH&bars=8&dmg=2&style=cyberpunk&theme=cyan&shake=heavy&felledColor=06b6d4)
+
+```markdown
+![Boss Bar](https://readme-boss-barr.vercel.app/api?name=TITAN+MECH&bars=8&dmg=2&style=cyberpunk&theme=cyan&shake=heavy&felledColor=06b6d4)
+```
+
+### Bloodborne Horror
+
+![Bloodborne Boss Bar](https://readme-boss-barr.vercel.app/api?name=CLERIC+BEAST&bars=8&dmg=2&style=bloodborne&theme=crimson&shake=heavy&felledColor=dc2626)
+
+```markdown
+![Boss Bar](https://readme-boss-barr.vercel.app/api?name=CLERIC+BEAST&bars=8&dmg=2&style=bloodborne&theme=crimson&shake=heavy&felledColor=dc2626)
+```
+
+### 8-Bit Arcade
+
+![Pixel Boss Bar](https://readme-boss-barr.vercel.app/api?name=CASTLE+OVERLORD&bars=8&dmg=2&style=pixel&theme=gold&felledColor=facc15)
+
+```markdown
+![Boss Bar](https://readme-boss-barr.vercel.app/api?name=CASTLE+OVERLORD&bars=8&dmg=2&style=pixel&theme=gold&felledColor=facc15)
+```
+
+### Modern Minimal
+
+![Minimal Boss Bar](https://readme-boss-barr.vercel.app/api?name=SYSTEM+INTEGRITY&bars=6&dmg=2&style=minimal&theme=green&shake=subtle)
+
+```markdown
+![Boss Bar](https://readme-boss-barr.vercel.app/api?name=SYSTEM+INTEGRITY&bars=6&dmg=2&style=minimal&theme=green&shake=subtle)
+```
+
+### Multi-Phase Encounter Chain
+
+Chain multiple phases sequentially. Phase 2 begins only after Phase 1 is defeated:
+
+![Multi-Phase Boss Bar](https://readme-boss-barr.vercel.app/api?boss=PHASE+1:4:4:0.4:1:crimson:medium:PHASE+1+CLEAR:souls&boss=PHASE+2:6:3:0.5:2:gold:heavy:PUSH_SWAP+FELLED:souls)
+
+```markdown
+![Boss Bar](https://readme-boss-barr.vercel.app/api?boss=PHASE+1:4:4:0.4:1:crimson:medium:PHASE+1+CLEAR:souls&boss=PHASE+2:6:3:0.5:2:gold:heavy:PUSH_SWAP+FELLED:souls)
+```
 
 ---
 
 ## Quick Start
 
-### 1. Visual Web Studio (Easiest - 1 Click)
+### Option 1: Web Studio (Fastest)
 
-Design your boss bar visually in your browser with real-time preview:  
-Open `index.html` or `preview.html` locally in any browser, or visit your deployed URL on Vercel:
-- **[https://readme-boss-barr.vercel.app](https://readme-boss-barr.vercel.app)**  
-Pick an aesthetic, adjust sliders, and click **"Copy Markdown for README"** or **"Download SVG"**!
+1. Open the [Web Studio](https://readme-boss-barr.vercel.app).
+2. Click **[EXECUTE SYSTEM]** or press Space/Enter.
+3. Select your aesthetic, pick a preset, and customize bars, damage, or colors.
+4. Click **Copy Markdown for README** and paste it into your `README.md`.
 
----
+### Option 2: Direct API URL
 
-### 2. Deploy with Vercel (1-Click Free Hosting)
+Add an image link to your markdown using the public API:
 
-Deploy your own live serverless endpoint to get real-time dynamic SVG URLs for your GitHub README:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FSS2Genji%2Freadme-boss-bar)
-
-> **No Vercel Account? Zero-Server Option:**  
-> You can also download the SVG directly from the Web Studio (or run `npx readme-boss-bar -o assets/boss_bar.svg`), commit it to your repository, and embed it locally:
-> ```markdown
-> ![Boss Bar](./assets/boss_bar.svg)
-> ```
-
----
-
-### 3. Copy & Paste into your GitHub README
-
-Once deployed to Vercel (or using the local asset), copy any line below and replace `YOUR+NAME` with your project, milestone, or boss name:
-
-#### Souls Gothic (Elden Ring Style)
 ```markdown
-![Boss Bar](https://readme-boss-barr.vercel.app/api?name=STARCOURGE+RADAHN&bars=10&dmg=3&style=souls&theme=purple&shake=heavy&felled=DEMIGOD+FELLED)
+![Boss Bar](https://readme-boss-barr.vercel.app/api?name=YOUR_PROJECT&bars=10&dmg=2&style=souls)
 ```
 
-#### Cyberpunk Sci-Fi HUD
-```markdown
-![Boss Bar](https://readme-boss-barr.vercel.app/api?name=TITAN+MECH&bars=8&dmg=2&style=cyberpunk&theme=cyan&shake=heavy&felledColor=06b6d4)
-```
+### Option 3: Local SVG Generation (Zero External Requests)
 
-#### Bloodborne Eldritch Horror
-```markdown
-![Boss Bar](https://readme-boss-barr.vercel.app/api?name=CLERIC+BEAST&bars=8&dmg=2&style=bloodborne&theme=crimson&shake=heavy&felledColor=dc2626)
-```
-
-#### 8-Bit NES Arcade
-```markdown
-![Boss Bar](https://readme-boss-barr.vercel.app/api?name=CASTLE+OVERLORD&bars=8&dmg=2&style=pixel&theme=gold&felledColor=facc15)
-```
-
-#### Modern Sleek Dashboard (Minimal)
-```markdown
-![Boss Bar](https://readme-boss-barr.vercel.app/api?name=SYSTEM+INTEGRITY&bars=6&dmg=2&style=minimal&theme=green&shake=subtle)
-```
-
-#### Classic 16-Bit Retro
-```markdown
-![Boss Bar](https://readme-boss-barr.vercel.app/api?name=MILESTONE+1&bars=6&dmg=2&style=classic&theme=crimson)
-```
-
-#### Zero-Config Cinematic Auto Mode
-```markdown
-![Boss Bar](https://readme-boss-barr.vercel.app/api?auto=true)
-```
-
----
-
-### 4. Interactive CLI Wizard
-
-Prefer the command line? Run the step-by-step interactive wizard:
+If you prefer committing static files to your repository without third-party requests:
 
 ```bash
-npx readme-boss-bar wizard
+npx readme-boss-bar -b "MY PROJECT:10:3:0.5:3" --style souls -o assets/boss_bar.svg
 ```
 
-It walks you through aesthetic styles, boss names, health bars, speed, themes, banner colors, and automatically exports your SVG and Markdown embed code!
+Then reference the file in your README:
+
+```markdown
+![Boss Bar](./assets/boss_bar.svg)
+```
 
 ---
 
-### 5. Multi-Boss Milestone Chains
+## Aesthetics
 
-Defeat Phase 1, then summon Phase 2:
+| Style Key | Description | Emblems & Particles | Default Banner | Default Color |
+| :--- | :--- | :--- | :--- | :--- |
+| `souls` | Ornate gothic filigree brackets and Cinzel serif font | Golden cross & floating embers | `GREAT ENEMY FELLED` | `#d97706` (gold) |
+| `cyberpunk` | Chamfered polygon bars with monospace typography | Tactical reticle & digital bits | `// TARGET DESTROYED //` | `#0891b2` (cyan) |
+| `bloodborne` | Distressed gothic iron with sharp distressed lettering | Hunter rune & dripping blood | `PREY SLAUGHTERED` | `#dc2626` (crimson) |
+| `pixel` | Stepped pixel borders and arcade typography | Blinking skull & square debris | `STAGE CLEAR` | `#dc2626` (crimson) |
+| `minimal` | Rounded pill bars with clean sans-serif type | Beacon dot & ping rings | `STATUS: DEFEATED` | `#16a34a` (green) |
+| `classic` | 16-bit retro frame with corner accents | Corner sparks & pixel skull | `GREAT ENEMY FELLED` | `#dc2626` (crimson) |
 
-```markdown
-![Boss Bar](https://readme-boss-barr.vercel.app/api?boss=CIRCLE+01:4:4:0.4:1:crimson:medium:PHASE+1+CLEAR:souls&boss=CIRCLE+02:6:3:0.5:2:gold:heavy:PUSH_SWAP+FELLED:souls)
-```
+Aliases are supported:
+- `gothic`, `elden`, `eldenring` &rarr; `souls`
+- `scifi`, `mech`, `hud` &rarr; `cyberpunk`
+- `retro`, `arcade`, `8bit` &rarr; `pixel`
+- `clean`, `flat` &rarr; `minimal`
+- `eldritch`, `horror` &rarr; `bloodborne`
 
 ---
 
 ## URL Parameters
 
-### Boss Specification Syntax
+### Shorthand Format
 
-You can pass bosses using the extended 9-part shorthand format:
+Define a boss encounter in a single parameter:
 
 ```text
-NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT:THEME:SHAKE:FELLED_TEXT:STYLE
+?boss=NAME:TOTAL_BARS:HITS:INTERVAL:DMG_PER_HIT:THEME:SHAKE:FELLED_TEXT:STYLE
 ```
 
-| Component | Type | Description | Default | Example |
-| :--- | :--- | :--- | :--- | :--- |
-| `NAME` | String | Boss title / milestone name | `BOSS` | `RADAHN` |
-| `TOTAL_BARS` | Integer | Total number of health segments | `5` | `10` |
-| `HITS` | Integer | Total hits to execute (if omitted, drains until defeated) | `All bars` | `2` |
-| `INTERVAL` | Float | Seconds between hits | `0.5s` | `0.5` |
-| `DMG_PER_HIT` | Integer | Number of bars drained per hit | `1` | `3` |
-| `THEME` | String | Color theme preset or `#hex` | `crimson` | `purple` |
-| `SHAKE` | String | Screen shake intensity (`none`, `subtle`, `medium`, `heavy`) | `medium` | `heavy` |
-| `FELLED_TEXT` | String | Defeat victory text overlay | Aesthetic default | `DEMIGOD FELLED` |
-| `STYLE` | String | Aesthetic style (`classic`, `souls`, `cyberpunk`, `pixel`, `bloodborne`, `minimal`) | `classic` | `souls` |
+Trailing values can be omitted. Example:
+- `?boss=RADAHN:10` &rarr; 10 bars, drains to defeat automatically.
+- `?boss=RADAHN:10:2:0.5:3` &rarr; 10 bars, takes 2 hits of 3 bars every 0.5s.
 
-*Note: Trailing components can be omitted (e.g. `?boss=RADAHN:10:::3::::souls` drains 3 bars every 0.5s with the Souls aesthetic until 10 bars are depleted).*
+### Granular Query Parameters
 
-### Query Parameters
-
-| Parameter | Type | Description | Example |
+| Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `style`, `aesthetic` | String | Aesthetic style (`classic`, `souls`, `cyberpunk`, `pixel`, `bloodborne`, `minimal`) | `?style=cyberpunk` |
-| `shake` | String | Screen shake intensity (`none`, `subtle`, `medium`, `heavy`) | `?shake=heavy` |
-| `tag`, `tagLive` | String | Custom active status badge text (top-right) | `?tag=[BOSS]` |
-| `tagColor`, `tagLiveColor` | String | Color for active status badge (`#hex` or `hex`) | `?tagColor=38bdf8` |
-| `tagFelled`, `felledTag` | String | Custom defeated status badge text (top-right) | `?tagFelled=[CLEARED]` |
-| `tagFelledColor` | String | Color for defeated status badge (`#hex` or `hex`) | `?tagFelledColor=f59e0b` |
-| `felledColor`, `bannerColor` | String | Custom color for defeated banner text and glow (`#hex` or `hex`) | `?felledColor=10b981` |
-| `dmgPopColor`, `popupColor` | String | Custom color for damage floating popup (`#hex` or `hex`) | `?dmgPopColor=38bdf8` |
-| `boss` | String | Repeatable boss specification shorthand | `?boss=RADAHN:10:2:0.5:3:purple:heavy` |
-| `bosses` | String | Comma-separated boss specifications | `?bosses=M1:3:3,M2:5:1` |
-| `b1`, `b2` | String | Numbered boss stages (sorted naturally) | `?b1=STAGE+1:4:4&b2=STAGE+2:6:2` |
-| `name`, `bars` | String / Int | Single boss definition | `?name=RADAHN&bars=10&dmg=3&interval=0.5` |
-| `auto` | Boolean | Enable automatic cinematic mode | `?auto=true` |
-| `theme` | String | Color theme (`crimson`, `purple`, `cyan`, `gold`, `green`, `orange`, `#hex`) | `?theme=purple` |
-| `interval`, `speed` | Float | Global default hit interval in seconds | `?interval=0.5` |
-| `dmg`, `damage` | Integer | Global default damage per hit in bars | `?dmg=3` |
-| `sparks` | Boolean | Toggle contextual particles & sparks (`true`, `false`) | `?sparks=false` |
-| `flash` | String | Hit flash color | `?flash=%23ffffff` |
-| `felled` | String | Custom defeat banner text | `?felled=DEMIGOD+FELLED` |
-| `dmgPop` | String | Damage popup template (`-{N} BARS`, `-{N} HP`, or `false`) | `?dmgPop=-{N}+HP` |
-| `width` | Integer | Total SVG width in pixels | `?width=700` |
-| `height` | Integer | Total SVG height in pixels | `?height=95` |
-| `id`, `prefix` | String | Scoped CSS class and keyframes namespace prefix | `?id=hero_boss` |
-
-#### Aesthetic Aliases
-For developer convenience, common aliases are automatically resolved:
-- `gothic`, `elden`, `eldenring`, `dark_souls` &rarr; `souls`
-- `scifi`, `sci-fi`, `cyber`, `mech`, `hud` &rarr; `cyberpunk`
-- `retro`, `arcade`, `8bit`, `nes` &rarr; `pixel`
-- `clean`, `modern`, `sleek`, `flat` &rarr; `minimal`
-- `eldritch`, `horror`, `gothic_horror` &rarr; `bloodborne`
-
----
-
-## Themes
-
-| Theme | Inspiration | Bar Color | Pulse Highlight |
-| :--- | :--- | :--- | :--- |
-| `crimson` | Souls Fire & Blood | `#dc2626` | `#ef4444` |
-| `purple` | St. Trina / Gravitational Void | `#9333ea` | `#a855f7` |
-| `cyan` | Glintstone Sorcery / Neon Mech | `#0891b2` | `#06b6d4` |
-| `gold` | Erdtree / Golden Order | `#d97706` | `#f59e0b` |
-| `green` | System Green / Poison Miasma | `#16a34a` | `#22c55e` |
-| `orange` | Flame of Frenzy / Giant Flame | `#ea580c` | `#f97316` |
-| Custom `#hex` | Any 3- or 6-digit hex (with or without `#`) | `user-defined` | `user-defined` |
+| `name` | string | `BOSS` | Boss name displayed above health bars |
+| `bars` | integer | `5` | Total number of health segments |
+| `dmg` | integer | `1` | Health segments lost per hit |
+| `hits` | integer | Auto | Number of attacks before stopping (omitted = until defeated) |
+| `interval` | float | `0.5` | Attack interval in seconds |
+| `style` | string | `classic` | Visual aesthetic (`souls`, `cyberpunk`, `bloodborne`, `pixel`, `minimal`, `classic`) |
+| `theme` | string | `crimson` | Color preset (`crimson`, `purple`, `cyan`, `gold`, `green`, `orange`) or `#hex` |
+| `shake` | string | `medium` | Screen shake level (`none`, `subtle`, `medium`, `heavy`) |
+| `felled` | string | Auto | Custom defeat banner text |
+| `felledColor` | string | Theme | Custom hex color for defeat banner and glow |
+| `dmgPopColor` | string | `#facc15` | Color for floating damage popup text |
+| `tag` | string | Auto | Custom status tag (e.g. `[CURRENT FOE]`) |
+| `tagColor` | string | Auto | Color for active status tag |
+| `tagFelled` | string | Auto | Custom status tag when defeated |
+| `tagFelledColor` | string | Auto | Color for defeated status tag |
+| `auto` | boolean | `false` | When `true`, automatically derives balanced cinematic defaults |
 
 ---
 
 ## CLI Usage
 
-Generate SVGs locally or directly in CI pipelines:
+Run directly with `npx`:
 
 ```bash
-# 0. Interactive step-by-step wizard
+# Step-by-step interactive CLI wizard
 npx readme-boss-bar wizard
 
-# 1. Generate Cyberpunk Mech HUD
-npx readme-boss-bar --style cyberpunk --shake heavy --felled-color 06b6d4 -b "CYBER MECH:10:3:0.4:3" -o assets/mech.svg
+# Generate a Cyberpunk Mech bar
+npx readme-boss-bar --style cyberpunk -b "CYBER MECH:10:3:0.4:3" -o assets/mech.svg
 
-# 2. Generate Souls Gothic Radahn
+# Generate a Souls Radahn encounter
 npx readme-boss-bar --style souls -b "RADAHN:10" --dmg 3 --interval 0.5 --theme purple --shake heavy -o assets/radahn.svg
 
-# 3. Generate Bloodborne Beast
-npx readme-boss-bar --style bloodborne -b "CLERIC BEAST:8:4:0.35:2" --felled-color dc2626 -o assets/bloodborne.svg
-
-# 4. Generate 8-Bit Arcade Boss
-npx readme-boss-bar --style pixel -b "CASTLE OVERLORD:8:4:0.4:2" --dmg-pop-color 38bdf8 -o assets/pixel.svg
-
-# 5. Generate Modern Minimal Dashboard
-npx readme-boss-bar --style minimal -b "SYSTEM INTEGRITY:6:3:0.5:2" -o assets/minimal.svg
-
-# 6. Automatic cinematic mode
+# Automatic cinematic encounter
 npx readme-boss-bar --auto -o assets/boss_bar.svg
 
-# 7. Using JSON configuration file
+# From a configuration file
 npx readme-boss-bar --config config.example.json -o assets/boss_bar.svg
 ```
 
-### JSON Configuration Format
+### Configuration File (`bosses.json`)
 
 ```json
 [
   {
     "name": "STARCOURGE RADAHN",
     "totalBars": 10,
-    "hits": 2,
     "damagePerHit": 3,
     "hitInterval": 0.5,
+    "hits": 4,
     "barColor": "purple",
     "shake": "heavy",
     "style": "souls",
-    "dmgPop": "-{N} BARS"
-  },
-  {
-    "name": "MALENIA, BLADE OF MIQUELLA",
-    "totalBars": 8,
-    "hits": 4,
-    "damagePerHit": 2,
-    "hitInterval": 0.35,
-    "barColor": "gold",
-    "shake": "heavy",
-    "style": "souls",
-    "felledText": "DEMIGOD FELLED",
-    "felledColor": "#f59e0b"
+    "felledText": "DEMIGOD FELLED"
   }
 ]
 ```
 
 ---
 
-## Interactive Studio (Web App)
-
-Visit **[readme-boss-barr.vercel.app](https://readme-boss-barr.vercel.app)** or open `index.html` / `preview.html` locally in any web browser to access the **Interactive Boss Bar Studio**:
-- **Aesthetic Selector**: Switch seamlessly between Classic, Souls, Cyberpunk, Pixel, Bloodborne, and Minimal styles.
-- **1-Click Presets**: Dedicated presets for every aesthetic style plus 42 School and Elden Ring runs.
-- **Interactive Stage Manager**: Add and remove multiple encounter phases on the fly.
-- **Status Tags & Color Tuning**: Customize top-right badges (e.g. `[CURRENT FOE]`, `[BOSS]`, `[FELLED]`) and hex colors for both live and defeated states.
-- **Reset to Defaults**: 1-click reset to cleanly restore default boss presets and controls.
-- **Real-Time Live Preview**: Instant rendering with live damage animations and screen shakes as you type or adjust sliders.
-- **1-Click Export Bar**: Copy GitHub README Markdown embeds, download SVG files, or copy CLI commands.
-
----
-
 ## GitHub Actions Automation
 
-Automatically regenerate your profile health bar on every push or milestone:
+Regenerate your boss bar automatically on each commit or milestone:
 
 ```yaml
 name: Update Boss Health Bar
+
 on:
   push:
     branches: [ main ]
 
 jobs:
-  build:
+  generate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npx readme-boss-bar -b "RADAHN:10:2:0.5:3" --style souls --theme purple --shake heavy -o assets/boss_bar.svg
+      - run: npx readme-boss-bar -b "RADAHN:10:4:0.5:3" --style souls --theme purple -o assets/boss_bar.svg
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: update profile boss health bar"
 ```
+
+---
+
+## Self-Hosting
+
+Deploy your own private instance to Vercel with one click:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FSS2Genji%2Freadme-boss-bar)
 
 ---
 
