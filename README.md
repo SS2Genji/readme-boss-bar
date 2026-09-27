@@ -66,33 +66,19 @@ Chain multiple phases sequentially. Phase 2 begins only after Phase 1 is defeate
 
 ## Quick Start
 
-### Option 1: Web Studio (Fastest)
+### 1. Web Studio (Interactive)
 
 1. Open the [Web Studio](https://readme-boss-barr.vercel.app).
 2. Click **[EXECUTE SYSTEM]** or press Space/Enter.
 3. Select your aesthetic, pick a preset, and customize bars, damage, or colors.
 4. Click **Copy Markdown for README** and paste it into your `README.md`.
 
-### Option 2: Direct API URL
+### 2. Direct API URL
 
-Add an image link to your markdown using the public API:
+Add an image link directly into your markdown profile:
 
 ```markdown
 ![Boss Bar](https://readme-boss-barr.vercel.app/api?name=YOUR_PROJECT&bars=10&dmg=2&style=souls)
-```
-
-### Option 3: Local SVG Generation (Zero External Requests)
-
-If you prefer committing static files to your repository without third-party requests:
-
-```bash
-npx readme-boss-bar -b "MY PROJECT:10:3:0.5:3" --style souls -o assets/boss_bar.svg
-```
-
-Then reference the file in your README:
-
-```markdown
-![Boss Bar](./assets/boss_bar.svg)
 ```
 
 ---
@@ -154,50 +140,9 @@ Trailing values can be omitted. Example:
 
 ---
 
-## CLI Usage
-
-Run directly with `npx`:
-
-```bash
-# Step-by-step interactive CLI wizard
-npx readme-boss-bar wizard
-
-# Generate a Cyberpunk Mech bar
-npx readme-boss-bar --style cyberpunk -b "CYBER MECH:10:3:0.4:3" -o assets/mech.svg
-
-# Generate a Souls Radahn encounter
-npx readme-boss-bar --style souls -b "RADAHN:10" --dmg 3 --interval 0.5 --theme purple --shake heavy -o assets/radahn.svg
-
-# Automatic cinematic encounter
-npx readme-boss-bar --auto -o assets/boss_bar.svg
-
-# From a configuration file
-npx readme-boss-bar --config config.example.json -o assets/boss_bar.svg
-```
-
-### Configuration File (`bosses.json`)
-
-```json
-[
-  {
-    "name": "STARCOURGE RADAHN",
-    "totalBars": 10,
-    "damagePerHit": 3,
-    "hitInterval": 0.5,
-    "hits": 4,
-    "barColor": "purple",
-    "shake": "heavy",
-    "style": "souls",
-    "felledText": "DEMIGOD FELLED"
-  }
-]
-```
-
----
-
 ## GitHub Actions Automation
 
-Regenerate your boss bar automatically on each commit or milestone:
+Regenerate and commit your boss bar automatically on each push or milestone:
 
 ```yaml
 name: Update Boss Health Bar
@@ -211,22 +156,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npx readme-boss-bar -b "RADAHN:10:4:0.5:3" --style souls --theme purple -o assets/boss_bar.svg
+      - name: Fetch Boss Bar SVG
+        run: |
+          mkdir -p assets
+          curl -s "https://readme-boss-barr.vercel.app/api?name=RADAHN&bars=10&dmg=3&style=souls&theme=purple" -o assets/boss_bar.svg
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: update profile boss health bar"
 ```
-
----
-
-## Self-Hosting
-
-Deploy your own private instance to Vercel with one click:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FSS2Genji%2Freadme-boss-bar)
 
 ---
 
