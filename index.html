@@ -1488,9 +1488,9 @@
   </div>
 
   <!-- Design Manifesto Modal Drawer -->
-  <div class="modal-backdrop" id="modal-manifesto" onclick="if(event.target === this) closeManifesto()">
+  <div class="modal-backdrop" id="modal-manifesto" onclick="if(event.target === this) { event.stopPropagation(); closeManifesto(); }">
     <div class="modal-content">
-      <button class="modal-close-btn" onclick="closeManifesto()">CLOSE</button>
+      <button class="modal-close-btn" onclick="event.stopPropagation(); closeManifesto()">CLOSE</button>
       <div class="manifesto-body">
         <h2>THE ANTI-SLOP DESIGN MANIFESTO</h2>
         <p><strong>Awwwards / FWA Level Creative Engineering Framework</strong></p>
@@ -1502,7 +1502,7 @@
         <p>Grounded in Pascal Deville's Web Brutalism, 1-bit Ditherpunk low-tech constraints, and David Rudnick's Primacist theory. We employ high-density HUD telemetry, spiky biomechanical wireframes, and chiaroscuro tonal balance.</p>
 
         <h3>3. Hybrid Creative Pipeline</h3>
-        <p>Four strict phases: Concept &amp; Manifesto &rarr; Procedural Textures &amp; Synthesis &rarr; Interaction &amp; Motion Math &rarr; Isolated Component Architecture.</p>
+        <p>Four strict phases: Concept &amp; Manifesto -&gt; Procedural Textures &amp; Synthesis -&gt; Interaction &amp; Motion Math -&gt; Isolated Component Architecture.</p>
 
         <h3>4. Web Wabi-Sabi &amp; Deliberate Imperfection</h3>
         <p>Rosa Menkman Glitch Studies remind us that digital perfection is sterile. Micro analog scanlines, chromatic aberration vectors, and tactile procedural audio provide authentic weight.</p>
@@ -1942,6 +1942,7 @@
       } else {
         if (hubEl) hubEl.style.display = 'none';
         if (studioEl) studioEl.style.display = 'flex';
+        updateStudio();
       }
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
@@ -1957,24 +1958,26 @@
 
     window.addEventListener('click', (e) => {
       if (currentView === 'hub') {
+        if (e.target.closest('#modal-manifesto')) return;
+        if (e.target.closest('.hud-bar')) return;
         const modal = document.getElementById('modal-manifesto');
         if (modal && modal.classList.contains('open')) return;
-        if (!e.target.closest('.hud-bar')) {
-          executeSystem();
-        }
+        executeSystem();
       }
     });
 
     window.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+      const modal = document.getElementById('modal-manifesto');
+      const isModalOpen = modal && modal.classList.contains('open');
+
       if (e.code === 'Space' || e.code === 'Enter') {
-        if (currentView === 'hub') {
+        if (currentView === 'hub' && !isModalOpen) {
           e.preventDefault();
           executeSystem();
         }
       } else if (e.code === 'Escape') {
-        const modal = document.getElementById('modal-manifesto');
-        if (modal && modal.classList.contains('open')) {
+        if (isModalOpen) {
           closeManifesto();
         } else if (currentView === 'studio') {
           switchView('hub');

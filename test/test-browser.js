@@ -143,6 +143,45 @@ async function runBrowserTests() {
           assert(window.getComputedStyle(studioEl).display !== 'none', 'executeSystem() revealed #view-studio');
           assert(glitchIntensity > 0.5, 'executeSystem triggered shader glitch burst');
 
+          // Test Escape key inside studio returns to hub
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape' }));
+          assert(currentView === 'hub', 'Escape key in studio switched back to hub');
+          assert(window.getComputedStyle(gatewayEl).display !== 'none', 'Gateway visible after Escape');
+          assert(window.getComputedStyle(studioEl).display === 'none', 'Studio hidden after Escape');
+
+          // Test Manifesto Modal isolation on Gateway: backdrop click, close btn, Space key, Escape key
+          const manifestoModal = document.getElementById('modal-manifesto');
+          assert(manifestoModal, 'Manifesto modal element exists');
+          openManifesto();
+          assert(manifestoModal.classList.contains('open'), 'Manifesto modal opened');
+          assert(currentView === 'hub', 'currentView remains hub when modal opens');
+
+          // Space key while modal is open should NOT execute system
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Space' }));
+          assert(currentView === 'hub', 'Space key while modal is open did NOT execute system');
+          assert(manifestoModal.classList.contains('open'), 'Modal still open after Space key');
+
+          // Escape key while modal is open should close modal and remain on hub
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape' }));
+          assert(!manifestoModal.classList.contains('open'), 'Escape key closed manifesto modal');
+          assert(currentView === 'hub', 'currentView remains hub after closing modal via Escape');
+
+          // Backdrop click should close modal and NOT execute system
+          openManifesto();
+          manifestoModal.click();
+          assert(!manifestoModal.classList.contains('open'), 'Backdrop click closed modal');
+          assert(currentView === 'hub', 'Backdrop click did NOT execute system');
+
+          // Close button click should close modal and NOT execute system
+          openManifesto();
+          document.querySelector('.modal-close-btn').click();
+          assert(!manifestoModal.classList.contains('open'), 'Close button closed modal');
+          assert(currentView === 'hub', 'Close button did NOT execute system');
+
+          // Finally enter studio for remaining tests
+          executeSystem();
+          assert(currentView === 'studio', 'Re-entered studio for studio testing');
+
           // --- 2. Purge ALL Emojis Assertions ---
           const forbiddenChars = ['⚔', '⚡', '⌖', '†', '▣', '◇', '▲', '◈', '♫', '✕', '↗', '✔', '🔄', '◐', '🌙', '❌', '🛡', '⌁'];
           const emojiRegex = /[\u{1F300}-\u{1F9FF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u;
@@ -156,6 +195,7 @@ async function runBrowserTests() {
             }
           }
 
+          assertNoEmoji(document.body, 'Entire document body');
           document.querySelectorAll('.btn-preset').forEach((btn, idx) => {
             assertNoEmoji(btn, 'preset button ' + idx);
           });
