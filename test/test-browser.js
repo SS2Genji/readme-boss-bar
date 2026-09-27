@@ -127,8 +127,18 @@ async function runBrowserTests() {
           assert(!document.querySelector('.hud-telemetry').textContent.includes('ENGINE:'), 'ENGINE: v0.2.0 removed from telemetry');
           assert(!document.querySelector('.hud-telemetry').textContent.includes('SEC:'), 'SEC: PURE-SVG 100% removed from telemetry');
 
+          // Test: Right click (button 2) must NOT execute system
+          window.dispatchEvent(new MouseEvent('click', { button: 2, bubbles: true }));
+          assert(hasExecuted === false, 'Right click on gateway did NOT execute system');
+          assert(currentView === 'hub', 'currentView remains hub after right click');
+
+          // Test: Clicking inside HUD bar must NOT execute system
+          document.querySelector('.hud-bar').dispatchEvent(new MouseEvent('click', { button: 0, bubbles: true }));
+          assert(hasExecuted === false, 'Clicking inside .hud-bar did NOT execute system');
+          assert(currentView === 'hub', 'currentView remains hub after clicking .hud-bar');
+
           // Test Entry via Enter key (One-Way Gateway Entry)
-          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter' }));
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter', key: 'Enter' }));
           assert(hasExecuted === true, 'hasExecuted flag flipped to true on entry');
           assert(currentView === 'studio', 'Enter key set currentView to studio');
           assert(window.getComputedStyle(gatewayEl).display === 'none', 'Enter key hid #view-gateway');
@@ -140,28 +150,40 @@ async function runBrowserTests() {
           document.getElementById('toast-text').innerText = 'SENTINEL_UNCHANGED';
 
           // Test: Space key in studio must NEVER re-open hub or re-trigger sound/glitch/toast
-          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Space' }));
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Space', key: ' ' }));
           assert(currentView === 'studio', 'Space key in studio did NOT re-open hub');
           assert(window.getComputedStyle(gatewayEl).display === 'none', 'Gateway remains hidden on Space');
           assert(glitchIntensity === 0, 'Space key did not re-trigger glitch intensity');
           assert(document.getElementById('toast-text').innerText === 'SENTINEL_UNCHANGED', 'Space key did not re-trigger toast');
 
           // Test: Enter key in studio must NEVER re-trigger
-          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter' }));
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter', key: 'Enter' }));
           assert(currentView === 'studio', 'Enter key in studio did NOT re-open hub');
           assert(glitchIntensity === 0, 'Enter key did not re-trigger glitch intensity');
           assert(document.getElementById('toast-text').innerText === 'SENTINEL_UNCHANGED', 'Enter key did not re-trigger toast');
 
+          // Test: NumpadEnter key in studio must NEVER re-trigger
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'NumpadEnter', key: 'Enter' }));
+          assert(currentView === 'studio', 'NumpadEnter key in studio did NOT re-open hub');
+          assert(glitchIntensity === 0, 'NumpadEnter key did not re-trigger glitch intensity');
+          assert(document.getElementById('toast-text').innerText === 'SENTINEL_UNCHANGED', 'NumpadEnter key did not re-trigger toast');
+
           // Test: Escape key in studio must NEVER re-open hub
-          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape' }));
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape', key: 'Escape' }));
           assert(currentView === 'studio', 'Escape key in studio did NOT re-open hub');
           assert(window.getComputedStyle(gatewayEl).display === 'none', 'Gateway remains hidden on Escape');
 
-          // Test: Document click in studio must NEVER re-trigger execution
-          document.body.click();
+          // Test: Document left click in studio must NEVER re-trigger execution
+          document.body.dispatchEvent(new MouseEvent('click', { button: 0, bubbles: true }));
           assert(currentView === 'studio', 'Body click did not switch view');
           assert(glitchIntensity === 0, 'Body click did not re-trigger glitch intensity');
           assert(document.getElementById('toast-text').innerText === 'SENTINEL_UNCHANGED', 'Body click did not re-trigger toast');
+
+          // Test: Document right click in studio must NEVER re-trigger execution
+          document.body.dispatchEvent(new MouseEvent('click', { button: 2, bubbles: true }));
+          assert(currentView === 'studio', 'Right click in studio did not switch view');
+          assert(glitchIntensity === 0, 'Right click in studio did not re-trigger glitch intensity');
+          assert(document.getElementById('toast-text').innerText === 'SENTINEL_UNCHANGED', 'Right click in studio did not re-trigger toast');
 
           // Test: Direct executeSystem() call is idempotent
           executeSystem();
@@ -348,6 +370,12 @@ async function runBrowserTests() {
           nameInput.dispatchEvent(new Event('input', { bubbles: true }));
           assert(document.getElementById('stage-title-0').innerText === 'MOGH, LORD OF BLOOD', 'Stage title live update');
 
+          // Verify typing space inside input field is not prevented and retains studio view
+          const spaceInInputEvt = new KeyboardEvent('keydown', { code: 'Space', key: ' ', bubbles: true, cancelable: true });
+          nameInput.dispatchEvent(spaceInInputEvt);
+          assert(!spaceInInputEvt.defaultPrevented, 'Space key in input field is not prevented');
+          assert(currentView === 'studio', 'Typing space in input maintains studio view');
+
           // Download and copy toasts
           downloadSVG();
           assert(document.getElementById('toast-text').innerText.includes('Downloaded'), 'Download triggered');
@@ -440,14 +468,85 @@ async function runBrowserTests() {
       returnByValue: true
     });
 
+    if (testRes.exceptionDetails) {
+      throw new Error("Browser test assertion failed: " + JSON.stringify(testRes.exceptionDetails));
+    }
+
+    // Helper to navigate and wait until fresh page is fully ready with hasExecuted === false
+    async function navigateAndReady(url) {
+      await send('Page.navigate', { url });
+      for (let i = 0; i < 30; i++) {
+        await new Promise(r => setTimeout(r, 100));
+        const res = await send('Runtime.evaluate', {
+          expression: '({ hasExecuted: typeof hasExecuted !== "undefined" ? hasExecuted : null, currentView: typeof currentView !== "undefined" ? currentView : null })',
+          returnByValue: true
+        });
+        if (res.result?.value?.hasExecuted === false && res.result?.value?.currentView === 'hub') {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // Additional Verification: Fresh page entry via [Space] key
+    if (!await navigateAndReady('http://127.0.0.1:9890/')) {
+      throw new Error("Failed to load fresh page for Space key test");
+    }
+    const spaceEntryRes = await send('Runtime.evaluate', {
+      expression: `
+        (() => {
+          if (hasExecuted !== false || currentView !== 'hub') return false;
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Space', key: ' ' }));
+          return hasExecuted === true && currentView === 'studio' && document.getElementById('view-gateway').style.display === 'none';
+        })()
+      `,
+      returnByValue: true
+    });
+    if (!spaceEntryRes.result?.value) {
+      throw new Error("Fresh page gateway entry via [Space] key failed!");
+    }
+
+    // Additional Verification: Fresh page entry via Left-Click on [EXECUTE SYSTEM]
+    if (!await navigateAndReady('http://127.0.0.1:9890/')) {
+      throw new Error("Failed to load fresh page for Left-Click test");
+    }
+    const clickEntryRes = await send('Runtime.evaluate', {
+      expression: `
+        (() => {
+          if (hasExecuted !== false || currentView !== 'hub') return false;
+          document.getElementById('btn-execute-system').click();
+          return hasExecuted === true && currentView === 'studio' && document.getElementById('view-gateway').style.display === 'none';
+        })()
+      `,
+      returnByValue: true
+    });
+    if (!clickEntryRes.result?.value) {
+      throw new Error("Fresh page gateway entry via Left-Click failed!");
+    }
+
+    // Additional Verification: Fresh page entry via [NumpadEnter]
+    if (!await navigateAndReady('http://127.0.0.1:9890/')) {
+      throw new Error("Failed to load fresh page for NumpadEnter test");
+    }
+    const numpadEntryRes = await send('Runtime.evaluate', {
+      expression: `
+        (() => {
+          if (hasExecuted !== false || currentView !== 'hub') return false;
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'NumpadEnter', key: 'Enter' }));
+          return hasExecuted === true && currentView === 'studio' && document.getElementById('view-gateway').style.display === 'none';
+        })()
+      `,
+      returnByValue: true
+    });
+    if (!numpadEntryRes.result?.value) {
+      throw new Error("Fresh page gateway entry via [NumpadEnter] key failed!");
+    }
+
     ws.close();
     chrome.kill();
     server.close();
 
-    if (testRes.exceptionDetails) {
-      throw new Error("Browser test assertion failed: " + JSON.stringify(testRes.exceptionDetails));
-    }
-    console.log(`[PASS] ALL ${testRes.result.value.count} BROWSER STUDIO ASSERTIONS PASSED CLEANLY!`);
+    console.log(`[PASS] ALL ${testRes.result.value.count + 3} BROWSER STUDIO ASSERTIONS PASSED CLEANLY!`);
   } catch (err) {
     chrome.kill();
     server.close();

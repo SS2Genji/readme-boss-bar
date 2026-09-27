@@ -1051,7 +1051,7 @@
     @media (max-width: 640px) {
       .specimen-card { position: static; }
       .btn-execute-system { font-size: 11.5px; padding: 12px 20px; }
-      .hud-bar { padding: 6px 10px; gap: 8px; flex-wrap: wrap; }
+      .hud-bar { padding: 6px 10px; gap: 8px; }
     }
     @media (max-width: 480px) {
       .hud-bar { padding: 6px 8px; }
@@ -1765,12 +1765,12 @@
       sound.playExecute();
       glitchIntensity = 1.0;
       switchView('studio');
-      updateStudio();
       showToast("System Executed: Boss Bar Studio Initialized");
     }
 
     window.addEventListener('click', (e) => {
       if (hasExecuted) return;
+      if (e.button !== 0) return;
       if (e.target.closest('.hud-bar')) return;
       executeSystem();
     });
@@ -1779,7 +1779,7 @@
       if (hasExecuted) return;
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
 
-      if (e.code === 'Space' || e.code === 'Enter') {
+      if (e.code === 'Space' || e.key === ' ' || e.code === 'Enter' || e.key === 'Enter') {
         e.preventDefault();
         executeSystem();
       }
