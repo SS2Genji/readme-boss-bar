@@ -12,7 +12,7 @@ Pure SVG vector graphics that run on GitHub's Camo image proxy without `<foreign
 
 Below are live SVGs rendered directly through the public API. Copy the markdown snippets below any example to use them in your own profile.
 
-### Souls Gothic
+### Souls
 
 ![Souls Boss Bar](https://readme-boss-barr.vercel.app/api?name=STARCOURGE+RADAHN&bars=10&dmg=3&style=souls&theme=purple&shake=heavy&felled=DEMIGOD+FELLED)
 
@@ -20,7 +20,7 @@ Below are live SVGs rendered directly through the public API. Copy the markdown 
 ![Boss Bar](https://readme-boss-barr.vercel.app/api?name=STARCOURGE+RADAHN&bars=10&dmg=3&style=souls&theme=purple&shake=heavy&felled=DEMIGOD+FELLED)
 ```
 
-### Cyberpunk HUD
+### Cyberpunk
 
 ![Cyberpunk Boss Bar](https://readme-boss-barr.vercel.app/api?name=TITAN+MECH&bars=8&dmg=2&style=cyberpunk&theme=cyan&shake=heavy&felledColor=06b6d4)
 
@@ -28,7 +28,7 @@ Below are live SVGs rendered directly through the public API. Copy the markdown 
 ![Boss Bar](https://readme-boss-barr.vercel.app/api?name=TITAN+MECH&bars=8&dmg=2&style=cyberpunk&theme=cyan&shake=heavy&felledColor=06b6d4)
 ```
 
-### Bloodborne Horror
+### Bloodborne
 
 ![Bloodborne Boss Bar](https://readme-boss-barr.vercel.app/api?name=CLERIC+BEAST&bars=8&dmg=2&style=bloodborne&theme=crimson&shake=heavy&felledColor=dc2626)
 
